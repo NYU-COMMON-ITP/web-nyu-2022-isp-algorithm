@@ -2,7 +2,9 @@ FROM node:16-alpine3.14
 
 # ENV PORT=3000
 
-# Various libs needed for nodejs build
+# These are included because they were used to build NextJS 9 on Node 12
+# bash may be the only one that's actually necessary but I haven't tried
+# In addition, it's possible to use zsh or any other shell
 RUN apk --no-cache add shadow \
     gcc \ 
     musl-dev \
@@ -21,7 +23,12 @@ RUN apk --no-cache add shadow \
     git \
     openssh \
     tini \
-    # python \
+    # Python failed due to a strange repository issue that doesn't happen for node:12.16.1-alpine
+    # Instead of spending time debugging I just commented out and it doesn't seem necessary
+    # for any dependencies. Likely these dependencies can be paired down as they come from
+    # an old dockerfile to build NextJS 9 on Node 12. No need to do this unless we run into 
+    # an issue with python however
+    # python \ 
     g++
 
 # This has to match docker-compose.yml
