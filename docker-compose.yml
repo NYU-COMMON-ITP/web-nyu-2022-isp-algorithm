@@ -7,16 +7,19 @@ services:
     platform: linux/amd64
     ports:
       - "3000:3000"
+      - "5555:5555"
     volumes:
       - .:/usr/src/web
     environment:
-      DATABASE_URL: postgresql://root:password@db:5432/test
+      DATABASE_URL: "${DATABASE_URL}"
     depends_on:
       - db
   db:
-    image: postgres:13.1
+    image: "postgres:${POSTGRES_VERSION}"
     volumes:
       - .:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
     environment:
       POSTGRES_DB: test
       POSTGRES_PASSWORD: password
