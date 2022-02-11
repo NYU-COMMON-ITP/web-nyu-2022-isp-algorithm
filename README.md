@@ -1,9 +1,41 @@
 # Common ISP Algorithm Project
 ## Installation
-postgres://u5smia99h95f2e:p4da774f1897d196f8df7789b235ee5c3b93a73ba4e49555064ba014887d41fe5@ec2-18-214-58-252.compute-1.amazonaws.com:5432/d6r8pqm2ld57k5
+This project was set up following https://vercel.com/guides/nextjs-prisma-postgres. I then
+wrapped everything up in docker and added some scripts to populate the environment. I've
+tried to comment liberally, but do ask if you're interested in going deeper.
 
-psql -U <pg_user> -d <db> < nyu-db-export.sql
-psql -U common -d common < nyu-db-export.sql
+Highly recommend using docker to run this environment. It's totally possible to set
+up on your host machine, but why? If you're really set on that I'm happy to help with that.
+
+The following steps will take care of setting up containers for node, postgres, and adminer.
+Additionally, it will populate database tables from the csvs in ./nyu-csv-data.
+
+1. Install docker desktop - https://www.docker.com/products/docker-desktop
+2. `docker compose build`
+3. `bin/dev-start` -- This should drop you in bash within the node container
+4. `npm install`
+TODO: Prisma needs some documentation here.
+5. `npm run dev`
+
+## Normal Development Tasks
+Please note that anything node related should be run within the node container. Use `bin/dev-start`
+### Daily Development
+1. `bin/dev-start`
+2. `npm run dev`
+
+### Adding a package
+It's important to use --save or --save-dev when npm installing to make sure packages are added to package.json.
+
+`npm i package_name --save`
+
+### Modifying the database schema
+There are a couple of options for this:
+
+1. Use psql or a database gui to modify by running sql. You'll need to pull those changes into
+your prima models. Once the db is how you want it run `npx prisma db pull`
+2. Go the other way and modify the Prisma models and push them to the db with `npx prisma db push`
+
+## Breaking Down bin/dev-start
 ## Initial Technical Decisions
 1. NextJS
     - Abstracts away lower level rendering concerns like Server side rendering (SSR), Static Site Generation (SSG), and Static rendering. Additionally, Incremental Static Site Generation is available
