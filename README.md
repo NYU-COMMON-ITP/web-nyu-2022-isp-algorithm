@@ -1,6 +1,9 @@
 # Common ISP Algorithm Project
 ## Installation
+postgres://u5smia99h95f2e:p4da774f1897d196f8df7789b235ee5c3b93a73ba4e49555064ba014887d41fe5@ec2-18-214-58-252.compute-1.amazonaws.com:5432/d6r8pqm2ld57k5
 
+psql -U <pg_user> -d <db> < nyu-db-export.sql
+psql -U common -d common < nyu-db-export.sql
 ## Initial Technical Decisions
 1. NextJS
     - Abstracts away lower level rendering concerns like Server side rendering (SSR), Static Site Generation (SSG), and Static rendering. Additionally, Incremental Static Site Generation is available
