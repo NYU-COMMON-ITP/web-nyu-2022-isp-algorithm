@@ -25,6 +25,7 @@ services:
     image: "postgres:${POSTGRES_VERSION}"
     restart: always
     volumes:
+      - .:/usr/src/web
       - ./postgres-data:/var/lib/postgresql/data
       # Any script in docker-entrypoint-initdb.d directory runs during
       # postgres initialization - sql files first, then sh files
@@ -39,5 +40,4 @@ services:
       POSTGRES_USER: nyu_user
       POSTGRES_DB: nyu_db
 volumes:
-  redis:
   db:
