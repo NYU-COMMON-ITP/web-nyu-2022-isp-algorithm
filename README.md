@@ -1,6 +1,6 @@
 # Common ISP Algorithm Project
 ## Installation
-This project was set up following https://vercel.com/guides/nextjs-prisma-postgres. I then
+This project was set up by partially following https://vercel.com/guides/nextjs-prisma-postgres. I then
 wrapped everything up in docker and added some scripts to populate the environment. I've
 tried to comment liberally, but do ask if you're interested in going deeper.
 
