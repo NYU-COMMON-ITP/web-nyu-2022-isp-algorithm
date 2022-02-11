@@ -1,0 +1,3 @@
+#!/bin/bash
+echo "Spinning down dev environment..."
+docker compose down

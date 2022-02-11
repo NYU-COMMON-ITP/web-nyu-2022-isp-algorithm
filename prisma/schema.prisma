@@ -1,6 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -8,4 +5,37 @@ generator client {
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
+}
+
+model properties {
+  id           Int     @id @default(autoincrement())
+  home_name    String? @db.VarChar
+  property_id  String? @db.VarChar
+  brand        String? @db.VarChar
+  city_name    String? @db.VarChar
+  neighborhood String? @db.VarChar
+  timezone     String? @db.VarChar
+  unit_count   Int?
+  rownum       Int?
+}
+
+model spaces {
+  space_id         Int      @id @default(autoincrement())
+  property_id      String   @db.VarChar
+  apartment_name   String   @db.VarChar
+  room_name        String   @db.VarChar
+  occupancy_type   String   @db.VarChar
+  security_deposit Int?
+  date_available   DateTime @db.Date
+  status           String   @db.VarChar
+  created_at       DateTime @db.Timestamp(6)
+  updated_at       DateTime @db.Timestamp(6)
+  mo3_price        Int
+  mo6_price        Int
+  mo9_price        Int
+  mo12_price       Int
+  bedroom_count    Int
+  bath_count       Int
+  min_price        Int
+  max_price        Int
 }

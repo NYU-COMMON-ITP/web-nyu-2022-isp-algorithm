@@ -1,3 +1,5 @@
 #!/bin/bash
 echo "Spinning up dev environment..."
+docker compose down
+docker compose up -d
 docker-compose run --service-ports --rm node bash
