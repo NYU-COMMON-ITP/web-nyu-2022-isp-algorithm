@@ -14,9 +14,11 @@ Additionally, it will populate database tables from the csvs in ./nyu-csv-data.
 2. `docker compose build`
 3. `bin/dev-start` -- This should drop you in bash within the node container
 4. `npm install`
-TODO: Prisma needs some documentation here.
 5. `npm run dev`
 
+The next JS dev server runs on port 3000, but this port is exposed as 6003 to the host machine.
+
+This means you need to open localhost:6003 to see the starter project
 ## Normal Development Tasks
 Please note that anything node related should be run within the node container. Use `bin/dev-start`
 ### Daily Development
@@ -34,6 +36,14 @@ There are a couple of options for this:
 1. Use psql or a database gui to modify by running sql. You'll need to pull those changes into
 your prima models. Once the db is how you want it run `npx prisma db pull`
 2. Go the other way and modify the Prisma models and push them to the db with `npx prisma db push`
+
+Personal preference is to let the database be the source of truth, but I'm also new to Prisma
+
+## View Database in a gui
+You can use any gui (I use TablePlus) to connect to the database using DATABASE_URL from env
+
+Additionally, prisma studio provides a simple gui for the database based on prisma models. After
+kicking off the dev environment just run `npx prisma studio`. The default port is 5555 but I've exposed this as port 6002 in the docker compose file.
 
 ## Breaking Down bin/dev-start
 ## Initial Technical Decisions
