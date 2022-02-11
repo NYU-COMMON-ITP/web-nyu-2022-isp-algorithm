@@ -6,24 +6,38 @@ services:
       dockerfile: Dockerfile.dev
     platform: linux/amd64
     ports:
-      - "3000:3000"
-      - "5555:5555"
+      - "6003:3000"
+      - "6002:5555"
     volumes:
       - .:/usr/src/web
     environment:
       DATABASE_URL: "${DATABASE_URL}"
     depends_on:
       - db
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 6001:8080
+    depends_on:
+      - db
   db:
     image: "postgres:${POSTGRES_VERSION}"
+    restart: always
     volumes:
-      - .:/var/lib/postgresql/data
+      - ./postgres-data:/var/lib/postgresql/data
+      # Any script in docker-entrypoint-initdb.d directory runs during
+      # postgres initialization - sql files first, then sh files
+      # This is skipped if db already exists
+      # See https://hub.docker.com/_/postgres
+      # Chose to be explicit here but likely you can glob this and expose the whole directory
+      - ./postgres-init/create-tables.sql:/docker-entrypoint-initdb.d/create-tables.sql
     ports:
-      - "5432:5432"
+      - "6000:5432"
     environment:
-      POSTGRES_DB: test
-      POSTGRES_PASSWORD: password
-      POSTGRES_USER: root
+      POSTGRES_PASSWORD: nyu_password
+      POSTGRES_USER: nyu_user
+      POSTGRES_DB: nyu_db
 volumes:
   redis:
   db:
