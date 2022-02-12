@@ -81,6 +81,14 @@ It's important to use --save or --save-dev when npm installing to make sure pack
 
 I've set up prettier and added a .vscode folder with workspace configuration so that prettier automatically formats code on save and paste events. Feel free to change this to however works for your team, but I recommend encoding these decisions as a prettier config and then just formatting on save.
 
+### Code linting
+
+An eslint configuration is included, but it's only a simplified version of what we use for our marketing site.
+
+### Code testing
+
+Jest
+
 ### Modifying the database schema
 
 There are a couple of options for this:
