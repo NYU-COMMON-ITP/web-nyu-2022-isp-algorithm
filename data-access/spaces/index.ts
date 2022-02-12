@@ -1,7 +1,7 @@
-import { Client } from 'pg';
+import { Client } from "pg";
 
-if(!process.env.DATABASE_URL) {
-    throw new Error('Need to specify a DATABASE_URL in your .env file');
+if (!process.env.DATABASE_URL) {
+  throw new Error("Need to specify a DATABASE_URL in your .env file");
 }
 
 // Example of raw sql. Note how to do parameterized queries
@@ -12,10 +12,10 @@ const client = new Client({
 });
 
 export async function getSpaces() {
-    await client.connect();
-    // const res = await client.query('SELECT $1::text as message', ['Hello world!'])
-    const res = await client.query('SELECT * from spaces');
-    console.log(res.rows); // Hello world!
-    await client.end();
-    return res.rows;
+  await client.connect();
+  // const res = await client.query('SELECT $1::text as message', ['Hello world!'])
+  const res = await client.query("SELECT * from spaces");
+  console.log(res.rows); // Hello world!
+  await client.end();
+  return res.rows;
 }

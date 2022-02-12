@@ -1,8 +1,8 @@
-import React, { useEffect } from "react"
-import { GetStaticProps } from "next"
-import Layout from "../components/Layout"
-import Post, { PostProps } from "../components/Post"
-import { getProperties, properties } from "../data-access/properties"
+import React, { useEffect } from "react";
+import { GetStaticProps } from "next";
+import Layout from "../components/Layout";
+import Post, { PostProps } from "../components/Post";
+import { getProperties, properties } from "../data-access/properties";
 import { getSpaces } from "../data-access/spaces";
 
 // This page will be statically rendered at build time
@@ -13,28 +13,31 @@ export const getStaticProps: GetStaticProps = async () => {
     {
       id: 1,
       title: "Prisma is the perfect ORM for Next.js",
-      content: "[Prisma](https://github.com/prisma/prisma) and Next.js go _great_ together!",
+      content:
+        "[Prisma](https://github.com/prisma/prisma) and Next.js go _great_ together!",
       published: false,
       author: {
         name: "Nikolas Burk",
         email: "burk@prisma.io",
       },
     },
-  ]
-  return { props: { feed, properties, spaces } }
-}
+  ];
+  return { props: { feed, properties, spaces } };
+};
 
 type Props = {
-  feed: PostProps[],
-  properties: properties[],
-  spaces: any[],
+  feed: PostProps[];
+  properties: properties[];
+  spaces: any[];
 };
 
 const Blog: React.FC<Props> = (props) => {
   // Even though this page is statically rendered at build time
   // This will fetch client side
   useEffect(() => {
-    fetch('/api/v1/properties').then(res => res.json()).then(console.log);
+    fetch("/api/v1/properties")
+      .then((res) => res.json())
+      .then(console.log);
   }, []);
   return (
     <Layout>
@@ -64,7 +67,7 @@ const Blog: React.FC<Props> = (props) => {
         }
       `}</style>
     </Layout>
-  )
-}
+  );
+};
 
-export default Blog
+export default Blog;

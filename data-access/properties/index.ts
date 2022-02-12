@@ -9,5 +9,5 @@ import { properties as _properties } from "@prisma/client";
 export type properties = _properties;
 
 export async function getProperties() {
-    return await prisma.properties.findMany();
+  return await prisma.properties.findMany();
 }
