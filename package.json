@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "cypress": "cypress open"
+    "cypress": "cypress open",
+    "test": "jest --watch"
   },
   "engines": {
     "node": "16.14.0"
