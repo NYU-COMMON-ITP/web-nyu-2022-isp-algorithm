@@ -3,10 +3,12 @@ import { GetStaticProps } from "next"
 import Layout from "../components/Layout"
 import Post, { PostProps } from "../components/Post"
 import { getProperties, properties } from "../data-access/properties"
+import { getSpaces } from "../data-access/spaces";
 
 // This page will be statically rendered at build time
 export const getStaticProps: GetStaticProps = async () => {
   const properties = await getProperties();
+  const spaces = await getSpaces();
   const feed = [
     {
       id: 1,
@@ -19,12 +21,13 @@ export const getStaticProps: GetStaticProps = async () => {
       },
     },
   ]
-  return { props: { feed, properties } }
+  return { props: { feed, properties, spaces } }
 }
 
 type Props = {
   feed: PostProps[],
   properties: properties[],
+  spaces: any[],
 };
 
 const Blog: React.FC<Props> = (props) => {
