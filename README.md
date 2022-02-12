@@ -83,7 +83,10 @@ I've set up prettier and added a .vscode folder with workspace configuration so 
 
 ### Code linting
 
-An eslint configuration is included, but it's only a simplified version of what we use for our marketing site.
+An eslint configuration is included, but it's only a basic one from next js. If you're using
+vscode you should see errors/warnings based on it, but I didn't enable auto fix on save for this one. Easy mod of .vscode settings file to enable this.
+
+Additionally, you can run it on the whole project using `npm run lint`.
 
 ### Code testing
 
