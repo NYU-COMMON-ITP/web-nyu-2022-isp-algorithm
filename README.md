@@ -88,9 +88,11 @@ vscode you should see errors/warnings based on it, but I didn't enable auto fix 
 
 Additionally, you can run it on the whole project using `npm run lint`.
 
+See https://paulintrognon.fr/blog/typescript-prettier-eslint-next-js and next js docs for more info
+
 ### Code testing
 
-Jest
+I've set up jest and cypress for unit/snapshot tests and integration test, respectively. See https://nextjs.org/docs/testing for more info
 
 ### Modifying the database schema
 
