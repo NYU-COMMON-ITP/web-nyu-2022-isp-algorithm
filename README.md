@@ -14,9 +14,10 @@ Additionally, it will populate database tables from the csvs in ./nyu-csv-data.
 
 1. Install docker desktop - https://www.docker.com/products/docker-desktop
 2. `docker compose build`
-3. `bin/dev-start` -- This should drop you in bash within the node container
-4. `npm install`
-5. `npm run dev`
+3. Create a .env file. Currently this is simple enough you can just save the example as .env
+4. `bin/dev-start` -- This should drop you in bash within the node container
+5. `npm install`
+6. `npm run dev`
 
 The next JS dev server runs on port 3000, but this port is exposed as 6003 to the host machine.
 
