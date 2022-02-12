@@ -4,6 +4,7 @@ import ReactMarkdown from "react-markdown"
 import Layout from "../../components/Layout"
 import { PostProps } from "../../components/Post"
 
+// This makes this page server side render
 export const getServerSideProps: GetServerSideProps = async ({ params }) => {
   const post = {
     id: 1,

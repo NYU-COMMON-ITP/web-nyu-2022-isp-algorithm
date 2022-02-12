@@ -39,6 +39,7 @@ your prima models. Once the db is how you want it run `npx prisma db pull`
 
 Personal preference is to let the database be the source of truth, but I'm also new to Prisma
 
+Regardless of which way you go, run `npx prisma generate` to regenerate the prisma client.
 ## View Database in a gui
 You can use any gui (I use TablePlus) to connect to the database using DATABASE_URL from env
 

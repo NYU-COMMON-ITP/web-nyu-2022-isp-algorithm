@@ -1,9 +1,12 @@
-import React from "react"
+import React, { useEffect } from "react"
 import { GetStaticProps } from "next"
 import Layout from "../components/Layout"
 import Post, { PostProps } from "../components/Post"
+import { getProperties, properties } from "../data-access/properties"
 
+// This page will be statically rendered at build time
 export const getStaticProps: GetStaticProps = async () => {
+  const properties = await getProperties();
   const feed = [
     {
       id: 1,
@@ -16,14 +19,20 @@ export const getStaticProps: GetStaticProps = async () => {
       },
     },
   ]
-  return { props: { feed } }
+  return { props: { feed, properties } }
 }
 
 type Props = {
-  feed: PostProps[]
-}
+  feed: PostProps[],
+  properties: properties[],
+};
 
 const Blog: React.FC<Props> = (props) => {
+  // Even though this page is statically rendered at build time
+  // This will fetch client side
+  useEffect(() => {
+    fetch('/api/v1/properties').then(res => res.json()).then(console.log);
+  }, []);
   return (
     <Layout>
       <div className="page">
@@ -34,6 +43,7 @@ const Blog: React.FC<Props> = (props) => {
               <Post post={post} />
             </div>
           ))}
+          <pre>{JSON.stringify(props.properties, null, 2)}</pre>
         </main>
       </div>
       <style jsx>{`
