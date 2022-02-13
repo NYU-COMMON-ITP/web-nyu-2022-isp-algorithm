@@ -7,6 +7,8 @@ if (!process.env.DATABASE_URL) {
 // Example of raw sql. Note how to do parameterized queries
 // Honestly wouldn't mess with this unless performance is an issue
 // Or if you just like sql
+// Also... definitely shouldn't define the client here and may want to
+// consider Pool. This is here for illustrative purposes
 const client = new Client({
   connectionString: process.env.DATABASE_URL,
 });
