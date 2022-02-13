@@ -31,3 +31,6 @@ RUN apk --no-cache add shadow \
 
 # This has to match docker-compose.yml
 WORKDIR /usr/src/web
+# Fixes permission issue with installing cypress
+# probably should actually fix the permissions in linux
+ENV CYPRESS_CACHE_FOLDER=/usr/src/web
