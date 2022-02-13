@@ -15,7 +15,6 @@ export async function getSpaces() {
   await client.connect();
   // const res = await client.query('SELECT $1::text as message', ['Hello world!'])
   const res = await client.query("SELECT * from spaces");
-  console.log(res.rows); // Hello world!
   await client.end();
   return res.rows;
 }

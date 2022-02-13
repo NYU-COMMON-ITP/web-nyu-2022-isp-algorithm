@@ -1,11 +1,25 @@
-import { getProperties } from "../../../../data-access/properties";
+import { getProperties } from "../../../../src/data-access/properties";
+
+const handlers = {
+  POST: async function (req, res) {
+    res.writeHead(200);
+    res.end({ success: true });
+  },
+  GET: async function (req, res) {
+    const properties = await getProperties();
+    res.writeHead(200);
+    res.end(JSON.stringify(properties));
+  },
+};
 
 // Dumb example of an api route. Express applies here
-const getPropertiesHandler = async (context, res) => {
-  const properties = await getProperties();
+async function getPropertiesHandler(req, res) {
+  const handlerFn = handlers[req.method];
+  if (typeof handlerFn !== "function") {
+    throw new Error(`No handler for method ${req.method}`);
+  }
 
-  res.writeHead(200);
-  res.end(JSON.stringify(properties));
-};
+  return handlerFn(req, res);
+}
 
 export default getPropertiesHandler;

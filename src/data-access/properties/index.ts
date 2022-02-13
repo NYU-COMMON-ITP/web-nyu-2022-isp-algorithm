@@ -1,7 +1,7 @@
 // Wrapper for prisma
 // Doing this makes it easy to swap prisma with another orm or plain sql as long as
 // you satisfy the interface
-import prisma from "../../lib/prisma";
+import prisma from "../prisma";
 import { properties as _properties } from "@prisma/client";
 
 // Pass through types

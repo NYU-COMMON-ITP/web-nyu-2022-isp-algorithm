@@ -31,10 +31,12 @@ The docker compose file is the source of truth for what's available in this repo
 
 Essentially express and react wrapped up to abstract various rendering strategies. This is where most of your development time will be spent.
 
-/components contains React components
-/data-access contains examples of fetching data from the database
-/pages has examples of different rendering strategies, data fetching, and api routes.
-/lib currently only has a wrapper around the prisma client
+/pages Is a special NextJS directory and is how NextJS handles routing
+
+All other NextJS concerns are contained within /src, which has 2 directories:
+
+- /components contains React components
+- /data-access contains examples of fetching data from the database
 
 The most important thing here is ports. `npm run dev` will spin up a development server running on port 3000 by default. Because I run next on my host machine for some apps, I forwarded port 6003 on the host machine to port 3000 within the node container. If you forget, the docker compose files have these mappings.
 
