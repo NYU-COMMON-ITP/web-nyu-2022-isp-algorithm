@@ -142,10 +142,7 @@ Really the only things needed to run this application are a postgres db and a bo
    - Please don't go crazy with inheritance and classes. Interfaces and types are nice. Everything else should look like vanilla js.
 6. npm instead of yarn
    yarn just doesn't offer enough for me and I hate installing extra things. With any project you just need to pick one and stick with it. Feel free to change if you want.
-
-Notably I didn't make any decisions about component libraries or CSS. I'm partial to vanilla CSS and CSS Modules but feel free to choose what you're comfortable with
-
-Additonally, this is just a starting point. While you should stick to this for the clients, you might decide it's easier to handle the computation logic externally. Deciding if that trade off is worth the extra work is up to you.
+7. Tailwinds CSS - partial to this, but css, css modules, and style jsx are all still supported. Feel free to use whatever component lib you're comfortable with
 
 # Original Readme Follows
 
