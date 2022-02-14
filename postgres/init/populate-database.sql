@@ -34,11 +34,11 @@ CREATE TABLE spaces (
 );
 
 COPY properties(id, home_name, property_id, brand, city_name, neighborhood, timezone, unit_count, rownum)
-FROM '/usr/src/web/nyu-csv-data/properties.csv'
+FROM '/usr/src/web/postgres/nyu-csv-data/properties.csv'
 DELIMITER ','
 CSV HEADER;
 
 COPY spaces(space_id, property_id, apartment_name, room_name, occupancy_type, security_deposit, date_available, status, created_at, updated_at, mo3_price, mo6_price, mo9_price, mo12_price, bedroom_count, bath_count, min_price, max_price)
-FROM '/usr/src/web/nyu-csv-data/spaces.csv'
+FROM '/usr/src/web/postgres/nyu-csv-data/spaces.csv'
 DELIMITER ','
 CSV HEADER;
