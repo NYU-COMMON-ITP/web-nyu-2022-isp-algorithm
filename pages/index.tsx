@@ -34,8 +34,12 @@ const Blog: React.FC<Props> = (props) => {
   // This will fetch client side
   useEffect(() => {
     Promise.all([
-      fetch("/api/v1/properties").then((res) => res.json()),
-      fetch("/api/v1/spaces").then((res) => res.json()),
+      fetch("/api/v1/properties")
+        .then((res) => res.json()
+        ),
+      fetch("/api/v1/spaces")
+        .then((res) => res.json()
+        ),
     ]).then(console.log);
   }, []);
   return (
