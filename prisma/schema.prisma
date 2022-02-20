@@ -26,7 +26,7 @@ model spaces {
   room_name        String   @db.VarChar
   occupancy_type   String   @db.VarChar
   security_deposit Int?
-  date_available   DateTime @db.Date
+  date_available   String   @db.Date
   status           String   @db.VarChar
   created_at       DateTime @db.Timestamp(6)
   updated_at       DateTime @db.Timestamp(6)

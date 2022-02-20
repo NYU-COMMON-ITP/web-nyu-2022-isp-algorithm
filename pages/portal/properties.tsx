@@ -1,8 +1,8 @@
 import React, { useEffect } from "react";
 import { GetStaticProps } from "next";
-import Layout from "../src/components/Layout";
-import Post, { PostProps } from "../src/components/Post";
-import { getProperties, properties } from "../src/data-access/properties";
+import Layout from "../../src/components/Layout";
+import Post, { PostProps } from "../../src/components/Post";
+import { getProperties, properties } from "../../src/data-access/properties";
 import { DataGrid, GridColDef, GridValueGetterParams } from '@mui/x-data-grid';
 
 
