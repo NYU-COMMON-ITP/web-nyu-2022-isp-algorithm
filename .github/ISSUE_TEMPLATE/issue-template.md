@@ -1,7 +1,7 @@
 ---
-name: issue template
+name: Issue template
 about: Template for New Issues
-title: "[New Issue]"
+title: "[ISSUE]"
 labels: ''
 assignees: ''
 
