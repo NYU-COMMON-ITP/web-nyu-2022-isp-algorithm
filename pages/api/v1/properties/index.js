@@ -8,7 +8,7 @@ const handlers = {
   GET: async function (req, res) {
     const properties = await getProperties();
     res.writeHead(200);
-    res.end(JSON.stringify(properties));
+    res.send(JSON.stringify(properties));
   },
 };
 
@@ -18,7 +18,6 @@ async function getPropertiesHandler(req, res) {
   if (typeof handlerFn !== "function") {
     throw new Error(`No handler for method ${req.method}`);
   }
-
   return handlerFn(req, res);
 }
 
