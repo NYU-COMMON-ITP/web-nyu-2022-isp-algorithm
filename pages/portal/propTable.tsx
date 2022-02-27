@@ -1,21 +1,38 @@
 import React, { useEffect } from "react";
 import { GetStaticProps } from "next";
-import Layout from "../../src/components/Layout";
-import Post, { PostProps } from "../../src/components/Post";
 import { getProperties, properties } from "../../src/data-access/properties";
-import { DataGrid, GridColDef, GridValueGetterParams } from '@mui/x-data-grid';
+import getPropertiesHandler from "../api/v1/properties"
+import { DataGrid, GridColDef } from '@mui/x-data-grid';
+// import properties from "../api/v1/properties";
 
+const SERVERURL = "http://localhost"
+const PORT = 3000
 
 // This page will be statically rendered at build time
 export const getStaticProps: GetStaticProps = async () => {
-    const properties = await getProperties();
+    // const properties = await getProperties();
+
+    // const options =
+
+    const res = await fetch(SERVERURL + ":" + PORT + '/api/v1/properties',
+        {
+            method: "GET",
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+    // const res = reqFn(options)
+    const rawProp = JSON.stringify(res)
+    const properties = []
+    for (var line of properties) {
+        line = line.json
+        line.data_avaliable = line.data_avaliable.toDateString()
+    }
+    console.log(res)
     return {
         props: { properties }
     }
-};
 
-type Props = {
-    properties: properties[];
 };
 
 const columns: GridColDef[] = [
@@ -24,22 +41,16 @@ const columns: GridColDef[] = [
     { field: 'city_name', headerName: 'CITY', width: 200 },
     { field: 'neighborhood', headerName: 'NEIGNBORHOOD', width: 200 },
     { field: 'unit_count', headerName: 'UNIT', width: 200 },
-    // {
-    //     field: 'fullName',
-    //     headerName: 'Full name',
-    //     description: 'This column has a value getter and is not sortable.',
-    //     sortable: false,
-    //     width: 160,
-    //     valueGetter: (params: GridValueGetterParams) =>
-    //         `${params.row.firstName || ''} ${params.row.lastName || ''}`,
-    // },
 ];
 
-const Blog: React.FC<Props> = (props) => {
+function PropTable(props) {
+    console.log(props.properties)
     return (
+        // <div>test{props.properties}</div>
         <div style={{ height: 1080, width: '100%' }}>
             <DataGrid
                 rows={props.properties}
+                getRowId={(props) => props.id}
                 columns={columns}
                 pageSize={20}
                 rowsPerPageOptions={[20, 50, 100]}
@@ -48,5 +59,5 @@ const Blog: React.FC<Props> = (props) => {
         </div>
     );
 };
+export default PropTable
 
-export default Blog;
