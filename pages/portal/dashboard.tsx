@@ -18,10 +18,11 @@ import MenuIcon from '@mui/icons-material/Menu';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import { listItems } from '../portal/listItems';
+import SelectTextFields from '../../src/components/Form'
 
 const drawerWidth: number = 240;
 import { GetStaticProps } from "next";
-import { getSpaces, spaces } from "../../src/data-access/spaces";
+import { getSpaces, spaces,getMenus,properties,getProperties} from "../../src/data-access/spaces";
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
 
 // This page will be statically rendered at build time
@@ -31,6 +32,7 @@ export const getStaticProps: GetStaticProps = async () => {
     for (var line of spaces) {
         spaceJson.push(
             {
+
                 space_id: line.space_id,
                 date_available: line.date_available.toDateString(),
                 property_id: line.property_id,
@@ -42,22 +44,65 @@ export const getStaticProps: GetStaticProps = async () => {
             }
         )
     }
+    const menus = await getMenus();
+    var menuSelect = []
+    // console.log(menus);
+    
+    for (var line of menus) {
+        menuSelect.push(
+            {
+                value: line.city_name,
+                label: line.city_name,
+
+            }
+        )
+    }
+    const properties: properties[] = await getProperties();
+    var propertiesJson = []
+    for (var line of properties) {
+        propertiesJson.push(
+            {
+                id: line.id,
+                home_name: line.home_name,
+                property_id :line.property_id,
+                brand: line.brand,        
+                city_name: line.city_name,    
+                neighborhood : line.neighborhood,
+                timezone : line.timezone,
+                unit_count : line.unit_count,
+                rownum : line.rownum,
+
+            }
+        )
+    }
     return {
-        props: { spaceJson }
+        props: { spaceJson,menuSelect, propertiesJson}
     }
 };
 
 
+// const columns: GridColDef[] = [
+//     { field: 'space_id', headerName: 'ID', width: 70 },
+//     { field: 'date_available', headerName: 'DATE_AVALBEAS', width: 70 },
+//     { field: 'property_id', headerName: 'P_NAME', width: 200 },
+//     { field: 'room_name', headerName: 'ROOM', width: 200 },
+//     { field: 'status', headerName: 'STATUS', width: 200 },
+//     { field: 'mo6_price', headerName: '16MONTH_PRICE', width: 200 },
+//     { field: 'mo9_price', headerName: '9MONTH_PRICE', width: 200 },
+//     { field: 'mo12_price', headerName: '12MONTH_PRICE', width: 200 },
+// ];
+
 const columns: GridColDef[] = [
-    { field: 'space_id', headerName: 'ID', width: 70 },
-    { field: 'date_available', headerName: 'DATE_AVALBE', width: 70 },
+    { field: 'id', headerName: 'ID', width: 70 },
+    { field: 'home_name', headerName: 'Home_Name', width: 70 },
     { field: 'property_id', headerName: 'P_NAME', width: 200 },
-    { field: 'room_name', headerName: 'ROOM', width: 200 },
-    { field: 'status', headerName: 'STATUS', width: 200 },
-    { field: 'mo6_price', headerName: '6MONTH_PRICE', width: 200 },
-    { field: 'mo9_price', headerName: '9MONTH_PRICE', width: 200 },
-    { field: 'mo12_price', headerName: '12MONTH_PRICE', width: 200 },
+    { field: 'brand', headerName: 'Brand', width: 200 },
+    { field: 'city_name', headerName: 'City_Name', width: 200 },
+    { field: 'neighborhood', headerName: 'Neighborhood', width: 200 },
+    { field: 'unit_count', headerName: 'Unit_Count', width: 200 },
+    { field: 'rownum', headerName: 'rownum', width: 200 },
 ];
+
 
 interface AppBarProps extends MuiAppBarProps {
     open?: boolean;
@@ -122,15 +167,54 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 
 const mdTheme = createTheme();
 
-function PortalContent({ spaceJson }) {
+function PortalContent({ spaceJson,menuSelect,propertiesJson }) {
     const [open, setOpen] = React.useState(true);
+    const [citiesSelected, setcitiesSelected] = React.useState();
+    const [newProp, setnewProp] = React.useState(null);
+
     const toggleDrawer = () => {
         setOpen(!open);
     };
 
+    React.useEffect(() => {
+    async function fetchMyAPI() {
+        const response =  await fetch(`http://localhost:6003/api/v1/properties/?city=${citiesSelected}`);
+        const properties: properties[] =  await response.json();
+        // return
+        console.log("heio")
+        // console.log(properties)
+        var propertiesJson = []
+        if(!properties || properties.length == 0) {
+            setnewProp({});
+            return
+        }
+        for (var line of properties) {
+            propertiesJson.push(
+                {
+                    id: line.id,
+                    home_name: line.home_name,
+                    property_id :line.property_id,
+                    brand: line.brand,        
+                    city_name: line.city_name,    
+                    neighborhood : line.neighborhood,
+                    timezone : line.timezone,
+                    unit_count : line.unit_count,
+                    rownum : line.rownum,
+
+                }
+            )
+        }
+        setnewProp(propertiesJson);
+    }
+    console.log("citiesSelected",citiesSelected);
+    
+    fetchMyAPI()
+    }, [citiesSelected])
+
     return (
         <ThemeProvider theme={mdTheme}>
             <Box sx={{ display: 'flex' }}>
+                
                 <CssBaseline />
                 <AppBar position="absolute" open={open}>
                     <Toolbar
@@ -197,6 +281,7 @@ function PortalContent({ spaceJson }) {
                     }}
                 >
                     <Toolbar />
+                    <SelectTextFields menuSelect = {menuSelect} setcitiesSelected={setcitiesSelected}/>
                     <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
                         <Grid container spacing={3}>
                             {/* Chart */}
@@ -230,9 +315,9 @@ function PortalContent({ spaceJson }) {
                                 <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
                                     <div style={{ height: 1000, width: '100%' }}>
                                         <DataGrid
-                                            rows={spaceJson}
+                                            rows={newProp != null? newProp : propertiesJson}
                                             columns={columns}
-                                            getRowId={(row) => row.space_id}
+                                            getRowId={(row) => row.id}
                                             pageSize={20}
                                             rowsPerPageOptions={[20, 50, 100]}
                                             checkboxSelection
@@ -249,6 +334,7 @@ function PortalContent({ spaceJson }) {
     );
 }
 
-export default function Portal({ spaceJson }) {
-    return <PortalContent spaceJson={spaceJson} />;
+export default function Portal({ spaceJson,menuSelect,propertiesJson }) {
+    
+    return <PortalContent spaceJson={spaceJson} menuSelect ={menuSelect} propertiesJson={propertiesJson}/>;
 }
