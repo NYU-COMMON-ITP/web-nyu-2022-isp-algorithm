@@ -11,3 +11,17 @@ export type properties = _properties;
 export async function getProperties() {
   return await prisma.properties.findMany();
 }
+
+export async function getPropertiesbycity(city) {
+  console.log("got here")
+  console.log(city);
+  
+  const data = await prisma.properties.findMany({
+    where: {
+      city_name: city,
+    },
+
+  })
+  console.log(data)
+  return data
+}
