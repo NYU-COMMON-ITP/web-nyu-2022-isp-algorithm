@@ -1,60 +1,69 @@
 import * as React from 'react';
 import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import MenuItem from '@mui/material/MenuItem';
-import { getSpaces, spaces } from "../data-access/spaces";
+import DesktopDatePicker from '@mui/lab/DesktopDatePicker';
+import AdapterDateFns from '@mui/lab/AdapterDateFns';
+import LocalizationProvider from '@mui/lab/LocalizationProvider';
+import SearchIcon from '@mui/icons-material/Search';
+import Radio from '@mui/material/Radio';
+import RadioGroup from '@mui/material/RadioGroup';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import FormControl from '@mui/material/FormControl';
+import FormLabel from '@mui/material/FormLabel';
 
 
-export default function SelectTextFields({menuSelect,setcitiesSelected}) {
+export default function SelectTextFields({ menuSelect, setcitiesSelected }) {
   const [city, setCity] = React.useState('');
+  const [date, setDate] = React.useState(new Date());
+  const [pet, setPet] = React.useState(false);
+  const [term, setTerm] = React.useState();
+  // const [room, setRoom] = React.useState();
 
-  const handleChange = (event) => {
+  const handleCityChange = (event) => {
     setCity(event.target.value);
     setcitiesSelected(event.target.value);
-
   };
 
-  // const [data, dataSet] = React.useState<any>(null)
+  const handleTermChange = (event) => {
+    setTerm(event.target.value);
+    setTermSelected(event.target.value);
+  };
+  const handleDateChange = (event) => {
+    setDate(event.target.value);
+  };
 
-  // React.useEffect(() => {
-  //   const fetchSpace = async () => {
-  //     const response = await fetch(`/api/v1/spaces/`, {
-  //       method: "GET",
-  //       headers: {
-  //         "Content-Type": "application/json"
-  //       },
-  //     });
-
-  //     if (!response.ok) {
-  //       throw new Error(`Error: ${response.status}`);
-  //     }
-
-  //     const spacesData = await response.json();
-  //     dataSet(spacesData);
-  //     console.log("spacesData",spacesData);
-      
-  //   }
-  
-  //   fetchSpace();
-  // }, [])
+  const handlePetChange = (event) => {
+    setPet(event.target.value)
+    setPetValue(event.target.value);
+  };
 
   return (
     <Box
       component="form"
       sx={{
-        '& .MuiTextField-root': { m: 1, width: '25ch' },
+        '& .MuiTextField-root': { m: 1, width: '20ch' },
       }}
       noValidate
       autoComplete="off"
+      justifyContent="center"
     >
-      <div>
+      <div style={{
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+      }}>
         <TextField
-          id="outlined-select-city"
+          id="select-city"
           select
           label="Select City"
+          size="small"
           value={city}
-          onChange={handleChange}
-          helperText="Please select your City"
+          onChange={handleCityChange}
+          InputLabelProps={{
+            shrink: true,
+          }}
         >
           {menuSelect.map((option) => (
             <MenuItem key={option.value} value={option.value}>
@@ -62,59 +71,97 @@ export default function SelectTextFields({menuSelect,setcitiesSelected}) {
             </MenuItem>
           ))}
         </TextField>
-        {/* <TextField
-          id="outlined-select-currency-native"
-          select
-          label="Native select"
-          value={city}
-          onChange={handleChange}
-          SelectProps={{
-            native: true,
-          }}
-          helperText="Please select your currency"
-        >
-          {currencies.map((option) => (
-            <option key={option.value} value={option.value}>
-              {option.label}
-            </option>
-          ))}
-        </TextField> */}
       </div>
-      {/* <div>
+      <div style={{
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+      }}>
         <TextField
-          id="filled-select-currency"
-          select
-          label="Select City"
-          value={currency}
-          onChange={handleChange}
-          helperText="Please select your currency"
-          variant="filled"
-        >
-          {currencies.map((option) => (
-            <MenuItem key={option.value} value={option.value}>
-              {option.label}
-            </MenuItem>
-          ))}
-        </TextField>
-        <TextField
-          id="filled-select-currency-native"
-          select
-          label="Native select"
-          value={currency}
-          onChange={handleChange}
-          SelectProps={{
-            native: true,
+          id="input-zipcode"
+          label="Zip Code"
+          size="small"
+          InputLabelProps={{
+            shrink: true,
           }}
-          helperText="Please select your currency"
-          variant="filled"
-        >
-          {currencies.map((option) => (
-            <option key={option.value} value={option.value}>
-              {option.label}
-            </option>
-          ))}
-        </TextField>
-      </div> */}
-    </Box>
+        />
+      </div>
+      <div style={{
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+      }}>
+        <TextField
+          id="outlined-number"
+          label="Budget"
+          type="number"
+          size="small"
+          InputLabelProps={{
+            shrink: true,
+          }}
+        />
+      </div>
+      <div style={{
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+      }}>
+        <LocalizationProvider dateAdapter={AdapterDateFns}>
+          <DesktopDatePicker
+            label="Move in"
+            value={date}
+            disablePast
+            // minDate={new Date('2017-01-01')}
+            onChange={(newValue) => {
+              setDate(newValue);
+            }}
+            renderInput={(params) => <TextField {...params} />}
+          />
+        </LocalizationProvider>
+      </div>
+      <div style={{
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'left',
+        paddingLeft: 30,
+      }}>
+        <FormControl>
+          <FormLabel id="term-selection">Term</FormLabel>
+          <RadioGroup
+            aria-labelledby="term-of-lease"
+            name="leasing-term"
+            value={term}
+            onChange={handleTermChange}
+          >
+            <FormControlLabel value="3Mon" control={<Radio />} label="3 Months" />
+            <FormControlLabel value="6Mon" control={<Radio />} label="6 Months" />
+            <FormControlLabel value="9Mon" control={<Radio />} label="9 Months" />
+            <FormControlLabel value="12Mon" control={<Radio />} label="12 Months" />
+          </RadioGroup>
+        </FormControl>
+
+      </div>
+      <div style={{
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'left',
+        paddingLeft: 30,
+      }}>
+        <FormControl>
+          <FormLabel id="term-selection">Pet</FormLabel>
+          <FormControlLabel value="false" control={<Radio />} label="False" />
+          <FormControlLabel value="false" control={<Radio />} label="True" />
+        </FormControl>
+      </div>
+      <div style={{
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+      }}>
+        <Button variant="outlined" endIcon={<SearchIcon />} onClick={() => { console.log('onClick'); }}>
+          Search
+        </Button>
+      </div>
+    </Box >
   );
 }

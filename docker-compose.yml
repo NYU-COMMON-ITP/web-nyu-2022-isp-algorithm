@@ -6,19 +6,23 @@ services:
       dockerfile: Dockerfile.dev
     platform: linux/amd64
     ports:
-      - "6003:3000"
-      - "6002:5555"
+      - 6003:3000
+      - 6002:5555
     volumes:
       - .:/usr/src/web
     environment:
       DATABASE_URL: "${DATABASE_URL}"
     depends_on:
       - db
+    networks:
+      - dev
   adminer:
     image: adminer
     restart: always
     ports:
       - 6001:8080
+    networks:
+      - dev
     depends_on:
       - db
   db:
@@ -34,10 +38,15 @@ services:
       # Chose to be explicit here but likely you can glob this and expose the whole directory
       - ./postgres/init/populate-database.sql:/docker-entrypoint-initdb.d/populate-database.sql
     ports:
-      - "6000:5432"
+      - 6000:5432
     environment:
       POSTGRES_PASSWORD: nyu_password
       POSTGRES_USER: nyu_user
       POSTGRES_DB: nyu_db
+    networks:
+      - dev
 volumes:
   db:
+
+networks:
+  dev:

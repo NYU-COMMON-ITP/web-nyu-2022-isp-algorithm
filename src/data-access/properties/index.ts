@@ -15,13 +15,14 @@ export async function getProperties() {
 export async function getPropertiesbycity(city) {
   console.log("got here")
   console.log(city);
-  
-  const data = await prisma.properties.findMany({
-    where: {
-      city_name: city,
-    },
-
-  })
-  console.log(data)
-  return data
+  if (city != 'undefined') {
+    const data = await prisma.properties.findMany({
+      where: {
+        city_name: city,
+      },
+    })
+    return data
+  } else {
+    return await prisma.properties.findMany()
+  }
 }

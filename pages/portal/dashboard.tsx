@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { GetStaticProps } from "next";
 import { styled, createTheme, ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import MuiDrawer from '@mui/material/Drawer';
@@ -20,89 +21,56 @@ import NotificationsIcon from '@mui/icons-material/Notifications';
 import { listItems } from '../portal/listItems';
 import SelectTextFields from '../../src/components/Form'
 
-const drawerWidth: number = 240;
-import { GetStaticProps } from "next";
-import { getSpaces, spaces,getMenus,properties,getProperties} from "../../src/data-access/spaces";
+import { properties, getProperties } from "../../src/data-access/spaces";
+import { getCities } from "../../src/data-access/searches"
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
+const drawerWidth: number = 240;
 
 // This page will be statically rendered at build time
 export const getStaticProps: GetStaticProps = async () => {
-    const spaces: spaces[] = await getSpaces();
-    var spaceJson = []
-    for (var line of spaces) {
-        spaceJson.push(
-            {
-
-                space_id: line.space_id,
-                date_available: line.date_available.toDateString(),
-                property_id: line.property_id,
-                room_name: line.room_name,
-                status: line.status,
-                mo6_price: line.mo6_price,
-                mo9_price: line.mo9_price,
-                mo12_price: line.mo12_price,
-            }
-        )
-    }
-    const menus = await getMenus();
+    const cityLists = await getCities();
     var menuSelect = []
-    // console.log(menus);
-    
-    for (var line of menus) {
+
+    for (var city of cityLists) {
         menuSelect.push(
             {
-                value: line.city_name,
-                label: line.city_name,
-
+                value: city.city_name,
+                label: city.city_name,
             }
         )
     }
     const properties: properties[] = await getProperties();
     var propertiesJson = []
-    for (var line of properties) {
+    for (var prop of properties) {
         propertiesJson.push(
             {
-                id: line.id,
-                home_name: line.home_name,
-                property_id :line.property_id,
-                brand: line.brand,        
-                city_name: line.city_name,    
-                neighborhood : line.neighborhood,
-                timezone : line.timezone,
-                unit_count : line.unit_count,
-                rownum : line.rownum,
-
+                id: prop.id,
+                home_name: prop.home_name,
+                property_id: prop.property_id,
+                brand: prop.brand,
+                city_name: prop.city_name,
+                neighborhood: prop.neighborhood,
+                timezone: prop.timezone,
+                unit_count: prop.unit_count,
+                rownum: prop.rownum,
             }
         )
     }
     return {
-        props: { spaceJson,menuSelect, propertiesJson}
+        props: { menuSelect, propertiesJson }
     }
 };
 
-
-// const columns: GridColDef[] = [
-//     { field: 'space_id', headerName: 'ID', width: 70 },
-//     { field: 'date_available', headerName: 'DATE_AVALBEAS', width: 70 },
-//     { field: 'property_id', headerName: 'P_NAME', width: 200 },
-//     { field: 'room_name', headerName: 'ROOM', width: 200 },
-//     { field: 'status', headerName: 'STATUS', width: 200 },
-//     { field: 'mo6_price', headerName: '16MONTH_PRICE', width: 200 },
-//     { field: 'mo9_price', headerName: '9MONTH_PRICE', width: 200 },
-//     { field: 'mo12_price', headerName: '12MONTH_PRICE', width: 200 },
-// ];
-
 const columns: GridColDef[] = [
-    { field: 'id', headerName: 'ID', width: 70 },
-    { field: 'home_name', headerName: 'Home_Name', width: 70 },
-    { field: 'property_id', headerName: 'P_NAME', width: 200 },
-    { field: 'brand', headerName: 'Brand', width: 200 },
-    { field: 'city_name', headerName: 'City_Name', width: 200 },
-    { field: 'neighborhood', headerName: 'Neighborhood', width: 200 },
-    { field: 'unit_count', headerName: 'Unit_Count', width: 200 },
-    { field: 'rownum', headerName: 'rownum', width: 200 },
+    { field: 'id', headerName: 'ID', width: 50 },
+    { field: 'home_name', headerName: 'Home', width: 150 },
+    { field: 'property_id', headerName: 'Prop_ID', width: 120 },
+    { field: 'brand', headerName: 'Brand', width: 70 },
+    { field: 'city_name', headerName: 'City', width: 100 },
+    { field: 'neighborhood', headerName: 'Neighborhood', width: 150 },
+    { field: 'unit_count', headerName: 'Unit', width: 70 },
+    // { field: 'rownum', headerName: 'rownum', width: 30 },
 ];
-
 
 interface AppBarProps extends MuiAppBarProps {
     open?: boolean;
@@ -167,9 +135,14 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 
 const mdTheme = createTheme();
 
-function PortalContent({ spaceJson,menuSelect,propertiesJson }) {
-    const [open, setOpen] = React.useState(true);
+function PortalContent({ menuSelect, propertiesJson }) {
+    const [open, setOpen] = React.useState(false);
     const [citiesSelected, setcitiesSelected] = React.useState();
+    const [zipInput, setnewZip] = React.useState(null);
+    const [budgetInput, setnewBudget] = React.useState(null);
+    const [movein, setnewDate] = React.useState(null);
+    const [pet, setnewPet] = React.useState(false);
+    const [colive, setnew] = React.useState(false);
     const [newProp, setnewProp] = React.useState(null);
 
     const toggleDrawer = () => {
@@ -177,44 +150,42 @@ function PortalContent({ spaceJson,menuSelect,propertiesJson }) {
     };
 
     React.useEffect(() => {
-    async function fetchMyAPI() {
-        const response =  await fetch(`http://localhost:6003/api/v1/properties/?city=${citiesSelected}`);
-        const properties: properties[] =  await response.json();
-        // return
-        console.log("heio")
-        // console.log(properties)
-        var propertiesJson = []
-        if(!properties || properties.length == 0) {
-            setnewProp({});
-            return
+        async function fetchMyAPI() {
+            const response = await fetch(`http://localhost:6003/api/v1/properties/?city=${citiesSelected}`);
+            const properties: properties[] = await response.json();
+            // return
+            console.log("heio")
+            var propertiesJson = []
+            if (!properties || properties.length == 0) {
+                setnewProp({});
+                return
+            }
+            for (var line of properties) {
+                propertiesJson.push(
+                    {
+                        id: line.id,
+                        home_name: line.home_name,
+                        property_id: line.property_id,
+                        brand: line.brand,
+                        city_name: line.city_name,
+                        neighborhood: line.neighborhood,
+                        timezone: line.timezone,
+                        unit_count: line.unit_count,
+                        rownum: line.rownum,
+                    }
+                )
+            }
+            setnewProp(propertiesJson);
         }
-        for (var line of properties) {
-            propertiesJson.push(
-                {
-                    id: line.id,
-                    home_name: line.home_name,
-                    property_id :line.property_id,
-                    brand: line.brand,        
-                    city_name: line.city_name,    
-                    neighborhood : line.neighborhood,
-                    timezone : line.timezone,
-                    unit_count : line.unit_count,
-                    rownum : line.rownum,
+        console.log("citiesSelected", citiesSelected);
 
-                }
-            )
-        }
-        setnewProp(propertiesJson);
-    }
-    console.log("citiesSelected",citiesSelected);
-    
-    fetchMyAPI()
+        fetchMyAPI()
     }, [citiesSelected])
 
     return (
         <ThemeProvider theme={mdTheme}>
             <Box sx={{ display: 'flex' }}>
-                
+
                 <CssBaseline />
                 <AppBar position="absolute" open={open}>
                     <Toolbar
@@ -281,45 +252,26 @@ function PortalContent({ spaceJson,menuSelect,propertiesJson }) {
                     }}
                 >
                     <Toolbar />
-                    <SelectTextFields menuSelect = {menuSelect} setcitiesSelected={setcitiesSelected}/>
+
                     <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
                         <Grid container spacing={3}>
-                            {/* Chart */}
-                            {/* <Grid item xs={12} md={8} lg={9}>
-                                <Paper
-                                    sx={{
-                                        p: 2,
-                                        display: 'flex',
-                                        flexDirection: 'column',
-                                        height: 240,
-                                    }}
-                                >
-                                    <Chart />
-                                </Paper>
-                            </Grid> */}
-                            {/* Recent Deposits */}
-                            {/* <Grid item xs={12} md={4} lg={3}>
-                                <Paper
-                                    sx={{
-                                        p: 2,
-                                        display: 'flex',
-                                        flexDirection: 'column',
-                                        height: 240,
-                                    }}
-                                >
-                                    <Deposits />
-                                </Paper>
-                            </Grid> */}
-                            {/* Spaces */}
-                            <Grid item xs={12}>
+                            <Grid item xs={3}>
                                 <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
-                                    <div style={{ height: 1000, width: '100%' }}>
+                                    <SelectTextFields
+                                        menuSelect={menuSelect}
+                                        setcitiesSelected={setcitiesSelected}
+                                    />
+                                </Paper>
+                            </Grid>
+                            <Grid item xs={9}>
+                                <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
+                                    <div style={{ height: 650, width: '100%', fontSize: 8 }}>
                                         <DataGrid
-                                            rows={newProp != null? newProp : propertiesJson}
+                                            rows={newProp != null ? newProp : propertiesJson}
                                             columns={columns}
                                             getRowId={(row) => row.id}
-                                            pageSize={20}
-                                            rowsPerPageOptions={[20, 50, 100]}
+                                            pageSize={10}
+                                            rowsPerPageOptions={[20, 50]}
                                             checkboxSelection
                                         />
                                     </div>
@@ -330,11 +282,11 @@ function PortalContent({ spaceJson,menuSelect,propertiesJson }) {
                     </Container>
                 </Box>
             </Box>
-        </ThemeProvider>
+        </ThemeProvider >
     );
 }
 
-export default function Portal({ spaceJson,menuSelect,propertiesJson }) {
-    
-    return <PortalContent spaceJson={spaceJson} menuSelect ={menuSelect} propertiesJson={propertiesJson}/>;
+export default function Portal({ menuSelect, propertiesJson }) {
+
+    return <PortalContent menuSelect={menuSelect} propertiesJson={propertiesJson} />;
 }
