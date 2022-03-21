@@ -29,10 +29,10 @@ const drawerWidth: number = 240;
 // This page will be statically rendered at build time
 export const getStaticProps: GetStaticProps = async () => {
     const cityLists = await getCities();
-    var menuSelect = []
+    var cityMenu = []
 
     for (var city of cityLists) {
-        menuSelect.push(
+        cityMenu.push(
             {
                 value: city.city_name,
                 label: city.city_name,
@@ -57,7 +57,7 @@ export const getStaticProps: GetStaticProps = async () => {
         )
     }
     return {
-        props: { menuSelect, propertiesJson }
+        props: { cityMenu, propertiesJson }
     }
 };
 
@@ -135,15 +135,14 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 
 const mdTheme = createTheme();
 
-function PortalContent({ menuSelect, propertiesJson }) {
+function PortalContent({ cityMenu, propertiesJson }) {
     const [open, setOpen] = React.useState(false);
-    const [citiesSelected, setcitiesSelected] = React.useState();
-    const [zipInput, setnewZip] = React.useState(null);
-    const [budgetInput, setnewBudget] = React.useState(null);
-    const [movein, setnewDate] = React.useState(null);
-    const [pet, setnewPet] = React.useState(false);
-    const [colive, setnew] = React.useState(false);
+    const [citiesSelected, setCitySelected] = React.useState();
+    const [termSelected, setTermSelected] = React.useState();
+    const [dateSelected, setDateSelected] = React.useState();
+    const [petSelected, setPetSelected] = React.useState();
     const [newProp, setnewProp] = React.useState(null);
+
 
     const toggleDrawer = () => {
         setOpen(!open);
@@ -180,7 +179,7 @@ function PortalContent({ menuSelect, propertiesJson }) {
         console.log("citiesSelected", citiesSelected);
 
         fetchMyAPI()
-    }, [citiesSelected])
+    }, [citiesSelected, termSelected, dateSelected, petSelected])
 
     return (
         <ThemeProvider theme={mdTheme}>
@@ -258,8 +257,11 @@ function PortalContent({ menuSelect, propertiesJson }) {
                             <Grid item xs={3}>
                                 <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
                                     <SelectTextFields
-                                        menuSelect={menuSelect}
-                                        setcitiesSelected={setcitiesSelected}
+                                        cityMenu={cityMenu}
+                                        setCitySelected={setCitySelected}
+                                        setTermSelected={setTermSelected}
+                                        setDateSelected={setDateSelected}
+                                        setPetSelected={setPetSelected}
                                     />
                                 </Paper>
                             </Grid>
@@ -286,7 +288,7 @@ function PortalContent({ menuSelect, propertiesJson }) {
     );
 }
 
-export default function Portal({ menuSelect, propertiesJson }) {
+export default function Portal({ cityMenu, propertiesJson }) {
 
-    return <PortalContent menuSelect={menuSelect} propertiesJson={propertiesJson} />;
+    return <PortalContent cityMenu={cityMenu} propertiesJson={propertiesJson} />;
 }

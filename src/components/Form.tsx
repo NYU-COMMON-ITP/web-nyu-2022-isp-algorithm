@@ -14,7 +14,7 @@ import FormControl from '@mui/material/FormControl';
 import FormLabel from '@mui/material/FormLabel';
 
 
-export default function SelectTextFields({ menuSelect, setcitiesSelected }) {
+export default function SelectTextFields({ cityMenu, setCitySelected, setTermSelected, setDateSelected, setPetSelected }) {
   const [city, setCity] = React.useState('');
   const [date, setDate] = React.useState(new Date());
   const [pet, setPet] = React.useState(false);
@@ -23,21 +23,27 @@ export default function SelectTextFields({ menuSelect, setcitiesSelected }) {
 
   const handleCityChange = (event) => {
     setCity(event.target.value);
-    setcitiesSelected(event.target.value);
+    setCitySelected(event.target.value);
   };
 
   const handleTermChange = (event) => {
     setTerm(event.target.value);
-    setTermSelected(event.target.value);
+    setTermSelected(event.target.value)
   };
   const handleDateChange = (event) => {
     setDate(event.target.value);
+    setDateSelected(event.target.value)
   };
 
   const handlePetChange = (event) => {
     setPet(event.target.value)
-    setPetValue(event.target.value);
+    setPetSelected(event.target.value)
   };
+
+  const handleSubmit = (event) => {
+    alert('Your favorite flavor is: ' + this.state.value);
+    event.preventDefault();
+  }
 
   return (
     <Box
@@ -65,7 +71,7 @@ export default function SelectTextFields({ menuSelect, setcitiesSelected }) {
             shrink: true,
           }}
         >
-          {menuSelect.map((option) => (
+          {cityMenu.map((option) => (
             <MenuItem key={option.value} value={option.value}>
               {option.label}
             </MenuItem>
@@ -111,10 +117,7 @@ export default function SelectTextFields({ menuSelect, setcitiesSelected }) {
             label="Move in"
             value={date}
             disablePast
-            // minDate={new Date('2017-01-01')}
-            onChange={(newValue) => {
-              setDate(newValue);
-            }}
+            onChange={handleDateChange}
             renderInput={(params) => <TextField {...params} />}
           />
         </LocalizationProvider>
@@ -132,6 +135,7 @@ export default function SelectTextFields({ menuSelect, setcitiesSelected }) {
             name="leasing-term"
             value={term}
             onChange={handleTermChange}
+            defaultValue="12Mon"
           >
             <FormControlLabel value="3Mon" control={<Radio />} label="3 Months" />
             <FormControlLabel value="6Mon" control={<Radio />} label="6 Months" />
@@ -148,9 +152,17 @@ export default function SelectTextFields({ menuSelect, setcitiesSelected }) {
         paddingLeft: 30,
       }}>
         <FormControl>
-          <FormLabel id="term-selection">Pet</FormLabel>
-          <FormControlLabel value="false" control={<Radio />} label="False" />
-          <FormControlLabel value="false" control={<Radio />} label="True" />
+          <FormLabel id="pet-selection">Pet</FormLabel>
+          <RadioGroup
+            aria-labelledby="pet-allow"
+            name="pet-allow"
+            value={pet}
+            onChange={handlePetChange}
+            defaultValue="false"
+          >
+            <FormControlLabel value="false" control={<Radio />} label="False" />
+            <FormControlLabel value="true" control={<Radio />} label="True" />
+          </RadioGroup>
         </FormControl>
       </div>
       <div style={{
@@ -158,7 +170,7 @@ export default function SelectTextFields({ menuSelect, setcitiesSelected }) {
         alignItems: 'center',
         justifyContent: 'center',
       }}>
-        <Button variant="outlined" endIcon={<SearchIcon />} onClick={() => { console.log('onClick'); }}>
+        <Button variant="outlined" type="submit" onSubmit={handleSubmit} endIcon={<SearchIcon />} >
           Search
         </Button>
       </div>
