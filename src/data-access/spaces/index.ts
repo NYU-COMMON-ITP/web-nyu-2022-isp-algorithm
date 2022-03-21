@@ -23,21 +23,21 @@ export async function getMenus() {
   // select: {
   //   city_name: true,
   // },
-// })
+  // })
 
-// return await prisma.spaces.findMany({
-//   where: {
-//     occupancy_type: 'traditional',
-//   },
-// })
+  // return await prisma.spaces.findMany({
+  //   where: {
+  //     occupancy_type: 'traditional',
+  //   },
+  // })
 
-    const data = await prisma.properties.groupBy({
-      by: ['city_name'],
-      _sum: {
-        id: true,
-      },
-    })
-    // console.log(data)
-    return data
+  const data = await prisma.properties.groupBy({
+    by: ['city_name'],
+    _sum: {
+      id: true,
+    },
+  })
+  // console.log(data)
+  return data
 
 }
