@@ -21,8 +21,7 @@ import NotificationsIcon from '@mui/icons-material/Notifications';
 import { listItems } from '../portal/listItems';
 import SelectTextFields from '../../src/components/Form'
 
-import { properties, getProperties } from "../../src/data-access/spaces";
-import { getCities } from "../../src/data-access/searches"
+import { properties, getCities, getProperties } from "../../src/data-access/searches"
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
 const drawerWidth: number = 240;
 
@@ -137,10 +136,10 @@ const mdTheme = createTheme();
 
 function PortalContent({ cityMenu, propertiesJson }) {
     const [open, setOpen] = React.useState(false);
-    const [citiesSelected, setCitySelected] = React.useState();
-    const [termSelected, setTermSelected] = React.useState();
-    const [dateSelected, setDateSelected] = React.useState();
-    const [petSelected, setPetSelected] = React.useState();
+    const [citiesSelected, setCitySelected] = React.useState('any');
+    const [termSelected, setTermSelected] = React.useState('12Mon');
+    const [dateSelected, setDateSelected] = React.useState(new Date());
+    const [petSelected, setPetSelected] = React.useState(false);
     const [newProp, setnewProp] = React.useState(null);
 
 
@@ -150,10 +149,25 @@ function PortalContent({ cityMenu, propertiesJson }) {
 
     React.useEffect(() => {
         async function fetchMyAPI() {
-            const response = await fetch(`http://localhost:6003/api/v1/properties/?city=${citiesSelected}`);
+            const data = {
+                "operation": "search",
+                "variables": {
+                    "brand": "common",
+                    "city_name": citiesSelected,
+                    "term": termSelected,
+                    "date_movein": dateSelected,
+                    "with_pet": petSelected
+                }
+            }
+            const response = await fetch(`http://localhost:6003/api/v1/search`, {
+                method: 'POST',
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(data)
+            });
+            // const response = await fetch(`http://localhost:6003/api/v1/properties/?city=${citiesSelected}`);
             const properties: properties[] = await response.json();
-            // return
-            console.log("heio")
             var propertiesJson = []
             if (!properties || properties.length == 0) {
                 setnewProp({});

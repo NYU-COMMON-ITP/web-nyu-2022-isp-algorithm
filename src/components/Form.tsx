@@ -30,17 +30,16 @@ export default function SelectTextFields({ cityMenu, setCitySelected, setTermSel
     setTerm(event.target.value);
     setTermSelected(event.target.value)
   };
-  const handleDateChange = (event) => {
-    setDate(event.target.value);
-    setDateSelected(event.target.value)
-  };
 
   const handlePetChange = (event) => {
     setPet(event.target.value)
     setPetSelected(event.target.value)
   };
-
-  const handleSubmit = (event) => {
+  const handleDateChange = (date) => {
+    setDate(date)
+    setDateSelected(date)
+  }
+  const handleClick = (event) => {
     alert('Your favorite flavor is: ' + this.state.value);
     event.preventDefault();
   }
@@ -117,7 +116,7 @@ export default function SelectTextFields({ cityMenu, setCitySelected, setTermSel
             label="Move in"
             value={date}
             disablePast
-            onChange={handleDateChange}
+            onChange={(date) => handleDateChange(date)}
             renderInput={(params) => <TextField {...params} />}
           />
         </LocalizationProvider>
@@ -170,9 +169,9 @@ export default function SelectTextFields({ cityMenu, setCitySelected, setTermSel
         alignItems: 'center',
         justifyContent: 'center',
       }}>
-        <Button variant="outlined" type="submit" onSubmit={handleSubmit} endIcon={<SearchIcon />} >
+        {/* <Button variant="outlined" type="submit" onClick={handleClick} endIcon={<SearchIcon />} >
           Search
-        </Button>
+        </Button> */}
       </div>
     </Box >
   );
