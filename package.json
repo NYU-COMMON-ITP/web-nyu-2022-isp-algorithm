@@ -23,6 +23,7 @@
     "@mui/icons-material": "^5.4.2",
     "@mui/lab": "^5.0.0-alpha.73",
     "@mui/material": "^5.4.2",
+    "@mui/styles": "^5.5.1",
     "@mui/x-data-grid": "^5.5.1",
     "@prisma/client": "^3.9.2",
     "@types/date-fns": "^2.6.0",
