@@ -18,14 +18,13 @@ import Paper from '@mui/material/Paper';
 import MenuIcon from '@mui/icons-material/Menu';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import NotificationsIcon from '@mui/icons-material/Notifications';
-import { listItems } from '../portal/listItems';
-import SelectTextFields from '../../src/components/Form'
+import { ListItems } from '../../src/components/ListItems';
+import UserSearchFields from '../../src/components/UserSearch'
 
 import { properties, getCities, getProperties } from "../../src/data-access/searches"
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
 const drawerWidth: number = 240;
 
-// This page will be statically rendered at build time
 export const getStaticProps: GetStaticProps = async () => {
     const cityLists = await getCities();
     var cityMenu = []
@@ -68,7 +67,6 @@ const columns: GridColDef[] = [
     { field: 'city_name', headerName: 'City', width: 100 },
     { field: 'neighborhood', headerName: 'Neighborhood', width: 150 },
     { field: 'unit_count', headerName: 'Unit', width: 70 },
-    // { field: 'rownum', headerName: 'rownum', width: 30 },
 ];
 
 interface AppBarProps extends MuiAppBarProps {
@@ -150,7 +148,7 @@ function PortalContent({ cityMenu, propertiesJson }) {
     React.useEffect(() => {
         async function fetchMyAPI() {
             const data = {
-                "operation": "search",
+                "operation": "UserSearch",
                 "variables": {
                     "brand": "common",
                     "city_name": citiesSelected,
@@ -159,14 +157,15 @@ function PortalContent({ cityMenu, propertiesJson }) {
                     "with_pet": petSelected
                 }
             }
-            const response = await fetch(`http://localhost:6003/api/v1/search`, {
+            const response = await fetch(`http://localhost:6003/api/v1/userSearch`, {
                 method: 'POST',
                 headers: {
                     "Content-Type": "application/json"
                 },
                 body: JSON.stringify(data)
             });
-            // const response = await fetch(`http://localhost:6003/api/v1/properties/?city=${citiesSelected}`);
+            console.log("result: ")
+            console.log(response)
             const properties: properties[] = await response.json();
             var propertiesJson = []
             if (!properties || properties.length == 0) {
@@ -203,7 +202,7 @@ function PortalContent({ cityMenu, propertiesJson }) {
                 <AppBar position="absolute" open={open}>
                     <Toolbar
                         sx={{
-                            pr: '24px', // keep right padding when drawer closed
+                            pr: '24px',
                         }}
                     >
                         <IconButton
@@ -249,7 +248,7 @@ function PortalContent({ cityMenu, propertiesJson }) {
                     </Toolbar>
                     <Divider />
                     <List component="nav">
-                        {listItems}
+                        {ListItems}
                     </List>
                 </Drawer>
                 <Box
@@ -270,7 +269,7 @@ function PortalContent({ cityMenu, propertiesJson }) {
                         <Grid container spacing={3}>
                             <Grid item xs={3}>
                                 <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
-                                    <SelectTextFields
+                                    <UserSearchFields
                                         cityMenu={cityMenu}
                                         setCitySelected={setCitySelected}
                                         setTermSelected={setTermSelected}
