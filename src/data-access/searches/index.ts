@@ -43,8 +43,8 @@ export async function getPropertiesbyUserInput(userSelection) {
 
 export async function getPropertiesbyId(userSelection) {
     console.log(userSelection);
-    if (userSelection.id != null) {
-        const data = await prisma.properties.findUnique({
+    if (userSelection.id != null || userSelection.id != '') {
+        const data = await prisma.properties.findMany({
             where: {
                 id: parseInt(userSelection.id),
             },
@@ -52,8 +52,6 @@ export async function getPropertiesbyId(userSelection) {
                 spaces: true,
             },
         })
-        console.log("result: ")
-        console.log(data)
         return data
     } else {
         return await prisma.properties.findMany()

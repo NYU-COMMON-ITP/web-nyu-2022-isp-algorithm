@@ -24,7 +24,7 @@ import SpaceSearchField from '../../src/components/SpaceSearch'
 import PropAttrField from '../../src/components/PropAttr'
 import SpaceAttrField from '../../src/components/SpaceAttr'
 
-import { properties, getCities, getProperties } from "../../src/data-access/searches"
+import { properties, getCities, getProperties, spaces } from "../../src/data-access/searches"
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
 const drawerWidth: number = 240;
 
@@ -75,13 +75,13 @@ const propColumns: GridColDef[] = [
 
 const spaceColumns: GridColDef[] = [
     { field: 'space_id', headerName: 'ID', width: 70 },
-    { field: 'date_available', headerName: 'DATE_AVALBE', width: 70 },
-    { field: 'property_id', headerName: 'P_NAME', width: 200 },
+    // { field: 'date_available', headerName: 'DATE_AVALBE', width: 70 },
+    { field: 'property_id', headerName: 'P_NAME', width: 150 },
     { field: 'room_name', headerName: 'ROOM', width: 200 },
     { field: 'status', headerName: 'STATUS', width: 200 },
-    { field: 'mo6_price', headerName: '6MONTH_PRICE', width: 200 },
-    { field: 'mo9_price', headerName: '9MONTH_PRICE', width: 200 },
-    { field: 'mo12_price', headerName: '12MONTH_PRICE', width: 200 },
+    // { field: 'mo6_price', headerName: '6MONTH_PRICE', width: 200 },
+    // { field: 'mo9_price', headerName: '9MONTH_PRICE', width: 200 },
+    // { field: 'mo12_price', headerName: '12MONTH_PRICE', width: 200 },
 ];
 
 interface AppBarProps extends MuiAppBarProps {
@@ -149,8 +149,6 @@ const mdTheme = createTheme();
 
 function PortalContent({ propertiesJson, spacesJson }) {
     const [open, setOpen] = React.useState(false);
-    // id: prop.id,
-    // home_name: prop.home_name,
     const [idSelected, setIdSelected] = React.useState(null);
     const [homeSelected, setHomeSelected] = React.useState('12Mon');
     const [newProp, setnewProp] = React.useState(null);
@@ -175,8 +173,12 @@ function PortalContent({ propertiesJson, spacesJson }) {
                 },
                 body: JSON.stringify(data)
             });
+            // console.log("result")
+            // console.log()
             const properties: properties[] = await response.json();
+            const spaces: spaces[] = await properties[0]["spaces"]
             var propertiesJson = []
+            // console.log("result")
             var spacesJson = []
             if (!properties || properties.length == 0) {
                 setnewProp({});
@@ -194,13 +196,25 @@ function PortalContent({ propertiesJson, spacesJson }) {
                         unit_count: line.unit_count,
                     }
                 )
-                // for (var room of properties.spaces) {
-                //     spacesJson.push(
-
-                //     )
-                // }
             }
             setnewProp(propertiesJson);
+
+            if (!spaces || spaces.length == 0) {
+                setnewSpace({});
+                return
+            }
+            for (var sp of spaces) {
+                spacesJson.push(
+                    {
+                        id: sp.space_id,
+                        space_id: sp.space_id,
+                        room_name: sp.room_name,
+                        status: sp.status
+                    }
+                )
+            }
+            setnewSpace(spacesJson);
+
         }
         fetchMyAPI()
     }, [idSelected])
@@ -293,7 +307,7 @@ function PortalContent({ propertiesJson, spacesJson }) {
                                             rows={newProp != null ? newProp : propertiesJson}
                                             columns={propColumns}
                                             getRowId={(row) => row.id}
-                                            pageSize={10}
+                                            pageSize={5}
                                             rowsPerPageOptions={[20, 50]}
                                             checkboxSelection
                                         />
@@ -323,7 +337,7 @@ function PortalContent({ propertiesJson, spacesJson }) {
                                             rows={newSpace != null ? newSpace : spacesJson}
                                             columns={spaceColumns}
                                             getRowId={(row) => row.id}
-                                            pageSize={10}
+                                            pageSize={5}
                                             rowsPerPageOptions={[20, 50]}
                                             checkboxSelection
                                         />
