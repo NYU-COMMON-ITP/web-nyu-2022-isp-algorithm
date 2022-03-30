@@ -8,36 +8,58 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 const useStyles = makeStyles({
     root: {
-        maxWidth: 345,
+        maxWidth: 280,
     },
     media: {
-        height: 140,
+        height: 130,
     },
 });
 
+const img = '/img/apt.jpeg';
+
 interface Props {
-    image: string;
-    title: string;
-    price: string;
-    description: string;
+    id: string,
+    home_name: string,
+    property_id: string,
+    brand: string,
+    city_name: string,
+    neighborhood: string,
+    timezone: string,
+    unit_count: string,
+    rownum: string,
 }
 
-export default function MediaCard({ image, title, price, description }: Props) {
+export default function MediaCard({ id, home_name, brand, city_name, neighborhood }: Props) {
     const classes = useStyles();
     return (
         <Card className={classes.root}>
             <CardActionArea>
-                <CardMedia className={classes.media} image={image} title={title} />
+                <img src='/img/apt.jpeg'
+                    width={280}
+                    height={50}
+                    alt="dev logo"></img>
+                {/* <CardMedia
+                    component="img"
+                    height="140"
+                    image="/img/apt.jpeg"
+                    alt=""
+                /> */}
                 <CardContent>
-                    <Typography gutterBottom variant="h5" component="h2">
-                        {title}
+                    <Typography gutterBottom component="h2">
+                        Brand: {brand}
                     </Typography>
-                    <Typography gutterBottom variant="subtitle1" color="textSecondary" component="h2">
+                    <Typography gutterBottom component="h2">
+                        City: {city_name}
+                    </Typography>
+                    <Typography gutterBottom component="h2">
+                        Neighbor: {neighborhood}
+                    </Typography>
+                    {/* <Typography gutterBottom variant="subtitle1" color="textSecondary" component="h2">
                         Price at: {price} $
                     </Typography>
                     <Typography variant="body2" color="textSecondary" component="p">
                         {description}
-                    </Typography>
+                    </Typography> */}
                 </CardContent>
             </CardActionArea>
             <CardActions>
