@@ -1,76 +1,45 @@
-import React, { useEffect } from "react";
-import { GetStaticProps } from "next";
-import Layout from "../src/components/Layout";
-import Post, { PostProps } from "../src/components/Post";
-import { getProperties, properties } from "../src/data-access/properties";
-import { getSpaces } from "../src/data-access/spaces";
+import Link from 'next/link';
+import Button from '@mui/material/Button';
+// import styled from "styled-components";
+// import dynamic from "next/dynamic";
 
-// This page will be statically rendered at build time
-export const getStaticProps: GetStaticProps = async () => {
-  const properties = await getProperties();
-  const feed = [
-    {
-      id: 1,
-      title: "Prisma is the perfect ORM for Next.js",
-      content:
-        "[Prisma](https://github.com/prisma/prisma) and Next.js go _great_ together!",
-      published: false,
-      author: {
-        name: "Nikolas Burk",
-        email: "burk@prisma.io",
-      },
-    },
-  ];
-  return { props: { feed, properties } };
-};
+// const BgImage = dynamic(() => import("../src/components/BGImage"), {
+//   ssr: false,
+// });
 
-type Props = {
-  feed: PostProps[];
-  properties: properties[];
-};
+// const Wrapper = styled.div`
+//   z-index: 1;
+//   width: 100%;
+//   height: 100%;
+//   position: fixed;
+//   justify-content: center;
+//   align-items: center;
+//   display: flex;
+// `;
 
-const Blog: React.FC<Props> = (props) => {
-  // Even though this page is statically rendered at build time
-  // This will fetch client side
-  useEffect(() => {
-    Promise.all([
-      fetch("/api/v1/properties")
-        .then((res) => res.json()
-        ),
-      fetch("/api/v1/spaces")
-        .then((res) => res.json()
-        ),
-    ]).then(console.log);
-  }, []);
+function HomePage() {
   return (
-    <Layout>
-      <div className="page">
-        <h1>Public Feed asd</h1>
-        <p className="text-blue-600">Hello world!</p>
-        <main>
-          {props.feed.map((post) => (
-            <div key={post.id} className="post">
-              <Post post={post} />
-            </div>
-          ))}
-        </main>
-      </div>
-      <style jsx>{`
-        .post {
-          background: white;
-          transition: box-shadow 0.1s ease-in;
-        }
+    // <>
+    //   <Wrapper>
+    <div>
+      <ul>
+        <li>
+          <Button href="/portal/dashboard">DashBoard Page</Button>
+        </li>
+        <li>
+          <Button href="/portal/management">Management Page</Button>
+        </li>
+        <li>
+          <Button href="/portal/cards">Apartment Info Page</Button>
+        </li>
+      </ul>
+    </div>
+    //   {/* </Wrapper> */}
 
-        .post:hover {
-          box-shadow: 1px 1px 3px #aaa;
-        }
+    //   {/* <BgImage /> */}
+    // </>
 
-        .post + .post {
-          margin-top: 2rem;
-        }
-      `}</style>
-    </Layout>
   );
-};
+}
 
-export default Blog;
+export default HomePage;
