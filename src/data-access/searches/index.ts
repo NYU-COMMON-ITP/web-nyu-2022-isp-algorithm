@@ -111,7 +111,7 @@ export async function getPropertiesbyCity(userSelection) {
 }
 
 export async function getCities() {
-    return await prisma.properties.groupBy({
+    return prisma.properties.groupBy({
         by: ['city_name'],
         _sum: {
             id: true,
@@ -119,5 +119,5 @@ export async function getCities() {
         orderBy: {
             'city_name': 'asc',
         }
-    })
+    });
 }

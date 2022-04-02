@@ -138,6 +138,7 @@ function PortalContent({ cityMenu, propertiesJson }) {
     const [termSelected, setTermSelected] = React.useState('12Mon');
     const [dateSelected, setDateSelected] = React.useState(new Date());
     const [petSelected, setPetSelected] = React.useState(false);
+    const [searchTrig, setSearch] = React.useState(false);
     const [newProp, setnewProp] = React.useState(null);
 
 
@@ -183,7 +184,6 @@ function PortalContent({ cityMenu, propertiesJson }) {
                         neighborhood: line.neighborhood,
                         timezone: line.timezone,
                         unit_count: line.unit_count,
-                        rownum: line.rownum,
                     }
                 )
             }
@@ -192,8 +192,8 @@ function PortalContent({ cityMenu, propertiesJson }) {
         console.log("citiesSelected", citiesSelected);
 
         fetchMyAPI()
-    }, [citiesSelected, termSelected, dateSelected, petSelected])
-
+        setSearch(false);
+    }, [searchTrig])
     return (
         <ThemeProvider theme={mdTheme}>
             <Box sx={{ display: 'flex' }}>
@@ -275,6 +275,7 @@ function PortalContent({ cityMenu, propertiesJson }) {
                                         setTermSelected={setTermSelected}
                                         setDateSelected={setDateSelected}
                                         setPetSelected={setPetSelected}
+                                        setSearch={setSearch}
                                     />
                                 </Paper>
                             </Grid>

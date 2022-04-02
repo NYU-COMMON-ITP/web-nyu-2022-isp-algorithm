@@ -171,7 +171,7 @@ export default function SelectTextFields({ cityMenu, setCitySelected, setTermSel
       }}>
         {/* <Button variant="outlined" type="submit" onClick={handleClick} endIcon={<SearchIcon />} >
           Search
-        </Button> */}
+        </Button>
       </div>
     </Box >
   );

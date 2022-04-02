@@ -11,9 +11,10 @@ import RadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import FormControl from '@mui/material/FormControl';
 import FormLabel from '@mui/material/FormLabel';
+import SearchIcon from '@mui/icons-material/Search';
 
 
-export default function UserSearchField({ cityMenu, setCitySelected, setTermSelected, setDateSelected, setPetSelected }) {
+export default function UserSearchField({ cityMenu, setCitySelected, setTermSelected, setDateSelected, setPetSelected,setSearch }) {
   const [city, setCity] = React.useState('');
   const [date, setDate] = React.useState(new Date());
   const [pet, setPet] = React.useState(false);
@@ -37,6 +38,12 @@ export default function UserSearchField({ cityMenu, setCitySelected, setTermSele
   const handleDateChange = (date) => {
     setDate(date)
     setDateSelected(date)
+  }
+
+  const handleClick = (event) => {
+    setSearch(true)
+    // alert('Your favorite flavor is: ' + this.state.value);
+    // event.preventDefault();
   }
 
   return (
@@ -164,9 +171,10 @@ export default function UserSearchField({ cityMenu, setCitySelected, setTermSele
         alignItems: 'center',
         justifyContent: 'center',
       }}>
-        {/* <Button variant="outlined" type="submit" onClick={handleClick} endIcon={<SearchIcon />} >
+        <Button variant="outlined" onClick={handleClick} endIcon={<SearchIcon />} >
+          {/*type="submit"*/}
           Search
-        </Button> */}
+        </Button>
       </div>
     </Box >
   );
