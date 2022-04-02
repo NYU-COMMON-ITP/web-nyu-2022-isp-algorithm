@@ -38,12 +38,6 @@ export default function MediaCard({ id, home_name, brand, city_name, neighborhoo
                     width={280}
                     height={50}
                     alt="dev logo"></img>
-                {/* <CardMedia
-                    component="img"
-                    height="140"
-                    image="/img/apt.jpeg"
-                    alt=""
-                /> */}
                 <CardContent>
                     <Typography gutterBottom component="h2">
                         Brand: {brand}

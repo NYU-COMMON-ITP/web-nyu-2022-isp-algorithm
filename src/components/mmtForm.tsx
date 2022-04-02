@@ -66,7 +66,6 @@ export default function SelectTextFields({ cityMenu, setCitySelected, setTermSel
                     id="outlined-required"
                     size="small"
                     label="ID"
-                    defaultValue="ID"
                 />
             </div>
             <div style={{
@@ -79,7 +78,6 @@ export default function SelectTextFields({ cityMenu, setCitySelected, setTermSel
                     id="outlined-disabled"
                     size="small"
                     label="Property Name"
-                    defaultValue="Property Name"
                 />
             </div>
             <div style={{
