@@ -1,211 +1,3 @@
-// import * as React from 'react';
-// import Radio from '@mui/material/Radio';
-// import RadioGroup from '@mui/material/RadioGroup';
-// import FormControlLabel from '@mui/material/FormControlLabel';
-// import FormControl from '@mui/material/FormControl';
-// import FormGroup from '@mui/material/FormGroup';
-// import FormLabel from '@mui/material/FormLabel';
-// import AdapterDateFns from '@mui/lab/AdapterDateFns';
-// import LocalizationProvider from '@mui/lab/LocalizationProvider';
-// import DatePicker from '@mui/lab/DatePicker';
-// import MobileDatePicker from '@mui/lab/MobileDatePicker';
-// import DesktopDatePicker from '@mui/lab/DesktopDatePicker';
-// import Stack from '@mui/material/Stack';
-// import Box from '@mui/material/Box';
-// import TextField from '@mui/material/TextField';
-// import FormHelperText from '@mui/material/FormHelperText';
-// import Switch from '@mui/material/Switch';
-// import Slider from '@mui/material/Slider';
-// import Button from '@mui/material/Button';
-// import ButtonGroup from '@mui/material/ButtonGroup';
-
-
-
-
-// function ManagementPage() {
-//     const [value, setValue] = React.useState(new Date());
-//     const [state, setState] = React.useState({
-//         gilad: true,
-//         jason: false,
-//         antoine: true,
-//     });
-//     // const [rangevalue, setValue] = React.useState([20, 37]);
-
-//     const handleChange = (event) => {
-//         setState({
-//             ...state,
-//             [event.target.name]: event.target.checked,
-//         });
-//     };
-
-//     return (
-//         <Box
-//             component="form"
-//             sx={{
-//                 '& .MuiTextField-root': { m: 1, width: '25ch' },
-//             }}
-//             noValidate
-//             autoComplete="off"
-//         >
-//             <div>
-//                 <h1>Property Search Function</h1>
-//                 <Stack>
-//                     <TextField
-//                         required
-//                         id="outlined-required"
-//                         label="ID"
-//                         defaultValue="ID"
-//                     />
-//                     <TextField
-//                         disabled
-//                         id="outlined-disabled"
-//                         label="Property Name"
-//                         defaultValue="Property Name"
-//                     />
-//                     <TextField
-//                         required
-//                         id="outlined-required"
-//                         label="Property ID"
-//                         defaultValue="Property ID"
-//                     />
-//                     <TextField
-//                         required
-//                         id="outlined-required"
-//                         label="Weight Value"
-//                         defaultValue="Weight Value"
-//                     />
-
-//                     <LocalizationProvider dateAdapter={AdapterDateFns}>
-
-//                         <DesktopDatePicker
-//                             label="CheckIn"
-//                             value={value}
-//                             minDate={new Date('2017-01-01')}
-//                             onChange={(newValue1) => {
-//                                 setValue(newValue1);
-//                             }}
-//                             renderInput={(params) => <TextField {...params} />}
-//                         />
-//                         <DesktopDatePicker
-//                             label="CheckOut"
-//                             value={value}
-//                             minDate={new Date('2017-01-01')}
-//                             onChange={(newValue2) => {
-//                                 setValue(newValue2);
-//                             }}
-//                             renderInput={(params) => <TextField {...params} />}
-//                         />
-
-//                     </LocalizationProvider>
-//                     <Box width={300}>
-//                         <Slider defaultValue={1500} aria-label="Default" valueLabelDisplay="auto" />
-//                     </Box>
-
-//                 </Stack>
-//                 <div>
-//                     <ButtonGroup variant="outlined" aria-label="outlined primary button group">
-//                         <Button>retrieve Info</Button>
-//                         <Button>Update Info</Button>
-//                         <Button>Delete Info</Button>
-//                     </ButtonGroup>
-//                 </div>
-//                 <div>
-
-
-
-//                     <h1> </h1>
-//                 </div>
-//                 <div>
-//                     <h1>Unit Search Function</h1>
-//                     <Stack>
-//                         <TextField
-//                             required
-//                             id="outlined-required"
-//                             label="ID"
-//                             defaultValue="ID"
-//                         />
-//                         <TextField
-//                             required
-//                             id="outlined-required"
-//                             label="Property ID"
-//                             defaultValue="Property ID"
-//                         />
-//                         <TextField
-//                             disabled
-//                             id="outlined-disabled"
-//                             label="Apt Num"
-//                             defaultValue="Apt Num"
-//                         />
-//                         <TextField
-//                             disabled
-//                             id="outlined-disabled"
-//                             label="Neighborhood"
-//                             defaultValue="Neighborhood"
-//                         />
-//                         <TextField
-//                             disabled
-//                             id="outlined-disabled"
-//                             label="room"
-//                             defaultValue="room"
-//                         />
-//                         <FormControl component="fieldset" variant="standard">
-//                             <FormLabel component="legend"></FormLabel>
-//                             <FormGroup>
-//                                 <FormControlLabel
-//                                     control={
-//                                         <Switch checked={state.gilad} onChange={handleChange} name="gilad" />
-//                                     }
-//                                     label="Avaliable"
-//                                 />
-//                                 <FormControlLabel
-//                                     control={
-//                                         <Switch checked={state.jason} onChange={handleChange} name="jason" />
-//                                     }
-//                                     label="Coliving"
-//                                 />
-//                             </FormGroup>
-//                             <FormHelperText></FormHelperText>
-//                         </FormControl>
-//                     </Stack>
-//                     <div>
-//                         <ButtonGroup variant="outlined" aria-label="outlined primary button group">
-//                             <Button>retrieve Info</Button>
-//                             <Button>Update Info</Button>
-//                             <Button>Delete Info</Button>
-//                         </ButtonGroup>
-//                     </div>
-//                 </div>
-
-
-
-//                 {/* <FormControl>
-//                     <FormLabel id="demo-row-radio-buttons-group-label">Gender</FormLabel>
-//                     <RadioGroup
-//                         row
-//                         aria-labelledby="demo-row-radio-buttons-group-label"
-//                         name="row-radio-buttons-group"
-//                     >
-//                         <FormControlLabel value="female" control={<Radio />} label="Female" />
-//                         <FormControlLabel value="male" control={<Radio />} label="Male" />
-//                         <FormControlLabel value="other" control={<Radio />} label="Other" />
-//                         <FormControlLabel
-//                             value="disabled"
-//                             disabled
-//                             control={<Radio />}
-//                             label="other"
-//                         />
-//                     </RadioGroup>
-//                 </FormControl> */}
-
-
-
-//             </div>
-//         </Box>
-//     );
-// }
-
-// export default ManagementPage
-
 import * as React from 'react';
 import { GetStaticProps } from "next";
 import { styled, createTheme, ThemeProvider } from '@mui/material/styles';
@@ -226,11 +18,13 @@ import Paper from '@mui/material/Paper';
 import MenuIcon from '@mui/icons-material/Menu';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import NotificationsIcon from '@mui/icons-material/Notifications';
-import { listItems } from '../portal/listItems';
-import SelectTextFields from '../../src/components/mmtForm'
-import MediaCard from '../../src/components/MediaCard';
-import { properties, getProperties } from "../../src/data-access/spaces";
-import { getCities } from "../../src/data-access/searches"
+import { ListItems } from '../../src/components/ListItems';
+import PropSearchField from '../../src/components/PropSearch'
+import SpaceSearchField from '../../src/components/SpaceSearch'
+import PropAttrField from '../../src/components/PropAttr'
+import SpaceAttrField from '../../src/components/SpaceAttr'
+
+import { properties, getCities, getProperties, spaces } from "../../src/data-access/searches"
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
 const drawerWidth: number = 240;
 
@@ -248,6 +42,7 @@ export const getStaticProps: GetStaticProps = async () => {
         )
     }
     const properties: properties[] = await getProperties();
+    var spacesJson = []
     var propertiesJson = []
     for (var prop of properties) {
         propertiesJson.push(
@@ -260,16 +55,15 @@ export const getStaticProps: GetStaticProps = async () => {
                 neighborhood: prop.neighborhood,
                 timezone: prop.timezone,
                 unit_count: prop.unit_count,
-                rownum: prop.rownum,
             }
         )
     }
     return {
-        props: { cityMenu, propertiesJson }
+        props: { cityMenu, propertiesJson, spacesJson }
     }
 };
 
-const columns: GridColDef[] = [
+const propColumns: GridColDef[] = [
     { field: 'id', headerName: 'ID', width: 50 },
     { field: 'home_name', headerName: 'Home', width: 150 },
     { field: 'property_id', headerName: 'Prop_ID', width: 120 },
@@ -277,7 +71,17 @@ const columns: GridColDef[] = [
     { field: 'city_name', headerName: 'City', width: 100 },
     { field: 'neighborhood', headerName: 'Neighborhood', width: 150 },
     { field: 'unit_count', headerName: 'Unit', width: 70 },
-    // { field: 'rownum', headerName: 'rownum', width: 30 },
+];
+
+const spaceColumns: GridColDef[] = [
+    { field: 'space_id', headerName: 'ID', width: 70 },
+    // { field: 'date_available', headerName: 'DATE_AVALBE', width: 70 },
+    { field: 'property_id', headerName: 'P_NAME', width: 150 },
+    { field: 'room_name', headerName: 'ROOM', width: 200 },
+    { field: 'status', headerName: 'STATUS', width: 200 },
+    // { field: 'mo6_price', headerName: '6MONTH_PRICE', width: 200 },
+    // { field: 'mo9_price', headerName: '9MONTH_PRICE', width: 200 },
+    // { field: 'mo12_price', headerName: '12MONTH_PRICE', width: 200 },
 ];
 
 interface AppBarProps extends MuiAppBarProps {
@@ -343,28 +147,42 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 
 const mdTheme = createTheme();
 
-function PortalContent({ cityMenu, propertiesJson }) {
+function PortalContent({ propertiesJson, spacesJson }) {
     const [open, setOpen] = React.useState(false);
-    const [citiesSelected, setCitySelected] = React.useState();
-    const [termSelected, setTermSelected] = React.useState();
-    const [dateSelected, setDateSelected] = React.useState();
-    const [petSelected, setPetSelected] = React.useState();
-    const [newProp, setnewProp] = React.useState(null);
-
+    const [propSelected, setIdSelected] = React.useState(null);
+    const [spSelected, setSpSelected] = React.useState(null);
+    const [homeSelected, setHomeSelected] = React.useState('');
+    const [searchPropTrig, setPropSearch] = React.useState(false);
+    const [searchSpaceTrig, setSpaceSearch] = React.useState(false);
+    const [newProp, setNewProp] = React.useState(null);
+    const [newSpace, setNewSpace] = React.useState(null);
 
     const toggleDrawer = () => {
         setOpen(!open);
     };
 
     React.useEffect(() => {
-        async function fetchMyAPI() {
-            const response = await fetch(`http://localhost:6003/api/v1/properties/?city=${citiesSelected}`);
+        async function fetchProp() {
+            const data = {
+                "operation": "managePropSearch",
+                "variables": {
+                    "id": propSelected,
+                    "home_name":homeSelected,
+                }
+            }
+            const response = await fetch('http://localhost:6003/api/v1/managtPropSearch', {
+                method: 'POST',
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(data)
+            });
             const properties: properties[] = await response.json();
-            // return
-            console.log("heio")
+
             var propertiesJson = []
+            var spacesJson = []
             if (!properties || properties.length == 0) {
-                setnewProp({});
+                setNewProp({});
                 return
             }
             for (var line of properties) {
@@ -376,18 +194,74 @@ function PortalContent({ cityMenu, propertiesJson }) {
                         brand: line.brand,
                         city_name: line.city_name,
                         neighborhood: line.neighborhood,
-                        timezone: line.timezone,
                         unit_count: line.unit_count,
-                        rownum: line.rownum,
                     }
                 )
             }
-            setnewProp(propertiesJson);
-        }
-        console.log("citiesSelected", citiesSelected);
 
-        fetchMyAPI()
-    }, [citiesSelected, termSelected, dateSelected, petSelected])
+            setNewProp(propertiesJson);
+            if (properties.length==1) {
+                const spaces: spaces[] = await properties[0]["spaces"]
+                if (!spaces || spaces.length == 0) {
+                    setNewSpace({});
+                    return
+                }
+                for (var sp of spaces) {
+                    spacesJson.push(
+                      {
+                          id: sp.space_id,
+                          space_id: sp.space_id,
+                          room_name: sp.room_name,
+                          status: sp.status
+                      }
+                    )
+                }
+                setNewSpace(spacesJson);
+            }else{
+                setNewSpace(null)
+            }
+        }
+        fetchProp()
+        setPropSearch(false)
+    }, [searchPropTrig])
+
+    React.useEffect(() => {
+        async function fetchSpace() {
+            const data = {
+                "operation": "manageSpaceSearch",
+                "variables": {
+                    "space_id": spSelected,
+                }
+            }
+            const response = await fetch('http://localhost:6003/api/v1/managtSpaceSearch', {
+                method: 'POST',
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(data)
+            });
+            const spaces: spaces[] = await response.json();
+            var spacesJson = []
+            if (!spaces || spaces.length == 0) {
+                setNewSpace({});
+                return
+            }
+            for (var sp of spaces) {
+                spacesJson.push(
+                  {
+                      id: sp.space_id,
+                      space_id: sp.space_id,
+                      room_name: sp.room_name,
+                      status: sp.status
+                  }
+                )
+            }
+            setNewProp({});
+            setNewSpace(spacesJson);
+        }
+        fetchSpace()
+        setSpaceSearch(false)
+      }, [searchSpaceTrig])
 
     return (
         <ThemeProvider theme={mdTheme}>
@@ -443,7 +317,7 @@ function PortalContent({ cityMenu, propertiesJson }) {
                     </Toolbar>
                     <Divider />
                     <List component="nav">
-                        {listItems}
+                        {ListItems}
                     </List>
                 </Drawer>
                 <Box
@@ -462,42 +336,67 @@ function PortalContent({ cityMenu, propertiesJson }) {
 
                     <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
                         <Grid container spacing={3}>
-                            <Grid item xs={3}>
+                            <Grid item xs={12} md={2} lg={2}>
                                 <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
-                                    <SelectTextFields
-                                        cityMenu={cityMenu}
-                                        setCitySelected={setCitySelected}
-                                        setTermSelected={setTermSelected}
-                                        setDateSelected={setDateSelected}
-                                        setPetSelected={setPetSelected}
+                                    <PropSearchField
+                                        setIdSelected={setIdSelected}
+                                        setHomeSelected={setHomeSelected}
+                                        setPropSearch={setPropSearch}
                                     />
                                 </Paper>
                             </Grid>
-                            <Grid item xs={9}>
-                                <Grid container spacing={1}>
-                                    {propertiesJson.map((mediaCard, i) => {
-                                        return (
-                                            <Grid key={i} item>
-                                                <MediaCard {...mediaCard} />
-                                            </Grid>
-                                        );
-                                    })}
-                                </Grid>
-                            </Grid>
-                            {/* <Grid item xs={9}>
+                            <Grid item xs={12} md={8} lg={8}>
                                 <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
-                                    <div style={{ height: 650, width: '100%', fontSize: 8 }}>
+                                    <div style={{ height: 400, width: '100%', fontSize: 8 }}>
                                         <DataGrid
                                             rows={newProp != null ? newProp : propertiesJson}
-                                            columns={columns}
+                                            columns={propColumns}
                                             getRowId={(row) => row.id}
-                                            pageSize={10}
+                                            pageSize={5}
                                             rowsPerPageOptions={[20, 50]}
                                             checkboxSelection
                                         />
                                     </div>
                                 </Paper>
-                            </Grid> */}
+                            </Grid>
+                            <Grid item xs={12} md={2} lg={2}>
+                                <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
+                                    <PropAttrField
+                                        setIdSelected={setIdSelected}
+                                        setHomeSelected={setHomeSelected}
+                                    />
+                                </Paper>
+                            </Grid>
+                            <Grid item xs={12} md={2} lg={2}>
+                                <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
+                                    <SpaceSearchField
+                                        setSpaceSelected={setSpSelected}
+                                        setSpaceSearch={setSpaceSearch}
+                                    />
+                                </Paper>
+                            </Grid>
+                            <Grid item xs={12} md={8} lg={8}>
+                                <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
+                                    <div style={{ height: 400, width: '100%', fontSize: 8 }}>
+                                        <DataGrid
+                                            rows={newSpace != null ? newSpace : spacesJson}
+                                            columns={spaceColumns}
+                                            getRowId={(row) => row.id}
+                                            pageSize={5}
+                                            rowsPerPageOptions={[20, 50]}
+                                            checkboxSelection
+                                        />
+                                    </div>
+                                </Paper>
+                            </Grid>
+                            <Grid item xs={12} md={2} lg={2}>
+                                <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
+                                    <SpaceAttrField
+                                        setIdSelected={setIdSelected}
+                                        setHomeSelected={setHomeSelected}
+                                    />
+                                </Paper>
+                            </Grid>
                         </Grid>
                         <Copyright sx={{ pt: 4 }} />
                     </Container>
@@ -507,7 +406,7 @@ function PortalContent({ cityMenu, propertiesJson }) {
     );
 }
 
-export default function Portal({ cityMenu, propertiesJson }) {
+export default function Portal({ propertiesJson, spacesJson }) {
 
-    return <PortalContent cityMenu={cityMenu} propertiesJson={propertiesJson} />;
+    return <PortalContent spacesJson={spacesJson} propertiesJson={propertiesJson} />;
 }

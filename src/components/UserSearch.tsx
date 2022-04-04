@@ -6,15 +6,15 @@ import MenuItem from '@mui/material/MenuItem';
 import DesktopDatePicker from '@mui/lab/DesktopDatePicker';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
-import SearchIcon from '@mui/icons-material/Search';
 import Radio from '@mui/material/Radio';
 import RadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import FormControl from '@mui/material/FormControl';
 import FormLabel from '@mui/material/FormLabel';
+import SearchIcon from '@mui/icons-material/Search';
 
 
-export default function SelectTextFields({ cityMenu, setCitySelected, setTermSelected, setDateSelected, setPetSelected }) {
+export default function UserSearchField({ cityMenu, setCitySelected, setTermSelected, setDateSelected, setPetSelected,setSearch }) {
   const [city, setCity] = React.useState('');
   const [date, setDate] = React.useState(new Date());
   const [pet, setPet] = React.useState(false);
@@ -30,19 +30,20 @@ export default function SelectTextFields({ cityMenu, setCitySelected, setTermSel
     setTerm(event.target.value);
     setTermSelected(event.target.value)
   };
-  const handleDateChange = (event) => {
-    setDate(event.target.value);
-    setDateSelected(event.target.value)
-  };
 
   const handlePetChange = (event) => {
     setPet(event.target.value)
     setPetSelected(event.target.value)
   };
+  const handleDateChange = (date) => {
+    setDate(date)
+    setDateSelected(date)
+  }
 
-  const handleSubmit = (event) => {
-    alert('Your favorite flavor is: ' + this.state.value);
-    event.preventDefault();
+  const handleClick = (event) => {
+    setSearch(true)
+    // alert('Your favorite flavor is: ' + this.state.value);
+    // event.preventDefault();
   }
 
   return (
@@ -117,7 +118,7 @@ export default function SelectTextFields({ cityMenu, setCitySelected, setTermSel
             label="Move in"
             value={date}
             disablePast
-            onChange={handleDateChange}
+            onChange={(date) => handleDateChange(date)}
             renderInput={(params) => <TextField {...params} />}
           />
         </LocalizationProvider>
@@ -170,7 +171,8 @@ export default function SelectTextFields({ cityMenu, setCitySelected, setTermSel
         alignItems: 'center',
         justifyContent: 'center',
       }}>
-        <Button variant="outlined" type="submit" onSubmit={handleSubmit} endIcon={<SearchIcon />} >
+        <Button variant="outlined" onClick={handleClick} endIcon={<SearchIcon />} >
+          {/*type="submit"*/}
           Search
         </Button>
       </div>

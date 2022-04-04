@@ -5,7 +5,7 @@ import ListItemText from '@mui/material/ListItemText';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import SearchIcon from '@mui/icons-material/Search';
 
-export const listItems = (
+export const ListItems = (
     <React.Fragment>
         <ListItemButton>
             <ListItemIcon>

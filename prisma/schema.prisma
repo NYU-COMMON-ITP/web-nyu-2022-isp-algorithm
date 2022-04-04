@@ -10,13 +10,14 @@ datasource db {
 model properties {
   id           Int     @id @default(autoincrement())
   home_name    String? @db.VarChar
-  property_id  String? @db.VarChar
+  property_id  String? @db.VarChar @unique
   brand        String? @db.VarChar
   city_name    String? @db.VarChar
   neighborhood String? @db.VarChar
   timezone     String? @db.VarChar
   unit_count   Int?
   rownum       Int?
+  spaces       spaces[]
 }
 
 model spaces {
@@ -38,4 +39,5 @@ model spaces {
   bath_count       Int
   min_price        Int
   max_price        Int
+  properties       properties? @relation(fields:[property_id],references:[property_id])
 }
