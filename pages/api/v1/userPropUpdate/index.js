@@ -1,11 +1,11 @@
-import { createProperty } from "../../../../src/data-access/OpsCreate";
+import { updateProperty } from "../../../../src/data-access/OpsUpdate";
 
 export default async function handler(req, res) {
     try {
         const userSelection = req.body
-        const result = await createProperty(userSelection.variables)
+        const result = await updateProperty(userSelection.variables)
         res.send(JSON.stringify(result));
     } catch (err) {
-        res.status(500).json({ error: 'failed to Add data' })
+        res.status(500).json({ error: 'failed to Update data' })
     }
 }

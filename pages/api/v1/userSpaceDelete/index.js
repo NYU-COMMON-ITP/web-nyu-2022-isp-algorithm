@@ -1,11 +1,12 @@
-import { createProperty } from "../../../../src/data-access/OpsCreate";
+import { deleteSpace } from "../../../../src/data-access/OpsDelete";
 
 export default async function handler(req, res) {
     try {
         const userSelection = req.body
-        const result = await createProperty(userSelection.variables)
+        const result = await deleteSpace(userSelection.variables)
         res.send(JSON.stringify(result));
     } catch (err) {
-        res.status(500).json({ error: 'failed to Add data' })
+        console.log(err)
+        res.status(500).json({ error: 'failed to Delete Space data' })
     }
 }

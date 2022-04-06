@@ -1,4 +1,4 @@
-import { createProperty } from "../../../../src/data-access/OpsCreate";
+import { createProperty } from "../../../../src/data-access/opsCreate";
 
 export default async function handler(req, res) {
     console.log("iiii")

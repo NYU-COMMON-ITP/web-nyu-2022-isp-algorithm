@@ -23,43 +23,13 @@ import AddProperty from '../../src/components/AddProperty'
 import AddSpace from '../../src/components/AddSpace';
 import UpdateProperty from '../../src/components/UpdateProperty'
 import UpdateSpace from '../../src/components/UpdateSpace';
+import DeleteSpace from '../../src/components/DeleteSpace';
+import DeleteProperty from '../../src/components/DeleteProperty';
 
 import { properties, getCities, getProperties } from "../../src/data-access/searches"
 import { createProperty, createSpace } from "../../src/data-access/OpsCreate"
 // import { DataGrid, GridColDef } from '@mui/x-data-grid';
 const drawerWidth: number = 240;
-
-// export const getStaticProps: GetStaticProps = async () => {
-//     var propertiesJson = []
-//     for (var prop of properties) {
-//         propertiesJson.push(
-//             {
-//                 id: prop.id,
-//                 home_name: prop.home_name,
-//                 property_id: prop.property_id,
-//                 brand: prop.brand,
-//                 city_name: prop.city_name,
-//                 neighborhood: prop.neighborhood,
-//                 timezone: prop.timezone,
-//                 unit_count: prop.unit_count,
-//                 rownum: prop.rownum,
-//             }
-//         )
-//     }
-//     return {
-//         props: { cityMenu,propertiesJson }
-//     }
-// };
-
-// const columns: GridColDef[] = [
-//     { field: 'id', headerName: 'ID', width: 50 },
-//     { field: 'home_name', headerName: 'Home', width: 150 },
-//     { field: 'property_id', headerName: 'Prop_ID', width: 120 },
-//     { field: 'brand', headerName: 'Brand', width: 70 },
-//     { field: 'city_name', headerName: 'City', width: 100 },
-//     { field: 'neighborhood', headerName: 'Neighborhood', width: 150 },
-//     { field: 'unit_count', headerName: 'Unit', width: 70 },
-// ];
 
 interface AppBarProps extends MuiAppBarProps {
     open?: boolean;
@@ -141,7 +111,7 @@ function PortalContent({propertiesJson }) {
     const [apartment_name, setapartment_name] = React.useState(null);
     const [room_name, setroom_name] = React.useState(null);
     const [occupancy_type, setoccupancy_type] = React.useState(null);
-    const [security_deposity,setsecurity_dep] = React.useState(null);
+    const [security_deposit,setsecurity_dep] = React.useState(null);
     const [date_available,setdate_available] = React.useState(null);   
     const [status,setstatus] = React.useState(null); 
     const [created_at,setcreated_at] = React.useState(null);
@@ -154,6 +124,10 @@ function PortalContent({propertiesJson }) {
     const [bath_count,setbath_count] = React.useState(null);
     const [min_price,set_min_price] = React.useState(null);
     const [max_price,set_max_price] = React.useState(null);
+    const [deleteSpaceTrig, setDeleteSpaceTrig] = React.useState(false);
+    const [deletePropTrig, setDeletePropTrig] = React.useState(false);
+    const [updateSpaceTrig, setUpdateSpaceTrig] = React.useState(false);
+    const [updatePropTrig, setUpdatePropTrig] = React.useState(false);
 
     const toggleDrawer = () => {
         setOpen(!open);
@@ -193,7 +167,7 @@ function PortalContent({propertiesJson }) {
                     "apartment_name":apartment_name,
                     "room_name":room_name,
                     "occupancy_type":occupancy_type,
-                    "security_deposity":parseInt(security_deposity),
+                    "security_deposit":parseInt(security_deposit),
                     "date_available":new Date(date_available),
                     "status":status,
                     "created_at":new Date(created_at),
@@ -218,6 +192,84 @@ function PortalContent({propertiesJson }) {
             console.log("result: ")
             console.log(response)
         }
+
+        async function deleteSpace() {
+            const data = {
+                "operation": "UserModification",
+                "variables": {
+                    "space_id": parseInt(space_id),
+                }
+            }
+            const response = await fetch(`http://localhost:6003/api/v1/userSpaceDelete`, {
+                method: 'DELETE',
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(data)
+            });
+            console.log("result: ")
+            console.log(response)
+        }
+
+        async function deleteProp() {
+            const data = {
+                "operation": "UserModification",
+                "variables": {
+                    "property_id": property_id,
+                }
+            }
+            const response = await fetch(`http://localhost:6003/api/v1/userPropDelete`, {
+                method: 'DELETE',
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(data)
+            });
+            console.log("result: ")
+            console.log(response)
+        }
+
+        // async function updateSpace() {
+        // Todo: Populate date with only non-null fields
+        //       Check if ID is given, otherwise throw error
+        //     const data = {
+        //         "operation": "UserModification",
+        //         "variables": {
+        //             "property_id": property_id,
+        //         }
+        //     }
+        //     const response = await fetch(`http://localhost:6003/api/v1/userSpaceUpdate`, {
+        //         method: 'PATCH',
+        //         headers: {
+        //             "Content-Type": "application/json"
+        //         },
+        //         body: JSON.stringify(data)
+        //     });
+        //     console.log("result: ")
+        //     console.log(response)
+        // }
+
+        // async function updateProp() {
+        // Todo: Populate date with only non-null fields
+        //       Check if ID is given, otherwise throw error
+
+        //     const data = {
+        //         "operation": "UserModification",
+        //         "variables": {
+        //             "property_id": property_id,
+        //         }
+        //     }
+        //     const response = await fetch(`http://localhost:6003/api/v1/userPropUpdate`, {
+        //         method: 'PATCH',
+        //         headers: {
+        //             "Content-Type": "application/json"
+        //         },
+        //         body: JSON.stringify(data)
+        //     });
+        //     console.log("result: ")
+        //     console.log(response)
+        // }
+
         if(createPropTrig){
             console.log("Property Add")
             createProperty()
@@ -229,7 +281,29 @@ function PortalContent({propertiesJson }) {
             setcreateSpaceTrig(false);
         }
 
-    }, [createPropTrig, createSpaceTrig])
+        if(deleteSpaceTrig){
+            console.log("Space Delete")
+            deleteSpace()
+            setDeleteSpaceTrig(false);
+        }
+        if(deletePropTrig){
+            console.log("Space Delete")
+            deleteProp()
+            setDeletePropTrig(false);
+        }
+
+        // if(updateSpaceTrig){
+        //     console.log("Space Delete")
+        //     updateSpace()
+        //     setUpdateSpaceTrig(false);
+        // }
+        // if(updatePropTrig){
+        //     console.log("Space Delete")
+        //     updateProp()
+        //     setUpdatePropTrig(false);
+        // }
+
+    }, [createPropTrig, createSpaceTrig, deleteSpaceTrig,deletePropTrig, updateSpaceTrig, updatePropTrig])
     return (
         <ThemeProvider theme={mdTheme}>
             <Box sx={{ display: 'flex' }}>
@@ -353,6 +427,7 @@ function PortalContent({propertiesJson }) {
                                         settimezone={settimezone}
                                         setunit_count={setunit_count}
                                         setrownum={setrownum}
+                                        // setUpdatePropTrig = {setUpdatePropTrig}
                                     />
                                 </Paper>
                             </Grid>
@@ -377,9 +452,27 @@ function PortalContent({propertiesJson }) {
                                         setbath_count={setbath_count}
                                         set_min_price={set_min_price}
                                         set_max_price={set_max_price}
+                                         // setUpdateSpaceTrig = {setUpdateSpaceTrig}
                                     />
                                 </Paper>
                             </Grid>
+                            <Grid item xs={4}>
+                                <Paper sx={{ p: 3, display: 'flex', flexDirection: 'column' }}> Delete Space
+                                    <DeleteSpace
+                                        setspace_id={setspace_id}
+                                        setDeleteSpaceTrig = {setDeleteSpaceTrig}
+                                    />
+                                </Paper>
+                            </Grid>
+                            <Grid item xs={4}>
+                                <Paper sx={{ p: 3, display: 'flex', flexDirection: 'column' }}> Delete Property
+                                    <DeleteProperty
+                                        setproperty_id={setproperty_id}
+                                        setDeletePropTrig = {setDeletePropTrig}
+                                    />
+                                </Paper>
+                            </Grid>
+
                         </Grid>
                         <Copyright sx={{ pt: 4 }} />
                     </Container>
