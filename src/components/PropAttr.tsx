@@ -2,23 +2,23 @@ import * as React from 'react';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
-import SearchIcon from '@mui/icons-material/Search';
+// import SearchIcon from '@mui/icons-material/Search';
 
 
-export default function PropAttrField({ setIdSelected, setHomeSelected }) {
-    const [id, setId] = React.useState(null);
-    const [home, setHome] = React.useState("");
+export default function PropAttrField({propAttr,setPropAttr,setTrig }) {
+    // const [id, setId] = React.useState(null);
+    // const [home, setHome] = React.useState("");
 
-    const handleIdChange = (event) => {
-        setId(event.target.value);
-    };
-    const handleHomeChange = (event) => {
-        setHome(event.target.value);
-    };
+    // const handleIdChange = (event) => {
+    //     setIdSelected(event.target.value);
+    // };
+
+    // const handleHomeChange = (event) => {
+    //     setHome(event.target.value);
+    // };
 
     const handleClick = (event) => {
-        setIdSelected(id);
-        setHomeSelected(home);
+        setTrig(true)
     }
 
     return (
@@ -45,7 +45,8 @@ export default function PropAttrField({ setIdSelected, setHomeSelected }) {
                     id="input-zipcode"
                     label="ID"
                     size="small"
-                    onChange={handleIdChange}
+                    value={propAttr.id}
+                    // onChange={handleIdChange}
                     InputLabelProps={{
                         shrink: true,
                     }}
@@ -60,7 +61,8 @@ export default function PropAttrField({ setIdSelected, setHomeSelected }) {
                     id="input-zipcode"
                     label="Home Name"
                     size="small"
-                    onChange={handleHomeChange}
+                    value={propAttr.home_name}
+                    // onChange={handleHomeChange}
                     InputLabelProps={{
                         shrink: true,
                     }}
@@ -71,7 +73,25 @@ export default function PropAttrField({ setIdSelected, setHomeSelected }) {
                 alignItems: 'center',
                 justifyContent: 'center',
             }}>
-                <Button variant="outlined" type="submit" onClick={handleClick} endIcon={<SearchIcon />} >
+                <TextField
+                  label="Home Brand"
+                  size="small"
+                  value={propAttr.brand}
+                  InputLabelProps={{
+                      shrink: true,
+                  }}
+                />
+            </div>
+
+            <div style={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+            }}>
+                <Button
+                  variant="outlined"
+                  // onClick={handleClick}
+                >
                     Update
                 </Button>
             </div>

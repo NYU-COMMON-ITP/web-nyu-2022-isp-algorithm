@@ -24,42 +24,16 @@ import SpaceSearchField from '../../src/components/SpaceSearch'
 import PropAttrField from '../../src/components/PropAttr'
 import SpaceAttrField from '../../src/components/SpaceAttr'
 
-import { properties, getCities, getProperties, spaces } from "../../src/data-access/searches"
+import { properties, spaces } from "../../src/data-access/searches"
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
 const drawerWidth: number = 240;
 
 // This page will be statically rendered at build time
 export const getStaticProps: GetStaticProps = async () => {
-    const cityLists = await getCities();
-    var cityMenu = []
-
-    for (var city of cityLists) {
-        cityMenu.push(
-            {
-                value: city.city_name,
-                label: city.city_name,
-            }
-        )
-    }
-    const properties: properties[] = await getProperties();
-    var spacesJson = []
-    var propertiesJson = []
-    for (var prop of properties) {
-        propertiesJson.push(
-            {
-                id: prop.id,
-                home_name: prop.home_name,
-                property_id: prop.property_id,
-                brand: prop.brand,
-                city_name: prop.city_name,
-                neighborhood: prop.neighborhood,
-                timezone: prop.timezone,
-                unit_count: prop.unit_count,
-            }
-        )
-    }
+    let spacesJson = []
+    let propertiesJson = []
     return {
-        props: { cityMenu, propertiesJson, spacesJson }
+        props: { propertiesJson, spacesJson }
     }
 };
 
@@ -149,13 +123,37 @@ const mdTheme = createTheme();
 
 function PortalContent({ propertiesJson, spacesJson }) {
     const [open, setOpen] = React.useState(false);
-    const [propSelected, setIdSelected] = React.useState(null);
-    const [spSelected, setSpSelected] = React.useState(null);
-    const [homeSelected, setHomeSelected] = React.useState('');
-    const [searchPropTrig, setPropSearch] = React.useState(false);
-    const [searchSpaceTrig, setSpaceSearch] = React.useState(false);
-    const [newProp, setNewProp] = React.useState(null);
-    const [newSpace, setNewSpace] = React.useState(null);
+    const [searchPropTrig, setSearchPropTrig] = React.useState(false);
+    const [searchSpaceTrig, setSearchSpaceTrig] = React.useState(false);
+    // const [actionTrig, setTrig] = React.useState(false);
+    // const [actionTrig, setTrig] = React.useState(false);
+    // const [actionTrig, setTrig] = React.useState(false);
+    // const [actionTrig, setTrig] = React.useState(false);
+    // const [actionTrig, setTrig] = React.useState(false);
+    // const [actionTrig, setTrig] = React.useState(false);
+    const [newProp, setNewProp] = React.useState([]);
+    const [newSpace, setNewSpace] = React.useState([]);
+
+
+    const [propAttr,setPropAttr] = React.useState({
+        id: "",
+        property_id:"",
+        brand: "",
+        home_name:"",
+        city_name:"",
+        neighborhood:"",
+    })
+
+    const [spaceAttr,setSpaceAttr] = React.useState({
+        space_id: "",
+        property_id: "",
+        room_name:"",
+        occupancy_type:"",
+        mo3_price:"",
+        mo6_price:"",
+        bedroom_count:"",
+        bath_count:"",
+    })
 
     const toggleDrawer = () => {
         setOpen(!open);
@@ -166,8 +164,8 @@ function PortalContent({ propertiesJson, spacesJson }) {
             const data = {
                 "operation": "managePropSearch",
                 "variables": {
-                    "id": propSelected,
-                    "home_name":homeSelected,
+                    "id": parseInt(propAttr.id),
+                    "home_name": propAttr.home_name,
                 }
             }
             const response = await fetch('http://localhost:6003/api/v1/managtPropSearch', {
@@ -179,13 +177,13 @@ function PortalContent({ propertiesJson, spacesJson }) {
             });
             const properties: properties[] = await response.json();
 
-            var propertiesJson = []
-            var spacesJson = []
+            let propertiesJson = []
+            let spacesJson = []
             if (!properties || properties.length == 0) {
-                setNewProp({});
+                setNewProp([]);
                 return
             }
-            for (var line of properties) {
+            for (let line of properties) {
                 propertiesJson.push(
                     {
                         id: line.id,
@@ -203,26 +201,28 @@ function PortalContent({ propertiesJson, spacesJson }) {
             if (properties.length==1) {
                 const spaces: spaces[] = await properties[0]["spaces"]
                 if (!spaces || spaces.length == 0) {
-                    setNewSpace({});
+                    setNewSpace([]);
                     return
                 }
-                for (var sp of spaces) {
+                for (let sp of spaces) {
                     spacesJson.push(
                       {
                           id: sp.space_id,
                           space_id: sp.space_id,
                           room_name: sp.room_name,
-                          status: sp.status
+                          status: sp.status,
+                          property_id:sp.property_id,
+                          occupancy_type: sp.occupancy_type
                       }
                     )
                 }
                 setNewSpace(spacesJson);
             }else{
-                setNewSpace(null)
+                setNewSpace([])
             }
         }
-        fetchProp()
-        setPropSearch(false)
+        fetchProp().then(()=>console.log('Search Properties'))
+        setSearchPropTrig(false)
     }, [searchPropTrig])
 
     React.useEffect(() => {
@@ -230,7 +230,7 @@ function PortalContent({ propertiesJson, spacesJson }) {
             const data = {
                 "operation": "manageSpaceSearch",
                 "variables": {
-                    "space_id": spSelected,
+                    "space_id": parseInt(spaceAttr.space_id),
                 }
             }
             const response = await fetch('http://localhost:6003/api/v1/managtSpaceSearch', {
@@ -241,27 +241,122 @@ function PortalContent({ propertiesJson, spacesJson }) {
                 body: JSON.stringify(data)
             });
             const spaces: spaces[] = await response.json();
-            var spacesJson = []
+            let spacesJson = []
             if (!spaces || spaces.length == 0) {
-                setNewSpace({});
+                setNewSpace([]);
                 return
             }
-            for (var sp of spaces) {
+            for (let sp of spaces) {
                 spacesJson.push(
                   {
                       id: sp.space_id,
                       space_id: sp.space_id,
                       room_name: sp.room_name,
-                      status: sp.status
+                      status: sp.status,
+                      property_id:sp.property_id,
+                      occupancy_type: sp.occupancy_type
                   }
                 )
             }
-            setNewProp({});
+            setNewProp([]);
             setNewSpace(spacesJson);
         }
-        fetchSpace()
-        setSpaceSearch(false)
+        fetchSpace().then(()=>console.log('Search Spaces'))
+        setSearchSpaceTrig(false)
       }, [searchSpaceTrig])
+
+    // React.useEffect(() => {
+    //     async function fetchCreateProp() {
+    //         const data = {
+    //             "operation": "managePropUpdate",
+    //             "variables": {
+    //                 "home_name":home_nameInput,
+    //                 "city_name":city_nameInput,
+    //                 "neighborhood":neighborhood_Input,
+    //             }
+    //         }
+    //         const response = await fetch('http://localhost:6003/api/v1/managtPropCreate', {
+    //             method: 'PUT',
+    //             headers: {
+    //                 "Content-Type": "application/json"
+    //             },
+    //             body: JSON.stringify(data)
+    //         });
+    //     }
+    //     fetchCreateProp()
+    //     setPropSearch(true)
+    //     setPropCreate(false)
+    // }, [createPropTrig])
+
+    // React.useEffect(() => {
+    //     async function fetchCreateSpace() {
+    //         const data = {
+    //             "operation": "manageSpaceCreate",
+    //             "variables": {
+    //                 "property_id":
+    //                 "apartment_room":aptRoomInput,
+    //                 "room_name":roomNameInput,
+    //                 "occupancy_type":ocpyInput,
+    //                 "mo3_price":,
+    //                 "mo6_price":,
+    //                 "bedroom_count":
+    //                 "bath_count":
+    //             }
+    //         }
+    //         const response = await fetch('http://localhost:6003/api/v1/managtSpaceCreate', {
+    //             method: 'PUT',
+    //             headers: {
+    //                 "Content-Type": "application/json"
+    //             },
+    //             body: JSON.stringify(data)
+    //         });
+    //     }
+    //     fetchCreateSpace()
+    //     setSpaceSearch(true)
+    //     setSpCreate(false)
+    // }, [createSpaceTrig])
+
+    // React.useEffect(() => {
+    //     async function fetchDeleteProp() {
+    //         const data = {
+    //             "operation": "managePropDelete",
+    //             "variables": {
+    //                 "id":selectedId,
+    //             }
+    //         }
+    //         const response = await fetch('http://localhost:6003/api/v1/managtPropDelete', {
+    //             method: 'DELETE',
+    //             headers: {
+    //                 "Content-Type": "application/json"
+    //             },
+    //             body: JSON.stringify(data)
+    //         });
+    //     }
+    //     fetchDeleteProp()
+    //     setPropSearch(true)
+    //     setPropDelete(false)
+    // }, [delPropTrig])
+
+    // React.useEffect(() => {
+    //     async function fetchDeleteSpace() {
+    //         const data = {
+    //             "operation": "manageSpaceCreate",
+    //             "variables": {
+    //                 "space_id":,
+    //             }
+    //         }
+    //         const response = await fetch('http://localhost:6003/api/v1/managtSpaceDelete', {
+    //             method: 'DELETE',
+    //             headers: {
+    //                 "Content-Type": "application/json"
+    //             },
+    //             body: JSON.stringify(data)
+    //         });
+    //     }
+    //     fetchDeleteSpace()
+    //     setSpaceSearch(true)
+    //     setSppaceDel(false)
+    // }, [delSpaceTrig])
 
     return (
         <ThemeProvider theme={mdTheme}>
@@ -271,7 +366,7 @@ function PortalContent({ propertiesJson, spacesJson }) {
                 <AppBar position="absolute" open={open}>
                     <Toolbar
                         sx={{
-                            pr: '24px', // keep right padding when drawer closed
+                            pr: '24px',
                         }}
                     >
                         <IconButton
@@ -339,9 +434,11 @@ function PortalContent({ propertiesJson, spacesJson }) {
                             <Grid item xs={12} md={2} lg={2}>
                                 <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
                                     <PropSearchField
-                                        setIdSelected={setIdSelected}
-                                        setHomeSelected={setHomeSelected}
-                                        setPropSearch={setPropSearch}
+                                        // setIdSelected={setIdSelected}
+                                        // setHomeSelected={setHomeSelected}
+                                        propAttr={propAttr}
+                                        setPropAttr={setPropAttr}
+                                        setTrig={setSearchPropTrig}
                                     />
                                 </Paper>
                             </Grid>
@@ -353,8 +450,24 @@ function PortalContent({ propertiesJson, spacesJson }) {
                                             columns={propColumns}
                                             getRowId={(row) => row.id}
                                             pageSize={5}
-                                            rowsPerPageOptions={[20, 50]}
-                                            checkboxSelection
+                                            rowsPerPageOptions={[5, 20, 50]}
+                                            checkboxSelection={false}
+                                            onSelectionModelChange={
+                                                (ids) => {
+                                                    const selectedProp = newProp.filter(e => e.id==ids)[0]
+                                                    console.log(selectedProp)
+                                                    setPropAttr({
+                                                                ...propAttr,
+                                                                id:String(ids),
+                                                                home_name:String(selectedProp.home_name),
+                                                                property_id:selectedProp.property_id,
+                                                                brand: selectedProp.brand,
+                                                                city_name:selectedProp.city_name,
+                                                                neighborhood:selectedProp.neighborhood,
+                                                                 })
+                                                    console.log(propAttr)
+                                                }
+                                        }
                                         />
                                     </div>
                                 </Paper>
@@ -362,16 +475,18 @@ function PortalContent({ propertiesJson, spacesJson }) {
                             <Grid item xs={12} md={2} lg={2}>
                                 <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
                                     <PropAttrField
-                                        setIdSelected={setIdSelected}
-                                        setHomeSelected={setHomeSelected}
+                                      propAttr={propAttr}
+                                      setPropAttr={setPropAttr}
+                                      setTrig = {setSearchPropTrig}
                                     />
                                 </Paper>
                             </Grid>
                             <Grid item xs={12} md={2} lg={2}>
                                 <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
                                     <SpaceSearchField
-                                        setSpaceSelected={setSpSelected}
-                                        setSpaceSearch={setSpaceSearch}
+                                        spaceAttr={spaceAttr}
+                                        setSpaceAttr={setSpaceAttr}
+                                        setTrig={setSearchSpaceTrig}
                                     />
                                 </Paper>
                             </Grid>
@@ -381,10 +496,32 @@ function PortalContent({ propertiesJson, spacesJson }) {
                                         <DataGrid
                                             rows={newSpace != null ? newSpace : spacesJson}
                                             columns={spaceColumns}
-                                            getRowId={(row) => row.id}
+                                            getRowId={(row) => row.space_id}
                                             pageSize={5}
-                                            rowsPerPageOptions={[20, 50]}
-                                            checkboxSelection
+                                            rowsPerPageOptions={[5, 20, 50]}
+                                            checkboxSelection={false}
+                                            onSelectionModelChange={
+                                                (ids) => {
+                                                    const selectedSpace = newSpace.filter(e => e.id==ids)[0]
+                                                    console.log(selectedSpace)
+                                                    setSpaceAttr({
+                                                        ...spaceAttr,
+                                                        space_id: String(ids),
+                                                        room_name: selectedSpace.room_name,
+                                                        occupancy_type: selectedSpace.occupancy_type,
+                                                        // room_name:"",
+                                                        // mo3_price:"",
+                                                        // mo6_price:"",
+                                                        // bedroom_count:"",
+                                                        // bath_count:"",
+                                                    })
+                                                    console.log(newSpace)
+                                                }
+                                            }
+                                            // onSelectionModelChange={(sp_id)=>{
+                                            //     // setIdSelected(selectedId)
+                                            //     setSpaceAttr({...spaceAttr, space_id:String(sp_id)})
+                                            // }}
                                         />
                                     </div>
                                 </Paper>
@@ -392,8 +529,9 @@ function PortalContent({ propertiesJson, spacesJson }) {
                             <Grid item xs={12} md={2} lg={2}>
                                 <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
                                     <SpaceAttrField
-                                        setIdSelected={setIdSelected}
-                                        setHomeSelected={setHomeSelected}
+                                      spaceAttr={spaceAttr}
+                                      setSpaceAttr={setSpaceAttr}
+                                      setTrig = {setSearchSpaceTrig}
                                     />
                                 </Paper>
                             </Grid>

@@ -3,28 +3,36 @@ import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import SearchIcon from '@mui/icons-material/Search';
+import { useState } from "react";
 
 
-export default function PropSearchField({ setIdSelected, setHomeSelected,setPropSearch }) {
-    const [id, setId] = React.useState(null);
-    const [home, setHome] = React.useState('');
-
-    // const onKeyDown = (event) => {
-    //     if (event.keyCode === 13) {
-    //         setIdSelected(event.target.value)
-    //     }
-    // };
-
+export default function PropSearchField({ propAttr, setPropAttr,setTrig }) {
+    const [id,setId] = useState("")
+    const [home,setHome] = useState("")
     const handleIdChange = (event) => {
-        setId(parseInt(event.target.value));
-        setIdSelected(parseInt(event.target.value));
+        setId(event.target.value)
+        setPropAttr({
+            ...propAttr,
+            id: event.target.value
+        })
     };
     const handleHomeChange = (event) => {
-        setHome(event.target.value);
-        setHomeSelected(event.target.value);
+        setHome(event.target.value)
+        setPropAttr({
+            ...propAttr,
+            home_name: event.target.value
+        })
     };
-    const handleClick = (event) => {
-        setPropSearch(true)
+    const handleClick = () => {
+        setPropAttr({
+            id:id,
+            home_name:home,
+            property_id:"",
+            brand: "",
+            city_name:"",
+            neighborhood:"",
+        })
+        setTrig(true)
     }
 
     return (
@@ -51,6 +59,7 @@ export default function PropSearchField({ setIdSelected, setHomeSelected,setProp
                     id="input-propid"
                     label="ID"
                     size="small"
+                    // value={propAttr.id}
                     onChange={handleIdChange}
                     InputLabelProps={{
                         shrink: true,
@@ -66,6 +75,7 @@ export default function PropSearchField({ setIdSelected, setHomeSelected,setProp
                     id="input-homename"
                     label="Home Name"
                     size="small"
+                    // value={propAttr.home_name}
                     onChange={handleHomeChange}
                     InputLabelProps={{
                         shrink: true,
@@ -85,7 +95,7 @@ export default function PropSearchField({ setIdSelected, setHomeSelected,setProp
         </Box >
     );
 }
-function props(props: any) {
-    throw new Error('Function not implemented.');
-}
+// function props(props: any) {
+//     throw new Error('Function not implemented.');
+// }
 

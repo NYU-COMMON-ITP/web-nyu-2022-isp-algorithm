@@ -51,8 +51,8 @@ export async function getPropertiesforManagt(userSelection) {
         home_name?: string
     }
     const formData: FormData = {
-        id: userSelection.id != null? userSelection.id :undefined,
-        home_name: userSelection.home_name != '' ? userSelection.home_name : undefined,
+        id: (userSelection.id != null &&userSelection.id != '')? userSelection.id :undefined,
+        home_name: (userSelection.home_name != null &&userSelection.home_name != '') ? userSelection.home_name : undefined,
     }
     console.log(formData)
     return await prisma.properties.findMany({
