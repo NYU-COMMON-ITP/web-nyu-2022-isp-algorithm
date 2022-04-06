@@ -57,7 +57,7 @@ export async function getPropertiesforManagt(userSelection) {
     console.log(formData)
     return await prisma.properties.findMany({
         where: {
-            OR: [
+            AND: [
                 {id: formData.id},
                 {home_name:{
                     contains: formData.home_name,

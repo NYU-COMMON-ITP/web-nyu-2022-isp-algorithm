@@ -454,18 +454,26 @@ function PortalContent({ propertiesJson, spacesJson }) {
                                             checkboxSelection={false}
                                             onSelectionModelChange={
                                                 (ids) => {
-                                                    const selectedProp = newProp.filter(e => e.id==ids)[0]
+                                                    // let selectedProp = newProp.filter(e => e.id==ids)
+                                                    let selectedProp = newProp.filter(
+                                                      function(obj, index){
+                                                        return obj.id==ids;
+                                                    }
+                                                    )
                                                     console.log(selectedProp)
-                                                    setPropAttr({
-                                                                ...propAttr,
-                                                                id:String(ids),
-                                                                home_name:String(selectedProp.home_name),
-                                                                property_id:selectedProp.property_id,
-                                                                brand: selectedProp.brand,
-                                                                city_name:selectedProp.city_name,
-                                                                neighborhood:selectedProp.neighborhood,
-                                                                 })
-                                                    console.log(propAttr)
+                                                    if (selectedProp.length!=0){
+                                                        setPropAttr({
+                                                            ...propAttr,
+                                                            id:String(ids),
+                                                            home_name:selectedProp[0].home_name,
+                                                            property_id:selectedProp[0].property_id,
+                                                            brand: selectedProp[0].brand,
+                                                            city_name:selectedProp[0].city_name,
+                                                            neighborhood:selectedProp[0].neighborhood,
+                                                        })
+
+                                                    }
+
                                                 }
                                         }
                                         />
@@ -502,20 +510,26 @@ function PortalContent({ propertiesJson, spacesJson }) {
                                             checkboxSelection={false}
                                             onSelectionModelChange={
                                                 (ids) => {
-                                                    const selectedSpace = newSpace.filter(e => e.id==ids)[0]
+                                                    // const selectedSpace = newSpace.filter(e => e.id==ids)[0]
+                                                    let selectedSpace = newSpace.filter(
+                                                      function(obj, index){
+                                                          return obj.space_id==ids;
+                                                      }
+                                                    )
                                                     console.log(selectedSpace)
-                                                    setSpaceAttr({
-                                                        ...spaceAttr,
-                                                        space_id: String(ids),
-                                                        room_name: selectedSpace.room_name,
-                                                        occupancy_type: selectedSpace.occupancy_type,
-                                                        // room_name:"",
-                                                        // mo3_price:"",
-                                                        // mo6_price:"",
-                                                        // bedroom_count:"",
-                                                        // bath_count:"",
-                                                    })
-                                                    console.log(newSpace)
+                                                    if(selectedSpace.length!=0){
+                                                        setSpaceAttr({
+                                                            ...spaceAttr,
+                                                            space_id: String(ids),
+                                                            room_name: selectedSpace[0].room_name,
+                                                            occupancy_type: selectedSpace[0].occupancy_type,
+                                                            // room_name:"",
+                                                            // mo3_price:"",
+                                                            // mo6_price:"",
+                                                            // bedroom_count:"",
+                                                            // bath_count:"",
+                                                        })
+                                                    }
                                                 }
                                             }
                                             // onSelectionModelChange={(sp_id)=>{
