@@ -6,3 +6,4 @@ postgres/data
 .cache
 9.4.1/*
 .vscode
+.idea/
