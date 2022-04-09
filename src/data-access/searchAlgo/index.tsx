@@ -2,15 +2,25 @@ import prisma from "../prisma";
 
 export async function searchingAlgo(userSelection) {
 
-  if (userSelection.city_name != 'any') {
+  if (userSelection.variables.city_name != 'any') {
     const data = await prisma.properties.findMany({
       where: {
-        city_name: userSelection.city_name,
+        city_name: userSelection.variables.city_name,
         spaces: {
           some: {
-            status: {
-              contains: 'Vacant Ready',
-            },
+            AND:[
+              {
+                status: {
+                contains: 'Available',
+              }
+              },
+              {
+                mo12_price: {
+                  gt: 0,
+                  lt: userSelection.variables.budget*userSelection.weight.price_factor,
+                }
+              },
+            ]
           },
         },
       },

@@ -145,9 +145,14 @@ function PortalContent({ cityMenu, propertiesJson }) {
                 "variables": {
                     "brand": searchConditions.brand,
                     "city_name": searchConditions.city,
+                    "zip_code":searchConditions.zip_code,
+                    "budget": parseInt(searchConditions.budget),
                     "term": searchConditions.term,
                     "move_in": searchConditions.move_in,
-                    "with_pet": searchConditions.pet
+                    "with_pet": searchConditions.pet,
+                },
+                "weight":{
+                    "price_factor": 1.2,
                 }
             }
             console.log(data)
