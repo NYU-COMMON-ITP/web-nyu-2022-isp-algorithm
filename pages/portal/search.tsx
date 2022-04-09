@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { useState } from "react";
 import { GetStaticProps } from "next";
 import { styled, createTheme, ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -20,6 +21,7 @@ import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import { ListItems } from '../../src/components/ListItems';
 import UserSearchFields from '../../src/components/UserSearch'
+import Copyright from '../../src/components/Copyright'
 
 import { properties, getCities, getProperties } from "../../src/data-access/searches"
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
@@ -27,9 +29,9 @@ const drawerWidth: number = 240;
 
 export const getStaticProps: GetStaticProps = async () => {
     const cityLists = await getCities();
-    var cityMenu = []
+    const cityMenu = []
 
-    for (var city of cityLists) {
+    for (const city of cityLists) {
         cityMenu.push(
             {
                 value: city.city_name,
@@ -38,8 +40,8 @@ export const getStaticProps: GetStaticProps = async () => {
         )
     }
     const properties: properties[] = await getProperties();
-    var propertiesJson = []
-    for (var prop of properties) {
+    const propertiesJson = []
+    for (const prop of properties) {
         propertiesJson.push(
             {
                 id: prop.id,
@@ -50,7 +52,6 @@ export const getStaticProps: GetStaticProps = async () => {
                 neighborhood: prop.neighborhood,
                 timezone: prop.timezone,
                 unit_count: prop.unit_count,
-                rownum: prop.rownum,
             }
         )
     }
@@ -71,19 +72,6 @@ const columns: GridColDef[] = [
 
 interface AppBarProps extends MuiAppBarProps {
     open?: boolean;
-}
-
-function Copyright(props: any) {
-    return (
-        <Typography variant="body2" color="text.secondary" align="center" {...props}>
-            {'Copyright © '}
-            <Link color="inherit" href="https://mui.com/">
-                Common
-            </Link>{' '}
-            {new Date().getFullYear()}
-            {'.'}
-        </Typography>
-    );
 }
 
 const AppBar = styled(MuiAppBar, {
@@ -134,13 +122,17 @@ const mdTheme = createTheme();
 
 function PortalContent({ cityMenu, propertiesJson }) {
     const [open, setOpen] = React.useState(false);
-    const [citiesSelected, setCitySelected] = React.useState('any');
-    const [termSelected, setTermSelected] = React.useState('12Mon');
-    const [dateSelected, setDateSelected] = React.useState(new Date());
-    const [petSelected, setPetSelected] = React.useState(false);
     const [searchTrig, setSearch] = React.useState(false);
-    const [newProp, setnewProp] = React.useState(null);
-
+    const [newProp, setNewProp] = React.useState(null);
+    const [searchConditions,setSearchConditions] = useState({
+        brand:"common",
+        city: "any",
+        zip_code:"",
+        move_in: new Date(),
+        term:"12Mon",
+        pet: false,
+        budget:"",
+    })
 
     const toggleDrawer = () => {
         setOpen(!open);
@@ -151,14 +143,15 @@ function PortalContent({ cityMenu, propertiesJson }) {
             const data = {
                 "operation": "UserSearch",
                 "variables": {
-                    "brand": "common",
-                    "city_name": citiesSelected,
-                    "term": termSelected,
-                    "date_movein": dateSelected,
-                    "with_pet": petSelected
+                    "brand": searchConditions.brand,
+                    "city_name": searchConditions.city,
+                    "term": searchConditions.term,
+                    "move_in": searchConditions.move_in,
+                    "with_pet": searchConditions.pet
                 }
             }
-            const response = await fetch(`http://localhost:6003/api/v1/userSearch`, {
+            console.log(data)
+            const response = await fetch(`/api/v1/userSearch`, {
                 method: 'POST',
                 headers: {
                     "Content-Type": "application/json"
@@ -166,14 +159,14 @@ function PortalContent({ cityMenu, propertiesJson }) {
                 body: JSON.stringify(data)
             });
             console.log("result: ")
-            console.log(response)
+            // console.log(response)
             const properties: properties[] = await response.json();
-            var propertiesJson = []
+            const propertiesJson = []
             if (!properties || properties.length == 0) {
-                setnewProp({});
+                setNewProp({});
                 return
             }
-            for (var line of properties) {
+            for (const line of properties) {
                 propertiesJson.push(
                     {
                         id: line.id,
@@ -187,13 +180,14 @@ function PortalContent({ cityMenu, propertiesJson }) {
                     }
                 )
             }
-            setnewProp(propertiesJson);
+            setNewProp(propertiesJson);
         }
-        console.log("citiesSelected", citiesSelected);
+        console.log("city", searchConditions.city);
 
-        fetchMyAPI()
+        fetchMyAPI().then(()=>console.log('Search by User Inputs'))
         setSearch(false);
     }, [searchTrig])
+
     return (
         <ThemeProvider theme={mdTheme}>
             <Box sx={{ display: 'flex' }}>
@@ -271,24 +265,26 @@ function PortalContent({ cityMenu, propertiesJson }) {
                                 <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
                                     <UserSearchFields
                                         cityMenu={cityMenu}
-                                        setCitySelected={setCitySelected}
-                                        setTermSelected={setTermSelected}
-                                        setDateSelected={setDateSelected}
-                                        setPetSelected={setPetSelected}
+                                        // setCitySelected={setCitySelected}
+                                        // setTermSelected={setTermSelected}
+                                        // setDateSelected={setDateSelected}
+                                        // setPetSelected={setPetSelected}
+                                        searchConditions={searchConditions}
+                                        setSearchConditions={setSearchConditions}
                                         setSearch={setSearch}
                                     />
                                 </Paper>
                             </Grid>
                             <Grid item xs={9}>
                                 <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
-                                    <div style={{ height: 650, width: '100%', fontSize: 8 }}>
+                                    <div style={{ height: 620, width: '100%', fontSize: 8 }}>
                                         <DataGrid
                                             rows={newProp != null ? newProp : propertiesJson}
                                             columns={columns}
                                             getRowId={(row) => row.id}
                                             pageSize={10}
-                                            rowsPerPageOptions={[20, 50]}
-                                            checkboxSelection
+                                            rowsPerPageOptions={[10, 20, 50]}
+                                            // checkboxSelection
                                         />
                                     </div>
                                 </Paper>

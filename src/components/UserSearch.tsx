@@ -15,36 +15,62 @@ import FormLabel from '@mui/material/FormLabel';
 import SearchIcon from '@mui/icons-material/Search';
 
 
-export default function UserSearchField({ cityMenu, setCitySelected, setTermSelected, setDateSelected, setPetSelected,setSearch }) {
-  const [city, setCity] = React.useState('');
+export default function UserSearchField({ cityMenu, searchConditions,setSearchConditions,setSearch }) {
+  const [city, setCity] = React.useState("");
   const [date, setDate] = React.useState(new Date());
+  const [budget, setBudget] = React.useState("");
   const [pet, setPet] = React.useState(false);
-  const [term, setTerm] = React.useState();
-  // const [room, setRoom] = React.useState();
+  const [term, setTerm] = React.useState("12Mon");
 
   const handleCityChange = (event) => {
     setCity(event.target.value);
-    setCitySelected(event.target.value);
+    setSearchConditions({
+      ...searchConditions,
+      city: event.target.value
+    })
+  };
+
+  const handleZipChange = (event) => {
+    setTerm(event.target.value);
+    setSearchConditions({
+      ...searchConditions,
+      zip: event.target.value
+    })
+  };
+
+  const handleBudgetChange = (event) => {
+    setBudget(event.target.value)
+    setSearchConditions({
+      ...searchConditions,
+      budget: event.target.value
+    })
   };
 
   const handleTermChange = (event) => {
     setTerm(event.target.value);
-    setTermSelected(event.target.value)
+    setSearchConditions({
+      ...searchConditions,
+      term: event.target.value
+    })
   };
 
   const handlePetChange = (event) => {
     setPet(event.target.value)
-    setPetSelected(event.target.value)
+    setSearchConditions({
+      ...searchConditions,
+      pet: event.target.value
+    })
   };
   const handleDateChange = (date) => {
     setDate(date)
-    setDateSelected(date)
+    setSearchConditions({
+      ...searchConditions,
+      move_in: date
+    })
   }
 
-  const handleClick = (event) => {
+  const handleClick = () => {
     setSearch(true)
-    // alert('Your favorite flavor is: ' + this.state.value);
-    // event.preventDefault();
   }
 
   return (
@@ -89,6 +115,7 @@ export default function UserSearchField({ cityMenu, setCitySelected, setTermSele
           id="input-zipcode"
           label="Zip Code"
           size="small"
+          onChange={handleZipChange}
           InputLabelProps={{
             shrink: true,
           }}
@@ -104,6 +131,7 @@ export default function UserSearchField({ cityMenu, setCitySelected, setTermSele
           label="Budget"
           type="number"
           size="small"
+          onChange={handleBudgetChange}
           InputLabelProps={{
             shrink: true,
           }}
@@ -145,35 +173,35 @@ export default function UserSearchField({ cityMenu, setCitySelected, setTermSele
             <FormControlLabel value="12Mon" control={<Radio />} label="12 Months" />
           </RadioGroup>
         </FormControl>
+      </div>
 
-      </div>
-      <div style={{
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'left',
-        paddingLeft: 30,
-      }}>
-        <FormControl>
-          <FormLabel id="pet-selection">Pet</FormLabel>
-          <RadioGroup
-            aria-labelledby="pet-allow"
-            name="pet-allow"
-            value={pet}
-            onChange={handlePetChange}
-            defaultValue="false"
-          >
-            <FormControlLabel value="false" control={<Radio />} label="False" />
-            <FormControlLabel value="true" control={<Radio />} label="True" />
-          </RadioGroup>
-        </FormControl>
-      </div>
+      {/*<div style={{*/}
+      {/*  display: 'flex',*/}
+      {/*  alignItems: 'center',*/}
+      {/*  justifyContent: 'left',*/}
+      {/*  paddingLeft: 30,*/}
+      {/*}}>*/}
+      {/*  <FormControl>*/}
+      {/*    <FormLabel id="pet-selection">Pet</FormLabel>*/}
+      {/*    <RadioGroup*/}
+      {/*      aria-labelledby="pet-allow"*/}
+      {/*      name="pet-allow"*/}
+      {/*      value={pet}*/}
+      {/*      onChange={handlePetChange}*/}
+      {/*      defaultValue="false"*/}
+      {/*    >*/}
+      {/*      <FormControlLabel value="false" control={<Radio />} label="False" />*/}
+      {/*      <FormControlLabel value="true" control={<Radio />} label="True" />*/}
+      {/*    </RadioGroup>*/}
+      {/*  </FormControl>*/}
+      {/*</div>*/}
+
       <div style={{
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
       }}>
         <Button variant="outlined" onClick={handleClick} endIcon={<SearchIcon />} >
-          {/*type="submit"*/}
           Search
         </Button>
       </div>

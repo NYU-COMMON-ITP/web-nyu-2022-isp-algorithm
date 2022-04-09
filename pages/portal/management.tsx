@@ -23,6 +23,7 @@ import PropSearchField from '../../src/components/PropSearch'
 import SpaceSearchField from '../../src/components/SpaceSearch'
 import PropAttrField from '../../src/components/PropAttr'
 import SpaceAttrField from '../../src/components/SpaceAttr'
+import Copyright from '../../src/components/Copyright'
 
 import { properties, spaces } from "../../src/data-access/searches"
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
@@ -62,18 +63,6 @@ interface AppBarProps extends MuiAppBarProps {
     open?: boolean;
 }
 
-function Copyright(props: any) {
-    return (
-        <Typography variant="body2" color="text.secondary" align="center" {...props}>
-            {'Copyright © '}
-            <Link color="inherit" href="https://mui.com/">
-                Common
-            </Link>{' '}
-            {new Date().getFullYear()}
-            {'.'}
-        </Typography>
-    );
-}
 
 const AppBar = styled(MuiAppBar, {
     shouldForwardProp: (prop) => prop !== 'open',
@@ -168,7 +157,7 @@ function PortalContent({ propertiesJson, spacesJson }) {
                     "home_name": propAttr.home_name,
                 }
             }
-            const response = await fetch('http://localhost:6003/api/v1/managtPropSearch', {
+            const response = await fetch('/api/v1/managtPropSearch', {
                 method: 'POST',
                 headers: {
                     "Content-Type": "application/json"
@@ -233,7 +222,7 @@ function PortalContent({ propertiesJson, spacesJson }) {
                     "space_id": parseInt(spaceAttr.space_id),
                 }
             }
-            const response = await fetch('http://localhost:6003/api/v1/managtSpaceSearch', {
+            const response = await fetch('/api/v1/managtSpaceSearch', {
                 method: 'POST',
                 headers: {
                     "Content-Type": "application/json"

@@ -14,32 +14,32 @@ export async function getProperties() {
     return await prisma.properties.findMany();
 }
 
-export async function getPropertiesbyUserInput(userSelection) {
-    console.log(userSelection);
-    if (userSelection.city_name != 'any') {
-        const data = await prisma.properties.findMany({
-            where: {
-                city_name: userSelection.city_name,
-                spaces: {
-                    some: {
-                        status: {
-                            contains: 'Vacant Ready',
-                        },
-                    },
-
-                },
-            },
-            include: {
-                spaces: true,
-            }
-        })
-        console.log("result: ")
-        console.log(data)
-        return data
-    } else {
-        return await prisma.properties.findMany()
-    }
-}
+// export async function getPropertiesbyUserInput(userSelection) {
+//     console.log(userSelection);
+//     if (userSelection.city_name != 'any') {
+//         const data = await prisma.properties.findMany({
+//             where: {
+//                 city_name: userSelection.city_name,
+//                 spaces: {
+//                     some: {
+//                         status: {
+//                             contains: 'Vacant Ready',
+//                         },
+//                     },
+//
+//                 },
+//             },
+//             include: {
+//                 spaces: true,
+//             }
+//         })
+//         console.log("result: ")
+//         console.log(data)
+//         return data
+//     } else {
+//         return await prisma.properties.findMany()
+//     }
+// }
 
 export async function getPropertiesforManagt(userSelection) {
     if (userSelection.id == null && userSelection.home_name == ''){
