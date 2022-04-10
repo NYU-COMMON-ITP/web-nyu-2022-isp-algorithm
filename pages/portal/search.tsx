@@ -20,6 +20,7 @@ import MenuIcon from '@mui/icons-material/Menu';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import {ListItems} from '../../src/components/ListItems';
+import CardsField from '../../src/components/CardsField'
 import UserSearchFields from '../../src/components/UserSearch'
 import Copyright from '../../src/components/Copyright'
 import AppBar from '../../src/components/AppBar'
@@ -30,6 +31,7 @@ import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import usePagination from "../../src/components/Paginations";
 import PropCard from "../../src/components/PropCard";
 import Pagination from '@mui/material/Pagination';
+import CardField from "../../src/components/CardsField";
 
 // const drawerWidth: number = 240;
 
@@ -130,8 +132,6 @@ function PortalContent({ cityMenu, propertiesJson }) {
     const [open, setOpen] = React.useState(false);
     const [searchTrig, setSearch] = React.useState(false);
     const [newProp, setNewProp] = React.useState([]);
-    const [page, setPage] = useState(1);
-    const [cardList,setCardList]=React.useState([]);
     const [searchConditions,setSearchConditions] = useState({
         brand:"common",
         city: "any",
@@ -144,19 +144,9 @@ function PortalContent({ cityMenu, propertiesJson }) {
     const toggleDrawer = () => {
       setOpen(!open);
     };
-    const PER_PAGE = 6;
-    const [count,setCount]=React.useState(Math.ceil(propertiesJson.length / PER_PAGE));
-    const pageDate = usePagination(propertiesJson, PER_PAGE);
 
-    const handlePageChange = (e, p) => {
-        setPage(p);
-        pageDate.jump(p);
-    };
 
-    const cardItems = [];
-    for (const prop of pageDate.currentData()) {
-        cardItems.push(<Grid item xs={6} sx={{ mx: "auto", }}><PropCard data={prop}/></Grid>);
-    }
+
 
     React.useEffect(() => {
         async function fetchMyAPI() {
@@ -311,27 +301,28 @@ function PortalContent({ cityMenu, propertiesJson }) {
                                   {/*    />*/}
                                   {/*</div>*/}
                               {/*</Paper>*/}
-                              <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
-                                  <Grid
-                                    container
-                                    spacing={3}
-                                    alignItems="center"
-                                    justifyContent="center">
-                                      {cardItems}
-                                  </Grid>
+                              {/*<Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>*/}
+                              {/*    <Grid*/}
+                              {/*      container*/}
+                              {/*      spacing={3}*/}
+                              {/*      alignItems="center"*/}
+                              {/*      justifyContent="center">*/}
+                              {/*        {cardItems}*/}
+                              {/*    </Grid>*/}
 
-                                  <Grid item xs={12} sx={{ m: 2 }}>
-                                      <Pagination
-                                        size="small"
-                                        count={count}
-                                        page={page}
-                                        variant="outlined"
-                                        shape="rounded"
-                                        onChange={handlePageChange}
-                                      />
-                                  </Grid>
+                              {/*    <Grid item xs={12} sx={{ m: 2 }}>*/}
+                              {/*        <Pagination*/}
+                              {/*          size="small"*/}
+                              {/*          count={count}*/}
+                              {/*          page={page}*/}
+                              {/*          variant="outlined"*/}
+                              {/*          shape="rounded"*/}
+                              {/*          onChange={handlePageChange}*/}
+                              {/*        />*/}
+                              {/*    </Grid>*/}
 
-                              </Paper>
+                              {/*</Paper>*/}
+                            <CardsField data={newProp}/>
                           </Grid>
                       </Grid>
                       <Copyright sx={{ pt: 4 }} />
