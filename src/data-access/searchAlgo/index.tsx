@@ -29,7 +29,7 @@ export async function searchingAlgo(userSelection) {
       }
     })
     console.log("result: ")
-    console.log(data)
+    // console.log(data)
     return data
   } else {
     return await prisma.properties.findMany()

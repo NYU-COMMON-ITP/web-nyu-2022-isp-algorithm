@@ -24,6 +24,8 @@ import SpaceSearchField from '../../src/components/SpaceSearch'
 import PropAttrField from '../../src/components/PropAttr'
 import SpaceAttrField from '../../src/components/SpaceAttr'
 import Copyright from '../../src/components/Copyright'
+import AppBar from '../../src/components/AppBar'
+import Drawer from '../../src/components/Drawer'
 
 import { properties, spaces } from "../../src/data-access/searches"
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
@@ -31,8 +33,8 @@ const drawerWidth: number = 240;
 
 // This page will be statically rendered at build time
 export const getStaticProps: GetStaticProps = async () => {
-    let spacesJson = []
-    let propertiesJson = []
+    const spacesJson = []
+    const propertiesJson = []
     return {
         props: { propertiesJson, spacesJson }
     }
@@ -59,67 +61,12 @@ const spaceColumns: GridColDef[] = [
     // { field: 'mo12_price', headerName: '12MONTH_PRICE', width: 200 },
 ];
 
-interface AppBarProps extends MuiAppBarProps {
-    open?: boolean;
-}
-
-
-const AppBar = styled(MuiAppBar, {
-    shouldForwardProp: (prop) => prop !== 'open',
-})<AppBarProps>(({ theme, open }) => ({
-    zIndex: theme.zIndex.drawer + 1,
-    transition: theme.transitions.create(['width', 'margin'], {
-        easing: theme.transitions.easing.sharp,
-        duration: theme.transitions.duration.leavingScreen,
-    }),
-    ...(open && {
-        marginLeft: drawerWidth,
-        width: `calc(100% - ${drawerWidth}px)`,
-        transition: theme.transitions.create(['width', 'margin'], {
-            easing: theme.transitions.easing.sharp,
-            duration: theme.transitions.duration.enteringScreen,
-        }),
-    }),
-}));
-
-const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' })(
-    ({ theme, open }) => ({
-        '& .MuiDrawer-paper': {
-            position: 'relative',
-            whiteSpace: 'nowrap',
-            width: drawerWidth,
-            transition: theme.transitions.create('width', {
-                easing: theme.transitions.easing.sharp,
-                duration: theme.transitions.duration.enteringScreen,
-            }),
-            boxSizing: 'border-box',
-            ...(!open && {
-                overflowX: 'hidden',
-                transition: theme.transitions.create('width', {
-                    easing: theme.transitions.easing.sharp,
-                    duration: theme.transitions.duration.leavingScreen,
-                }),
-                width: theme.spacing(7),
-                [theme.breakpoints.up('sm')]: {
-                    width: theme.spacing(9),
-                },
-            }),
-        },
-    }),
-);
-
 const mdTheme = createTheme();
 
 function PortalContent({ propertiesJson, spacesJson }) {
     const [open, setOpen] = React.useState(false);
     const [searchPropTrig, setSearchPropTrig] = React.useState(false);
     const [searchSpaceTrig, setSearchSpaceTrig] = React.useState(false);
-    // const [actionTrig, setTrig] = React.useState(false);
-    // const [actionTrig, setTrig] = React.useState(false);
-    // const [actionTrig, setTrig] = React.useState(false);
-    // const [actionTrig, setTrig] = React.useState(false);
-    // const [actionTrig, setTrig] = React.useState(false);
-    // const [actionTrig, setTrig] = React.useState(false);
     const [newProp, setNewProp] = React.useState([]);
     const [newSpace, setNewSpace] = React.useState([]);
 
@@ -166,13 +113,13 @@ function PortalContent({ propertiesJson, spacesJson }) {
             });
             const properties: properties[] = await response.json();
 
-            let propertiesJson = []
-            let spacesJson = []
+            const propertiesJson = []
+            const spacesJson = []
             if (!properties || properties.length == 0) {
                 setNewProp([]);
                 return
             }
-            for (let line of properties) {
+            for (const line of properties) {
                 propertiesJson.push(
                     {
                         id: line.id,
@@ -193,7 +140,7 @@ function PortalContent({ propertiesJson, spacesJson }) {
                     setNewSpace([]);
                     return
                 }
-                for (let sp of spaces) {
+                for (const sp of spaces) {
                     spacesJson.push(
                       {
                           id: sp.space_id,
@@ -230,12 +177,12 @@ function PortalContent({ propertiesJson, spacesJson }) {
                 body: JSON.stringify(data)
             });
             const spaces: spaces[] = await response.json();
-            let spacesJson = []
+            const spacesJson = []
             if (!spaces || spaces.length == 0) {
                 setNewSpace([]);
                 return
             }
-            for (let sp of spaces) {
+            for (const sp of spaces) {
                 spacesJson.push(
                   {
                       id: sp.space_id,
@@ -444,7 +391,7 @@ function PortalContent({ propertiesJson, spacesJson }) {
                                             onSelectionModelChange={
                                                 (ids) => {
                                                     // let selectedProp = newProp.filter(e => e.id==ids)
-                                                    let selectedProp = newProp.filter(
+                                                    const selectedProp = newProp.filter(
                                                       function(obj, index){
                                                         return obj.id==ids;
                                                     }
@@ -500,7 +447,7 @@ function PortalContent({ propertiesJson, spacesJson }) {
                                             onSelectionModelChange={
                                                 (ids) => {
                                                     // const selectedSpace = newSpace.filter(e => e.id==ids)[0]
-                                                    let selectedSpace = newSpace.filter(
+                                                    const selectedSpace = newSpace.filter(
                                                       function(obj, index){
                                                           return obj.space_id==ids;
                                                       }
@@ -521,10 +468,6 @@ function PortalContent({ propertiesJson, spacesJson }) {
                                                     }
                                                 }
                                             }
-                                            // onSelectionModelChange={(sp_id)=>{
-                                            //     // setIdSelected(selectedId)
-                                            //     setSpaceAttr({...spaceAttr, space_id:String(sp_id)})
-                                            // }}
                                         />
                                     </div>
                                 </Paper>

@@ -6,18 +6,18 @@ import DashboardIcon from '@mui/icons-material/Dashboard';
 import SearchIcon from '@mui/icons-material/Search';
 
 export const ListItems = (
-    <React.Fragment>
-        <ListItemButton>
-            <ListItemIcon>
-                <SearchIcon />
-            </ListItemIcon>
-            <ListItemText primary="Search" />
-        </ListItemButton>
-        <ListItemButton>
-            <ListItemIcon>
-                <DashboardIcon />
-            </ListItemIcon>
-            <ListItemText primary="Management Portal" />
-        </ListItemButton>
-    </React.Fragment>
+  <React.Fragment>
+    <ListItemButton>
+      <ListItemIcon>
+        <SearchIcon />
+      </ListItemIcon>
+      <ListItemText primary="Search" />
+    </ListItemButton>
+    <ListItemButton>
+      <ListItemIcon>
+        <DashboardIcon />
+      </ListItemIcon>
+      <ListItemText primary="Management Portal" />
+    </ListItemButton>
+  </React.Fragment>
 );
