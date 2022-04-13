@@ -31,8 +31,6 @@ CREATE TABLE spaces (
     min_price int4 NOT NULL,
     max_price int4 NOT NULL,
     PRIMARY KEY (space_id)
-    FOREIGN KEY ("property_id") REFERENCES "properties"(property_id)
-
 );
 
 COPY properties(id, home_name, property_id, brand, city_name, neighborhood, timezone, unit_count, rownum)

@@ -1,36 +1,21 @@
-FROM node:16-alpine3.14
-
+FROM node:16-slim
 # These are included because they were used to build NextJS 9 on Node 12
 # bash may be the only one that's actually necessary but I haven't tried
 # In addition, it's possible to use zsh or any other shell
-RUN apk --no-cache add shadow \
-    gcc \ 
-    musl-dev \
-    autoconf \
-    automake \
-    make \
-    libtool \ 
-    nasm \
-    tiff \
-    jpeg \
-    zlib \
-    zlib-dev \
-    file \
-    pkgconf \
-    bash \
-    git \
-    openssh \
-    tini \
-    # Python failed due to a strange repository issue that doesn't happen for node:12.16.1-alpine
-    # Instead of spending time debugging I just commented out and it doesn't seem necessary
-    # for any dependencies. Likely these dependencies can be paired down as they come from
-    # an old dockerfile to build NextJS 9 on Node 12. No need to do this unless we run into 
-    # an issue with python however
-    # python \ 
-    g++
+RUN apt-get update
+RUN apt-get install -y sudo openssl openssh-server libtiff-dev libjpeg-dev g++ gcc musl-dev libvshadow-utils autoconf automake zlib1g zlib1g-dev make libtool nasm file pkgconf bash git tini
+#openssh zlib zlib-dev tiff shadow jpeg
+# Python failed due to a strange repository issue that doesn't happen for node:12.16.1-alpine
+# Instead of spending time debugging I just commented out and it doesn't seem necessary
+# for any dependencies. Likely these dependencies can be paired down as they come from
+# an old dockerfile to build NextJS 9 on Node 12. No need to do this unless we run into 
+# an issue with python however
+# python \ 
 
 # This has to match docker-compose.yml
 WORKDIR /usr/src/web
 # Fixes permission issue with installing cypress
 # probably should actually fix the permissions in linux
+# EXPOSE 5555
+# EXPOSE 3000
 ENV CYPRESS_CACHE_FOLDER=/usr/src/web
