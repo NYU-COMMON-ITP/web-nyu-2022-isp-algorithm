@@ -25,6 +25,7 @@ import UpdateProperty from "../../src/components/UpdateProperty";
 import UpdateSpace from "../../src/components/UpdateSpace";
 import DeleteSpace from "../../src/components/DeleteSpace";
 import DeleteProperty from "../../src/components/DeleteProperty";
+import { useRouter } from "next/router";
 
 import {
   properties,
@@ -32,6 +33,7 @@ import {
   getProperties,
 } from "../../src/data-access/searches";
 import { createProperty, createSpace } from "../../src/data-access/OpsCreate";
+import { borderLeft } from "@mui/system";
 // import { DataGrid, GridColDef } from '@mui/x-data-grid';
 const drawerWidth: number = 240;
 
@@ -104,6 +106,12 @@ const Drawer = styled(MuiDrawer, {
 const mdTheme = createTheme();
 
 function PortalContent({ propertiesJson }) {
+  const router = useRouter();
+  const query = router.query;
+  const isUpdate = query.isUpdate;
+  const isCreate = query.isCreate;
+  const isDelete = query.isDelete;
+
   const [open, setOpen] = React.useState(false);
   const [home_name, sethome_name] = React.useState(null);
   const [property_id, setproperty_id] = React.useState(null);
@@ -354,47 +362,6 @@ function PortalContent({ propertiesJson }) {
       } else console.log("Space ID missing");
     }
 
-    // async function updateSpace() {
-    // Todo: Populate date with only non-null fields
-    //       Check if ID is given, otherwise throw error
-    //     const data = {
-    //         "operation": "UserModification",
-    //         "variables": {
-    //             "property_id": property_id,
-    //         }
-    //     }
-    //     const response = await fetch(`http://localhost:6003/api/v1/userSpaceUpdate`, {
-    //         method: 'PATCH',
-    //         headers: {
-    //             "Content-Type": "application/json"
-    //         },
-    //         body: JSON.stringify(data)
-    //     });
-    //     console.log("result: ")
-    //     console.log(response)
-    // }
-
-    // async function updateProp() {
-    // Todo: Populate date with only non-null fields
-    //       Check if ID is given, otherwise throw error
-
-    //     const data = {
-    //         "operation": "UserModification",
-    //         "variables": {
-    //             "property_id": property_id,
-    //         }
-    //     }
-    //     const response = await fetch(`http://localhost:6003/api/v1/userPropUpdate`, {
-    //         method: 'PATCH',
-    //         headers: {
-    //             "Content-Type": "application/json"
-    //         },
-    //         body: JSON.stringify(data)
-    //     });
-    //     console.log("result: ")
-    //     console.log(response)
-    // }
-
     if (createPropTrig) {
       console.log("Property Add");
       createProperty();
@@ -427,6 +394,40 @@ function PortalContent({ propertiesJson }) {
       updateProp();
       setUpdatePropTrig(false);
     }
+
+    if (isUpdate == "true") {
+      var cp = document.getElementById("createProperty");
+      cp.style.display = "none";
+      var cs = document.getElementById("createSpace");
+      cs.style.display = "none";
+      var dp = document.getElementById("deleteProperty");
+      dp.style.display = "none";
+      var ds = document.getElementById("deleteSpace");
+      ds.style.display = "none";
+    }
+    if (isCreate == "true") {
+      var up = document.getElementById("updateProperty");
+      up.style.display = "none";
+      var us = document.getElementById("updateSpace");
+      us.style.display = "none";
+      var dp = document.getElementById("deleteProperty");
+      dp.style.display = "none";
+      var ds = document.getElementById("deleteSpace");
+      ds.style.display = "none";
+    }
+    if (isDelete == "true") {
+      console.log("update3", isUpdate);
+      console.log("create3", isCreate);
+      console.log("delete3", isDelete);
+      var cp = document.getElementById("createProperty");
+      cp.style.display = "none";
+      var cs = document.getElementById("createSpace");
+      cs.style.display = "none";
+      var up = document.getElementById("updateProperty");
+      up.style.display = "none";
+      var us = document.getElementById("updateSpace");
+      us.style.display = "none";
+    }
   }, [
     createPropTrig,
     createSpaceTrig,
@@ -434,6 +435,9 @@ function PortalContent({ propertiesJson }) {
     deletePropTrig,
     updateSpaceTrig,
     updatePropTrig,
+    isUpdate,
+    isCreate,
+    isDelete,
   ]);
   return (
     <ThemeProvider theme={mdTheme}>
@@ -505,114 +509,137 @@ function PortalContent({ propertiesJson }) {
 
           <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
             <Grid container spacing={3}>
-              <Grid item xs={3}>
-                <Paper sx={{ p: 2, display: "flex", flexDirection: "column" }}>
-                  {" "}
-                  Create property
-                  <AddProperty
-                    setproperty_id={setproperty_id}
-                    setbrand={setbrand}
-                    sethome_name={sethome_name}
-                    setcity_name={setcity_name}
-                    setneighborhood={setneighborhood}
-                    settimezone={settimezone}
-                    setunit_count={setunit_count}
-                    setrownum={setrownum}
-                    setcreatePropTrig={setcreatePropTrig}
-                  />
-                </Paper>
-              </Grid>
-              <Grid item xs={4}>
-                <Paper sx={{ p: 2, display: "flex", flexDirection: "column" }}>
-                  {" "}
-                  Create Space
-                  <AddSpace
-                    setproperty_id={setproperty_id}
-                    setapartment_name={setapartment_name}
-                    setroom_name={setroom_name}
-                    setoccupancy_type={setoccupancy_type}
-                    setsecurity_dep={setsecurity_dep}
-                    setdate_available={setdate_available}
-                    setstatus={setstatus}
-                    setcreated_at={setcreated_at}
-                    set_updated_at={set_updated_at}
-                    set_mo3_price={set_mo3_price}
-                    set_mo6_price={set_mo6_price}
-                    set_mo9_price={set_mo9_price}
-                    set_mo12_price={set_mo12_price}
-                    setbed_roomcount={setbed_roomcount}
-                    setbath_count={setbath_count}
-                    set_min_price={set_min_price}
-                    set_max_price={set_max_price}
-                    setcreateSpaceTrig={setcreateSpaceTrig}
-                  />
-                </Paper>
-              </Grid>
-              <Grid item xs={4}>
-                <Paper sx={{ p: 3, display: "flex", flexDirection: "column" }}>
-                  {" "}
-                  Update Property
-                  <UpdateProperty
-                    setproperty_id={setproperty_id}
-                    setbrand={setbrand}
-                    sethome_name={sethome_name}
-                    setcity_name={setcity_name}
-                    setneighborhood={setneighborhood}
-                    settimezone={settimezone}
-                    setunit_count={setunit_count}
-                    setrownum={setrownum}
-                    setUpdatePropTrig={setUpdatePropTrig}
-                  />
-                </Paper>
-              </Grid>
-              <Grid item xs={4}>
-                <Paper sx={{ p: 3, display: "flex", flexDirection: "column" }}>
-                  {" "}
-                  Update Space
-                  <UpdateSpace
-                    setspace_id={setspace_id}
-                    setproperty_id={setproperty_id}
-                    setapartment_name={setapartment_name}
-                    setcityname={setcity_name}
-                    setroom_name={setroom_name}
-                    setoccupancy_type={setoccupancy_type}
-                    setsecurity_dep={setsecurity_dep}
-                    setdate_available={setdate_available}
-                    setstatus={setstatus}
-                    setcreated_at={setcreated_at}
-                    set_updated_at={set_updated_at}
-                    set_mo3_price={set_mo3_price}
-                    set_mo6_price={set_mo6_price}
-                    set_mo9_price={set_mo9_price}
-                    set_mo12_price={set_mo12_price}
-                    setbed_roomcount={setbed_roomcount}
-                    setbath_count={setbath_count}
-                    set_min_price={set_min_price}
-                    set_max_price={set_max_price}
-                    setUpdateSpaceTrig={setUpdateSpaceTrig}
-                  />
-                </Paper>
-              </Grid>
-              <Grid item xs={4}>
-                <Paper sx={{ p: 3, display: "flex", flexDirection: "column" }}>
-                  {" "}
-                  Delete Space
-                  <DeleteSpace
-                    setspace_id={setspace_id}
-                    setDeleteSpaceTrig={setDeleteSpaceTrig}
-                  />
-                </Paper>
-              </Grid>
-              <Grid item xs={4}>
-                <Paper sx={{ p: 3, display: "flex", flexDirection: "column" }}>
-                  {" "}
-                  Delete Property
-                  <DeleteProperty
-                    setproperty_id={setproperty_id}
-                    setDeletePropTrig={setDeletePropTrig}
-                  />
-                </Paper>
-              </Grid>
+              <div id="createProperty" style={{ width: "inherit" }}>
+                <Grid item xs={3}>
+                  <Paper
+                    sx={{ p: 2, display: "flex", flexDirection: "column" }}
+                  >
+                    {" "}
+                    Create property
+                    <AddProperty
+                      setproperty_id={setproperty_id}
+                      setbrand={setbrand}
+                      sethome_name={sethome_name}
+                      setcity_name={setcity_name}
+                      setneighborhood={setneighborhood}
+                      settimezone={settimezone}
+                      setunit_count={setunit_count}
+                      setrownum={setrownum}
+                      setcreatePropTrig={setcreatePropTrig}
+                    />
+                  </Paper>
+                </Grid>
+              </div>
+              <div id="createSpace" style={{ width: "inherit" }}>
+                <Grid item xs={4}>
+                  <Paper
+                    sx={{ p: 2, display: "flex", flexDirection: "column" }}
+                  >
+                    {" "}
+                    Create Space
+                    <AddSpace
+                      setproperty_id={setproperty_id}
+                      setapartment_name={setapartment_name}
+                      setroom_name={setroom_name}
+                      setoccupancy_type={setoccupancy_type}
+                      setsecurity_dep={setsecurity_dep}
+                      setdate_available={setdate_available}
+                      setstatus={setstatus}
+                      setcreated_at={setcreated_at}
+                      set_updated_at={set_updated_at}
+                      set_mo3_price={set_mo3_price}
+                      set_mo6_price={set_mo6_price}
+                      set_mo9_price={set_mo9_price}
+                      set_mo12_price={set_mo12_price}
+                      setbed_roomcount={setbed_roomcount}
+                      setbath_count={setbath_count}
+                      set_min_price={set_min_price}
+                      set_max_price={set_max_price}
+                      setcreateSpaceTrig={setcreateSpaceTrig}
+                    />
+                  </Paper>
+                </Grid>
+              </div>
+              <div id="updateProperty" style={{ width: "inherit" }}>
+                <Grid item xs={4}>
+                  <Paper
+                    sx={{ p: 3, display: "flex", flexDirection: "column" }}
+                  >
+                    {" "}
+                    Update Property
+                    <UpdateProperty
+                      setproperty_id={setproperty_id}
+                      setbrand={setbrand}
+                      sethome_name={sethome_name}
+                      setcity_name={setcity_name}
+                      setneighborhood={setneighborhood}
+                      settimezone={settimezone}
+                      setunit_count={setunit_count}
+                      setrownum={setrownum}
+                      setUpdatePropTrig={setUpdatePropTrig}
+                    />
+                  </Paper>
+                </Grid>
+              </div>
+              <div id="updateSpace" style={{ width: "inherit" }}>
+                <Grid item xs={4}>
+                  <Paper
+                    sx={{ p: 3, display: "flex", flexDirection: "column" }}
+                  >
+                    {" "}
+                    Update Space
+                    <UpdateSpace
+                      setspace_id={setspace_id}
+                      setproperty_id={setproperty_id}
+                      setapartment_name={setapartment_name}
+                      setroom_name={setroom_name}
+                      setoccupancy_type={setoccupancy_type}
+                      setsecurity_dep={setsecurity_dep}
+                      setdate_available={setdate_available}
+                      setstatus={setstatus}
+                      setcreated_at={setcreated_at}
+                      set_updated_at={set_updated_at}
+                      set_mo3_price={set_mo3_price}
+                      set_mo6_price={set_mo6_price}
+                      set_mo9_price={set_mo9_price}
+                      set_mo12_price={set_mo12_price}
+                      setbed_roomcount={setbed_roomcount}
+                      setbath_count={setbath_count}
+                      set_min_price={set_min_price}
+                      set_max_price={set_max_price}
+                      setUpdateSpaceTrig={setUpdateSpaceTrig}
+                    />
+                  </Paper>
+                </Grid>
+              </div>
+              <div id="deleteSpace" style={{ width: "inherit" }}>
+                <Grid item xs={4}>
+                  <Paper
+                    sx={{ p: 3, display: "flex", flexDirection: "column" }}
+                  >
+                    {" "}
+                    Delete Space
+                    <DeleteSpace
+                      setspace_id={setspace_id}
+                      setDeleteSpaceTrig={setDeleteSpaceTrig}
+                    />
+                  </Paper>
+                </Grid>
+              </div>
+              <div id="deleteProperty" style={{ width: "inherit" }}>
+                <Grid item xs={4}>
+                  <Paper
+                    sx={{ p: 3, display: "flex", flexDirection: "column" }}
+                  >
+                    {" "}
+                    Delete Property
+                    <DeleteProperty
+                      setproperty_id={setproperty_id}
+                      setDeletePropTrig={setDeletePropTrig}
+                    />
+                  </Paper>
+                </Grid>
+              </div>
             </Grid>
             <Copyright sx={{ pt: 4 }} />
           </Container>

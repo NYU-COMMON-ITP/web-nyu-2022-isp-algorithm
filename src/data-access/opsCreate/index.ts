@@ -12,7 +12,6 @@ export type properties = _properties;
 export type spaces = _spaces;
 
 export async function createProperty(userData) {
-    console.log("Property: DB:", userData)
     return prisma.properties.create({
         data:{
             home_name : userData.home_name,
@@ -28,7 +27,6 @@ export async function createProperty(userData) {
 }
 
 export async function createSpace(userData) {
-    console.log("Space: DB:", userData)
     return prisma.spaces.create({
  data:{   
         apartment_name   : userData.apartment_name,

@@ -8,7 +8,6 @@ export default async function handler(req, res) {
         let  resultP = await Promise.all([deleteProperty(userSelection.variables)]);
         res.send(JSON.stringify(resultS+resultP));
     } catch (err) {
-        console.log(err)
         res.status(500).json({ error: 'failed to Delete data' })
     }
 }

@@ -12,7 +12,6 @@ export type properties = _properties;
 export type spaces = _spaces;
 
 export async function deleteProperty(userData) {
-    console.log("Property: DB:", userData)
     return prisma.properties.deleteMany({
         where: {
             property_id: {
@@ -23,7 +22,6 @@ export async function deleteProperty(userData) {
 }
 
 export async function deleteSpaceByPropId(userData) {
-    console.log("Property: DB:", userData)
     return prisma.spaces.deleteMany({
         where: {
             property_id: {
@@ -34,7 +32,6 @@ export async function deleteSpaceByPropId(userData) {
 }
 
 export async function deleteSpace(userData) {
-    console.log("Space: DB:", userData)
     return prisma.spaces.delete({
         where: {
             space_id: userData.space_id,
