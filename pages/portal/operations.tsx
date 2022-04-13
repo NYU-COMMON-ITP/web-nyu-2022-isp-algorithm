@@ -152,7 +152,6 @@ function PortalContent({ propertiesJson }) {
 
   React.useEffect(() => {
     async function createProperty() {
-      console.log("hi");
       const PropertyData = {
         operation: "UserModification",
         variables: {
@@ -340,7 +339,6 @@ function PortalContent({ propertiesJson }) {
             key == "max_price") &&
           isNaN(tempVar[key])
         ) {
-          console.log("???????>>", key);
           delete tempVar[key];
         }
       });
@@ -416,9 +414,6 @@ function PortalContent({ propertiesJson }) {
       ds.style.display = "none";
     }
     if (isDelete == "true") {
-      console.log("update3", isUpdate);
-      console.log("create3", isCreate);
-      console.log("delete3", isDelete);
       var cp = document.getElementById("createProperty");
       cp.style.display = "none";
       var cs = document.getElementById("createSpace");
