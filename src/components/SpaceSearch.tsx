@@ -5,21 +5,15 @@ import TextField from '@mui/material/TextField';
 import SearchIcon from '@mui/icons-material/Search';
 
 
-export default function SpaceSearchField({ setIdSelected, setHomeSelected }) {
-    const [id, setId] = React.useState(null);
-    const [home, setHome] = React.useState("");
-    // const [room, setRoom] = React.useState();
-
+export default function SpaceSearchField({ setSpaceSelected, setSpaceSearch }) {
+    const [space_id, setId] = React.useState(null);
     const handleIdChange = (event) => {
-        setId(event.target.value);
-    };
-    const handleHomeChange = (event) => {
-        setHome(event.target.value);
+        setId(parseInt(event.target.value));
+        setSpaceSelected(parseInt(event.target.value))
     };
 
     const handleClick = (event) => {
-        setIdSelected(id);
-        setHomeSelected(home);
+        setSpaceSearch(true)
     }
 
     return (
@@ -57,7 +51,7 @@ export default function SpaceSearchField({ setIdSelected, setHomeSelected }) {
                 alignItems: 'center',
                 justifyContent: 'center',
             }}>
-                <Button variant="outlined" type="submit" onClick={handleClick} endIcon={<SearchIcon />} >
+                <Button variant="outlined" onClick={handleClick} endIcon={<SearchIcon />} >
                     Search
                 </Button>
             </div>

@@ -41,55 +41,57 @@ export async function getPropertiesbyUserInput(userSelection) {
     }
 }
 
-export async function getPropertiesbyId(userSelection) {
-    console.log(userSelection);
-    if (userSelection.id != null || userSelection.id != '') {
-        const data = await prisma.properties.findMany({
-            where: {
-                id: parseInt(userSelection.id),
-            },
-            include: {
-                spaces: true,
-            },
-        })
-        return data
-    } else {
-        return await prisma.properties.findMany()
+export async function getPropertiesforManagt(userSelection) {
+    if (userSelection.id == null && userSelection.home_name == ''){
+        return await prisma.properties.findMany({include: {spaces: true}})
     }
+    console.log('backend');
+    interface FormData {
+        id: number
+        home_name?: string
+    }
+    const formData: FormData = {
+        id: userSelection.id != null? userSelection.id :undefined,
+        home_name: userSelection.home_name != '' ? userSelection.home_name : undefined,
+    }
+    console.log(formData)
+    return await prisma.properties.findMany({
+        where: {
+            OR: [
+                {id: formData.id},
+                {home_name:{
+                    contains: formData.home_name,
+                    }}
+            ]
+            },
+        include: {
+            spaces: true,
+        },
+    })
 }
 
-export async function getPropertiesbyName(userSelection) {
+export async function getSpacesforManagt(userSelection) {
     console.log(userSelection);
-    if (userSelection.city_name != 'any') {
-        const data = await prisma.properties.findUnique({
-            where: {
-                id: userSelection.home_name,
-            },
-            include: {
-                spaces: true,
-            }
-        })
-        console.log("result: ")
-        console.log(data)
-        return data
-    } else {
-        return await prisma.properties.findMany()
-    }
-}
-
-export async function getSpacesbyId(userSelection) {
-    console.log(userSelection);
-    if (userSelection.city_name != 'any') {
-        const data = await prisma.spaces.findUnique({
-            where: {
+    console.log('backend');
+    if (userSelection.space_id == null ){
+        return await prisma.spaces.findMany()
+    }else{
+        return await prisma.spaces.findMany({
+            where:
+            //   {
+            //     spaces: {
+            //            every:{
+            //                space_id: userSelection.space_id,
+            //            }
+            //     },
+            // },
+            // include: {
+            //     spaces: true,
+            // }
+              {
                 space_id: userSelection.space_id,
             },
         })
-        console.log("result: ")
-        console.log(data)
-        return data
-    } else {
-        return await prisma.spaces.findMany()
     }
 }
 

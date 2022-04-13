@@ -149,39 +149,40 @@ const mdTheme = createTheme();
 
 function PortalContent({ propertiesJson, spacesJson }) {
     const [open, setOpen] = React.useState(false);
-    const [idSelected, setIdSelected] = React.useState(null);
-    const [homeSelected, setHomeSelected] = React.useState('12Mon');
-    const [newProp, setnewProp] = React.useState(null);
-    const [newSpace, setnewSpace] = React.useState(null);
+    const [propSelected, setIdSelected] = React.useState(null);
+    const [spSelected, setSpSelected] = React.useState(null);
+    const [homeSelected, setHomeSelected] = React.useState('');
+    const [searchPropTrig, setPropSearch] = React.useState(false);
+    const [searchSpaceTrig, setSpaceSearch] = React.useState(false);
+    const [newProp, setNewProp] = React.useState(null);
+    const [newSpace, setNewSpace] = React.useState(null);
 
     const toggleDrawer = () => {
         setOpen(!open);
     };
 
     React.useEffect(() => {
-        async function fetchMyAPI() {
+        async function fetchProp() {
             const data = {
-                "operation": "manageSearch",
+                "operation": "managePropSearch",
                 "variables": {
-                    "id": idSelected,
+                    "id": propSelected,
+                    "home_name":homeSelected,
                 }
             }
-            const response = await fetch('http://localhost:6003/api/v1/managPropIdSearch', {
+            const response = await fetch('http://localhost:6003/api/v1/managtPropSearch', {
                 method: 'POST',
                 headers: {
                     "Content-Type": "application/json"
                 },
                 body: JSON.stringify(data)
             });
-            // console.log("result")
-            // console.log()
             const properties: properties[] = await response.json();
-            const spaces: spaces[] = await properties[0]["spaces"]
+
             var propertiesJson = []
-            // console.log("result")
             var spacesJson = []
             if (!properties || properties.length == 0) {
-                setnewProp({});
+                setNewProp({});
                 return
             }
             for (var line of properties) {
@@ -197,27 +198,70 @@ function PortalContent({ propertiesJson, spacesJson }) {
                     }
                 )
             }
-            setnewProp(propertiesJson);
 
+            setNewProp(propertiesJson);
+            if (properties.length==1) {
+                const spaces: spaces[] = await properties[0]["spaces"]
+                if (!spaces || spaces.length == 0) {
+                    setNewSpace({});
+                    return
+                }
+                for (var sp of spaces) {
+                    spacesJson.push(
+                      {
+                          id: sp.space_id,
+                          space_id: sp.space_id,
+                          room_name: sp.room_name,
+                          status: sp.status
+                      }
+                    )
+                }
+                setNewSpace(spacesJson);
+            }else{
+                setNewSpace(null)
+            }
+        }
+        fetchProp()
+        setPropSearch(false)
+    }, [searchPropTrig])
+
+    React.useEffect(() => {
+        async function fetchSpace() {
+            const data = {
+                "operation": "manageSpaceSearch",
+                "variables": {
+                    "space_id": spSelected,
+                }
+            }
+            const response = await fetch('http://localhost:6003/api/v1/managtSpaceSearch', {
+                method: 'POST',
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(data)
+            });
+            const spaces: spaces[] = await response.json();
+            var spacesJson = []
             if (!spaces || spaces.length == 0) {
-                setnewSpace({});
+                setNewSpace({});
                 return
             }
             for (var sp of spaces) {
                 spacesJson.push(
-                    {
-                        id: sp.space_id,
-                        space_id: sp.space_id,
-                        room_name: sp.room_name,
-                        status: sp.status
-                    }
+                  {
+                      id: sp.space_id,
+                      space_id: sp.space_id,
+                      room_name: sp.room_name,
+                      status: sp.status
+                  }
                 )
             }
-            setnewSpace(spacesJson);
-
+            setNewProp({});
+            setNewSpace(spacesJson);
         }
-        fetchMyAPI()
-    }, [idSelected])
+        fetchSpace()
+        setSpaceSearch(false)
+      }, [searchSpaceTrig])
 
     return (
         <ThemeProvider theme={mdTheme}>
@@ -297,6 +341,7 @@ function PortalContent({ propertiesJson, spacesJson }) {
                                     <PropSearchField
                                         setIdSelected={setIdSelected}
                                         setHomeSelected={setHomeSelected}
+                                        setPropSearch={setPropSearch}
                                     />
                                 </Paper>
                             </Grid>
@@ -325,8 +370,8 @@ function PortalContent({ propertiesJson, spacesJson }) {
                             <Grid item xs={12} md={2} lg={2}>
                                 <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
                                     <SpaceSearchField
-                                        setIdSelected={setIdSelected}
-                                        setHomeSelected={setHomeSelected}
+                                        setSpaceSelected={setSpSelected}
+                                        setSpaceSearch={setSpaceSearch}
                                     />
                                 </Paper>
                             </Grid>

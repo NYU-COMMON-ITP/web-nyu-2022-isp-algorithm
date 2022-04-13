@@ -5,13 +5,27 @@ import TextField from '@mui/material/TextField';
 import SearchIcon from '@mui/icons-material/Search';
 
 
-export default function PropSearchField({ setIdSelected, setHomeSelected }) {
+export default function PropSearchField({ setIdSelected, setHomeSelected,setPropSearch }) {
+    const [id, setId] = React.useState(null);
+    const [home, setHome] = React.useState('');
 
-    const onKeyDown = (event) => {
-        if (event.keyCode === 13) {
-            setIdSelected(event.target.value)
-        }
+    // const onKeyDown = (event) => {
+    //     if (event.keyCode === 13) {
+    //         setIdSelected(event.target.value)
+    //     }
+    // };
+
+    const handleIdChange = (event) => {
+        setId(parseInt(event.target.value));
+        setIdSelected(parseInt(event.target.value));
     };
+    const handleHomeChange = (event) => {
+        setHome(event.target.value);
+        setHomeSelected(event.target.value);
+    };
+    const handleClick = (event) => {
+        setPropSearch(true)
+    }
 
     return (
         <Box
@@ -37,10 +51,7 @@ export default function PropSearchField({ setIdSelected, setHomeSelected }) {
                     id="input-propid"
                     label="ID"
                     size="small"
-                    onKeyDown={onKeyDown}
-                    // onChange={e => {
-                    //     setIdSelected(e.target.value)
-                    // }}
+                    onChange={handleIdChange}
                     InputLabelProps={{
                         shrink: true,
                     }}
@@ -55,9 +66,7 @@ export default function PropSearchField({ setIdSelected, setHomeSelected }) {
                     id="input-homename"
                     label="Home Name"
                     size="small"
-                    onChange={e => {
-                        setHomeSelected(e.target.value)
-                    }}
+                    onChange={handleHomeChange}
                     InputLabelProps={{
                         shrink: true,
                     }}
@@ -68,9 +77,10 @@ export default function PropSearchField({ setIdSelected, setHomeSelected }) {
                 alignItems: 'center',
                 justifyContent: 'center',
             }}>
-                {/* <Button variant="outlined" type="submit" onClick={handleClick} endIcon={<SearchIcon />} >
+                <Button variant="outlined" onClick={handleClick} endIcon={<SearchIcon />} >
+                    {/*type="submit"*/}
                     Search
-                </Button> */}
+                </Button>
             </div>
         </Box >
     );
