@@ -323,10 +323,8 @@ function PortalContent({ propertiesJson }) {
         },
       };
       const tempVar = data.variables;
-      // console.log(">>", tempVar);
       Object.keys(tempVar).forEach((key) => {
         if (tempVar[key] == null) {
-          console.log("Hi", key, tempVar[key]);
           delete tempVar[key];
         }
         if (
@@ -341,7 +339,6 @@ function PortalContent({ propertiesJson }) {
             key == "max_price") &&
           isNaN(tempVar[key])
         ) {
-          console.log("Bye");
           delete tempVar[key];
         }
       });
