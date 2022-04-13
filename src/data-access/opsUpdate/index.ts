@@ -12,7 +12,6 @@ export type properties = _properties;
 export type spaces = _spaces;
 
 export async function updateProperty(userData) {
-    console.log("Property: DB111:", userData)
     const pId= userData.property_id;
 Object.keys(userData).forEach((key) => {
           delete userData["property_id"];
@@ -27,7 +26,6 @@ Object.keys(userData).forEach((key) => {
 }
 
 export async function updateSpace(userData) {
-    console.log("Property: DB111:", userData)
     const sId= userData.space_id;
 
 

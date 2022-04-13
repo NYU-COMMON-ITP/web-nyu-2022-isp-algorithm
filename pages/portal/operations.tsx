@@ -118,7 +118,7 @@ function PortalContent({ propertiesJson }) {
   const [brand, setbrand] = React.useState(null);
   const [city_name, setcity_name] = React.useState(null);
   const [neighborhood, setneighborhood] = React.useState(null);
-  const [timezone, settimezone] = React.useState(new Date());
+  const [timezone, settimezone] = React.useState(null);
   const [unit_count, setunit_count] = React.useState(null);
   const [rownum, setrownum] = React.useState(null);
   const [createSpaceTrig, setcreateSpaceTrig] = React.useState(false);
@@ -323,8 +323,10 @@ function PortalContent({ propertiesJson }) {
         },
       };
       const tempVar = data.variables;
+      // console.log(">>", tempVar);
       Object.keys(tempVar).forEach((key) => {
         if (tempVar[key] == null) {
+          console.log("Hi", key, tempVar[key]);
           delete tempVar[key];
         }
         if (
@@ -339,11 +341,12 @@ function PortalContent({ propertiesJson }) {
             key == "max_price") &&
           isNaN(tempVar[key])
         ) {
+          console.log("Bye");
           delete tempVar[key];
         }
       });
       data.variables = tempVar;
-
+      console.log(">>", data.variables);
       if (data.variables.space_id) {
         const response = await fetch(
           `http://localhost:6003/api/v1/userSpaceUpdate`,

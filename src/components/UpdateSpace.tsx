@@ -85,19 +85,19 @@ export default function UpdateSpace({
     setsecuritydeposit(event.target.value);
   };
 
-  const handleDateavailableChange = (date) => {
-    setdate_available(date);
-    setdateavailable(date);
+  const handleDateavailableChange = (event) => {
+    setdate_available(event.target.value);
+    setdateavailable(event.target.value);
   };
 
-  const handleCreatedatChange = (date) => {
-    setcreated_at(date);
-    setcreatedat(date);
+  const handleCreatedatChange = (event) => {
+    setcreated_at(event.target.value);
+    setcreatedat(event.target.value);
   };
 
-  const handleUpdatedatChange = (date) => {
-    set_updated_at(date);
-    setupdatedat(date);
+  const handleUpdatedatChange = (event) => {
+    set_updated_at(event.target.value);
+    setupdatedat(event.target.value);
   };
 
   const handleStatusChange = (event) => {

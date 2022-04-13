@@ -23,7 +23,6 @@ export default function UpdateProperty({
   setunit_count,
   setrownum,
   setUpdatePropTrig,
-  setupdateSpaceTrig,
 }) {
   const [homename, sethomename] = React.useState(null);
   const [propertyid, setpropertyid] = React.useState(null);
