@@ -11,34 +11,34 @@ import UserSearchField from "../../components/UserSearch";
 export type properties = _properties;
 export type spaces = _spaces;
 
-
-// const updateUser = await prisma.user.update({
-//   where: {
-//     email: 'viola@prisma.io',
-//   },
-//   data: {
-//     name: 'Viola the Magnificent',
-//   },
-// })
-
 export async function updateProperty(userData) {
-    console.log("Property: DB:", userData)
-    // send non null params
-    return prisma.properties.deleteMany({
+    console.log("Property: DB111:", userData)
+    const pId= userData.property_id;
+Object.keys(userData).forEach((key) => {
+          delete userData["property_id"];
+      });
+
+    return prisma.properties.updateMany({
         where: {
-            property_id: {
-                contains: userData.property_id,
-            },
+            property_id: pId,
         },
+        data:userData
     })
 }
 
 export async function updateSpace(userData) {
-    console.log("Space: DB:", userData)
-    // send non null params
-    return prisma.spaces.delete({
+    console.log("Property: DB111:", userData)
+    const sId= userData.space_id;
+
+
+Object.keys(userData).forEach((key) => {
+          delete userData["space_id"];
+      });
+
+    return prisma.spaces.updateMany({
         where: {
-            space_id: userData.space_id,
+            space_id: sId,
         },
-})
+        data:userData
+    })
 }

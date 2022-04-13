@@ -25,7 +25,6 @@ async function getPropertiesHandler(req, res) {
 
 export default async function handler(req, res) {
   try {
-    console.log("hi")
     console.log(req.query)
     // const city = req.query.city
     const result = await getPropertiesbycity(req.query.city)
