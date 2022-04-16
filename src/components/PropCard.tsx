@@ -8,6 +8,7 @@ import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
 import { makeStyles } from "@mui/styles";
 import { Grid } from "@mui/material";
+import { properties } from "../../src/data-access/searches";
 
 ChartJS.register(ArcElement, Tooltip);
 
@@ -45,7 +46,7 @@ const boxStyle_wb={
   fontSize: '0.6rem',
   fontWeight: '700',
   m:0.2,
-  // display: 'inline'
+  overflow: 'auto'
 }
 
 const boxStyle_nb={
@@ -66,13 +67,16 @@ function PropCard({data}) {
   return (
     <Card className={classes.root}>
       <Box display="flex" justifyContent="space-between">
-        <Grid item xs={4}>
+        <Grid item xs={4} >
           <CardContent >
             <Button
               variant="outlined"
               size='small'
               sx={{
-                mb: 1,
+                mb: 0.5,
+                fontSize: '0.7rem',
+                fontWeight: '700',
+                m:0.2,
               }}
             >
               Briefing:
@@ -82,7 +86,7 @@ function PropCard({data}) {
               sx={boxStyle_nb}
 
             >
-              Name:
+              Home:
             </Box>
             <Box
               component="span"
@@ -90,7 +94,7 @@ function PropCard({data}) {
               className={classes.alignItemsAndJustifyContent}
 
             >
-              {data.home_name.split('.')[1]}
+              {String(data.home_name).split('.')[1]}
             </Box>
             <Box
               component="span"
@@ -122,6 +126,19 @@ function PropCard({data}) {
               component="span"
               sx={boxStyle_nb}
             >
+              Room:
+            </Box>
+            <Box
+              component="span"
+              sx={boxStyle_wb}
+              className={classes.alignItemsAndJustifyContent}
+            >
+              {data.city_name}
+            </Box>
+            <Box
+              component="span"
+              sx={boxStyle_nb}
+            >
               Price:
             </Box>
             <Box
@@ -139,7 +156,10 @@ function PropCard({data}) {
               variant="outlined"
               size='small'
               sx={{
-                mb: 1,
+                mb: 0.5,
+                fontSize: '0.7rem',
+                fontWeight: '700',
+                m:0.2,
               }}
             >
               Weights:
@@ -148,7 +168,7 @@ function PropCard({data}) {
               component="span"
               sx={boxStyle_nb}
               >
-              {"Dist: "}
+              {"Dist Score: "}
             </Box>
             <Box
                 component="span"
@@ -161,7 +181,7 @@ function PropCard({data}) {
               component="span"
               sx={boxStyle_nb}
             >
-              {"Price: "}
+              {"Price Score: "}
             </Box>
             <Box
               component="span"
@@ -174,7 +194,7 @@ function PropCard({data}) {
               component="span"
               sx={boxStyle_nb}
             >
-              {"Time: "}
+              {"Time Score: "}
             </Box>
             <Box
               component="span"
@@ -187,7 +207,7 @@ function PropCard({data}) {
               component="span"
               sx={boxStyle_nb}
             >
-              {"Market: "}
+              {"Market Score: "}
             </Box>
             <Box
               component="span"
@@ -200,7 +220,7 @@ function PropCard({data}) {
               component="span"
               sx={boxStyle_nb}
             >
-              {"Sum:"}
+              {"Scores Sum:"}
             </Box>
             <Box
               component="span"
@@ -211,21 +231,12 @@ function PropCard({data}) {
             </Box>
           </CardContent>
         </Grid>
-        <Grid item xs={4} >
+        <Grid item xs={4} sx={{m:1}}>
           <CardContent sx={{
             mb: 1,
             fontSize: '0.8rem',
             float: 'middle',
           }}>
-            {/*<Button*/}
-            {/*  variant="outlined"*/}
-            {/*  size='small'*/}
-            {/*  sx={{*/}
-            {/*    mb: 1,*/}
-            {/*  }}*/}
-            {/*>*/}
-            {/*  Chart:*/}
-            {/*</Button>*/}
           </CardContent>
           <Doughnut
             data={{labels: chartData.labels,
@@ -238,7 +249,6 @@ function PropCard({data}) {
           >
             Distribution of Weights
           </Box>
-
         </Grid>
       </Box>
       <Grid item xs={12}>

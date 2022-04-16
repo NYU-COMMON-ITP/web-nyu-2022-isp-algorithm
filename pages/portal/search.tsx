@@ -24,29 +24,6 @@ import AppBar from "../../src/components/AppBar";
 import Drawer from "../../src/components/Drawer";
 import { getCities, getProperties, properties } from "../../src/data-access/searches";
 
-// interface propCard{
-//       id: Number,
-//       home_name: String,
-//       property_id: Number,
-//       brand: String,
-//       city_name: String,
-//       neighborhood: String,
-//       timezone: String,
-//       unit_count: Number,
-//       weights:{
-//         wf_distance: Number,
-//         // wf_value:prop.dist_diff,
-//         // distance_value:
-//         wf_price: Number,
-//         // wf_value:prop.price_diff,
-//         // price_value:
-//         wf_time: Number,
-//         // wf_value:prop.time_diff,
-//         // time_value:
-//         wf_market: Number,
-//       }
-// }
-
 export const getStaticProps: GetStaticProps = async () => {
     let cityLists = []
     try {
@@ -80,9 +57,7 @@ export const getStaticProps: GetStaticProps = async () => {
 
 function resToJson(props){
   const propertiesJson = []
-  console.log('props'+props)
   for (const [index, prop] of Object.entries(props)){
-    console.log(prop)
     propertiesJson.push(
       {
         id: prop['id'],
@@ -148,7 +123,6 @@ function PortalContent({ cityMenu, propertiesJson }) {
                     "price_factor": 1.2,
                 }
             }
-            console.log(data)
             const response = await fetch(`/api/v1/userSearch`, {
                 method: 'POST',
                 headers: {
@@ -156,9 +130,8 @@ function PortalContent({ cityMenu, propertiesJson }) {
                 },
                 body: JSON.stringify(data)
             });
-            console.log("result: ")
             const properties: properties[] = await response.json();
-            console.log(typeof (properties))
+            console.log(typeof properties)
             if (!properties || properties.length == 0) {
                 setNewProp([]);
                 return
@@ -173,8 +146,6 @@ function PortalContent({ cityMenu, propertiesJson }) {
         console.error(error);
       }
     }, [searchTrig])
-
-
 
     return (
       <ThemeProvider theme={mdTheme}>

@@ -42,7 +42,7 @@ function CardField({data}){
   }
 
   return (
-    <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
+    <Paper sx={{ p: 1, display: 'flex', flexDirection: 'column' }}>
       <Grid
         container
         spacing={3}
@@ -50,7 +50,7 @@ function CardField({data}){
         justifyContent="center">
         {cardItems}
       </Grid>
-      <Grid item xs={12} sx={{ m: 2 }}>
+      <Grid item xs={12} sx={{ m: 0.5 ,p:0.5 }}>
         <Pagination
           size="small"
           count={count}

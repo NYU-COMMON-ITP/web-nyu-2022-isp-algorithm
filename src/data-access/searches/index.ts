@@ -23,7 +23,7 @@ export type properties = {
     wf_price: Number,
     wf_time: Number,
     wf_market: Number,
-    spaces: spaces[]
+    spaces?: spaces[]
 }
 
 export async function getProperties() {
