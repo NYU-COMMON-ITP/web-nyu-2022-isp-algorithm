@@ -1,130 +1,115 @@
-import * as React from 'react';
+import * as React from "react";
 import { useState } from "react";
 import { GetStaticProps } from "next";
-import { styled, createTheme, ThemeProvider } from '@mui/material/styles';
-import CssBaseline from '@mui/material/CssBaseline';
-import MuiDrawer from '@mui/material/Drawer';
-import Box from '@mui/material/Box';
-import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar';
-import Toolbar from '@mui/material/Toolbar';
-import List from '@mui/material/List';
-import Typography from '@mui/material/Typography';
-import Divider from '@mui/material/Divider';
-import IconButton from '@mui/material/IconButton';
-import Badge from '@mui/material/Badge';
-import Container from '@mui/material/Container';
-import Grid from '@mui/material/Grid';
-import Link from '@mui/material/Link';
-import Paper from '@mui/material/Paper';
-import MenuIcon from '@mui/icons-material/Menu';
-import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
-import NotificationsIcon from '@mui/icons-material/Notifications';
-import {ListItems} from '../../src/components/ListItems';
-import CardsField from '../../src/components/CardsField'
-import UserSearchFields from '../../src/components/UserSearch'
-import Copyright from '../../src/components/Copyright'
-import AppBar from '../../src/components/AppBar'
-import Drawer from '../../src/components/Drawer'
+import { createTheme, ThemeProvider } from "@mui/material/styles";
+import CssBaseline from "@mui/material/CssBaseline";
+import Box from "@mui/material/Box";
+import Toolbar from "@mui/material/Toolbar";
+import List from "@mui/material/List";
+import Typography from "@mui/material/Typography";
+import Divider from "@mui/material/Divider";
+import IconButton from "@mui/material/IconButton";
+import Badge from "@mui/material/Badge";
+import Container from "@mui/material/Container";
+import Grid from "@mui/material/Grid";
+import Paper from "@mui/material/Paper";
+import MenuIcon from "@mui/icons-material/Menu";
+import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
+import NotificationsIcon from "@mui/icons-material/Notifications";
+import { ListItems } from "../../src/components/ListItems";
+import CardsField from "../../src/components/CardsField";
+import UserSearchFields from "../../src/components/UserSearch";
+import Copyright from "../../src/components/Copyright";
+import AppBar from "../../src/components/AppBar";
+import Drawer from "../../src/components/Drawer";
+import { getCities, getProperties, properties } from "../../src/data-access/searches";
 
-import { properties, getCities, getProperties } from "../../src/data-access/searches"
-import { DataGrid, GridColDef } from '@mui/x-data-grid';
-import usePagination from "../../src/components/Paginations";
-import PropCard from "../../src/components/PropCard";
-import Pagination from '@mui/material/Pagination';
-import CardField from "../../src/components/CardsField";
-
-// const drawerWidth: number = 240;
+// interface propCard{
+//       id: Number,
+//       home_name: String,
+//       property_id: Number,
+//       brand: String,
+//       city_name: String,
+//       neighborhood: String,
+//       timezone: String,
+//       unit_count: Number,
+//       weights:{
+//         wf_distance: Number,
+//         // wf_value:prop.dist_diff,
+//         // distance_value:
+//         wf_price: Number,
+//         // wf_value:prop.price_diff,
+//         // price_value:
+//         wf_time: Number,
+//         // wf_value:prop.time_diff,
+//         // time_value:
+//         wf_market: Number,
+//       }
+// }
 
 export const getStaticProps: GetStaticProps = async () => {
-    const cityLists = await getCities();
+    let cityLists = []
+    try {
+      cityLists = await getCities();
+    }catch (error) {
+      console.error(error);
+    }
     const cityMenu = []
 
     for (const city of cityLists) {
         cityMenu.push(
-          {
-              value: city.city_name,
-              label: city.city_name,
-          }
+            {
+                value: city.city_name,
+                label: city.city_name,
+            }
         )
     }
-    const properties: properties[] = await getProperties();
-    const propertiesJson = []
-    for (const prop of properties) {
-        propertiesJson.push(
-          {
-              id: prop.id,
-              home_name: prop.home_name,
-              property_id: prop.property_id,
-              brand: prop.brand,
-              city_name: prop.city_name,
-              neighborhood: prop.neighborhood,
-              timezone: prop.timezone,
-              unit_count: prop.unit_count,
-          }
-        )
+    let properties: properties[] = []
+    let  propertiesJson = []
+    try {
+      properties = await getProperties();
+      propertiesJson = resToJson(properties);
+    }catch (error) {
+      console.error(error);
     }
+
     return {
         props: { cityMenu, propertiesJson }
     }
 };
 
-const columns: GridColDef[] = [
-    { field: 'id', headerName: 'ID', width: 50 },
-    { field: 'home_name', headerName: 'Home', width: 150 },
-    { field: 'property_id', headerName: 'Prop_ID', width: 120 },
-    { field: 'brand', headerName: 'Brand', width: 70 },
-    { field: 'city_name', headerName: 'City', width: 100 },
-    { field: 'neighborhood', headerName: 'Neighborhood', width: 150 },
-    { field: 'unit_count', headerName: 'Unit', width: 70 },
-];
-
-// interface AppBarProps extends MuiAppBarProps {
-//     open?: boolean;
-// }
-//
-// const AppBar = styled(MuiAppBar, {
-//     shouldForwardProp: (prop) => prop !== 'open',
-// })<AppBarProps>(({ theme, open }) => ({
-//     zIndex: theme.zIndex.drawer + 1,
-//     transition: theme.transitions.create(['width', 'margin'], {
-//         easing: theme.transitions.easing.sharp,
-//         duration: theme.transitions.duration.leavingScreen,
-//     }),
-//     ...(open && {
-//         marginLeft: drawerWidth,
-//         width: `calc(100% - ${drawerWidth}px)`,
-//         transition: theme.transitions.create(['width', 'margin'], {
-//             easing: theme.transitions.easing.sharp,
-//             duration: theme.transitions.duration.enteringScreen,
-//         }),
-//     }),
-// }));
-//
-// const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' })(
-//   ({ theme, open }) => ({
-//       '& .MuiDrawer-paper': {
-//           position: 'relative',
-//           whiteSpace: 'nowrap',
-//           width: drawerWidth,
-//           transition: theme.transitions.create('width', {
-//               easing: theme.transitions.easing.sharp,
-//               duration: theme.transitions.duration.enteringScreen,
-//           }),
-//           boxSizing: 'border-box',
-//           ...(!open && {
-//               overflowX: 'hidden',
-//               transition: theme.transitions.create('width', {
-//                   easing: theme.transitions.easing.sharp,
-//                   duration: theme.transitions.duration.leavingScreen,
-//               }),
-//               width: theme.spacing(7),
-//               [theme.breakpoints.up('sm')]: {
-//                   width: theme.spacing(9),
-//               },
-//           }),
-//       },
-//   }),
-// );
+function resToJson(props){
+  const propertiesJson = []
+  console.log('props'+props)
+  for (const [index, prop] of Object.entries(props)){
+    console.log(prop)
+    propertiesJson.push(
+      {
+        id: prop['id'],
+        home_name: prop['home_name'],
+        property_id: prop['property_id'],
+        brand: prop['brand'],
+        city_name: prop['city_name'],
+        neighborhood: prop['neighborhood'],
+        timezone: prop['timezone'],
+        unit_count: prop['unit_count'],
+        weights:{
+          wf_distance: prop['wf_distance'],
+          // wf_value:prop.dist_diff,
+          // distance_value:
+          wf_price: prop['wf_price'],
+          // wf_value:prop.price_diff,
+          // price_value:
+          wf_time: prop['wf_time'],
+          // wf_value:prop.time_diff,
+          // time_value:
+          wf_market: prop['wf_market'],
+        }
+      }
+    )
+  }
+  return propertiesJson;
+}
 
 const mdTheme = createTheme();
 
@@ -141,12 +126,10 @@ function PortalContent({ cityMenu, propertiesJson }) {
         pet: false,
         budget:"",
     })
+
     const toggleDrawer = () => {
       setOpen(!open);
     };
-
-
-
 
     React.useEffect(() => {
         async function fetchMyAPI() {
@@ -174,32 +157,24 @@ function PortalContent({ cityMenu, propertiesJson }) {
                 body: JSON.stringify(data)
             });
             console.log("result: ")
-            // console.log(response)
             const properties: properties[] = await response.json();
-            const propertiesJson = []
+            console.log(typeof (properties))
             if (!properties || properties.length == 0) {
                 setNewProp([]);
                 return
             }
-            for (const line of properties) {
-                propertiesJson.push(
-                  {
-                      id: line.id,
-                      home_name: line.home_name,
-                      property_id: line.property_id,
-                      brand: line.brand,
-                      city_name: line.city_name,
-                      neighborhood: line.neighborhood,
-                      timezone: line.timezone,
-                      unit_count: line.unit_count,
-                  }
-                )
-            }
+            const propertiesJson = resToJson(properties)
             setNewProp(propertiesJson);
         }
-        fetchMyAPI().then(()=>console.log('Search by User Inputs'))
+      try {
+        fetchMyAPI().then(() => console.log('Search by User Inputs'))
         setSearch(false);
+      }catch (error) {
+        console.error(error);
+      }
     }, [searchTrig])
+
+
 
     return (
       <ThemeProvider theme={mdTheme}>
@@ -289,39 +264,6 @@ function PortalContent({ cityMenu, propertiesJson }) {
                               </Paper>
                           </Grid>
                           <Grid item xs={9}>
-                              {/*<Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>*/}
-                                  {/*<div style={{ height: 620, width: '100%', fontSize: 8 }}>*/}
-                                  {/*    <DataGrid*/}
-                                  {/*      rows={newProp != null ? newProp : propertiesJson}*/}
-                                  {/*      columns={columns}*/}
-                                  {/*      getRowId={(row) => row.id}*/}
-                                  {/*      pageSize={10}*/}
-                                  {/*      rowsPerPageOptions={[10, 20, 50]}*/}
-                                  {/*      // checkboxSelection*/}
-                                  {/*    />*/}
-                                  {/*</div>*/}
-                              {/*</Paper>*/}
-                              {/*<Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>*/}
-                              {/*    <Grid*/}
-                              {/*      container*/}
-                              {/*      spacing={3}*/}
-                              {/*      alignItems="center"*/}
-                              {/*      justifyContent="center">*/}
-                              {/*        {cardItems}*/}
-                              {/*    </Grid>*/}
-
-                              {/*    <Grid item xs={12} sx={{ m: 2 }}>*/}
-                              {/*        <Pagination*/}
-                              {/*          size="small"*/}
-                              {/*          count={count}*/}
-                              {/*          page={page}*/}
-                              {/*          variant="outlined"*/}
-                              {/*          shape="rounded"*/}
-                              {/*          onChange={handlePageChange}*/}
-                              {/*        />*/}
-                              {/*    </Grid>*/}
-
-                              {/*</Paper>*/}
                             <CardsField data={newProp}/>
                           </Grid>
                       </Grid>

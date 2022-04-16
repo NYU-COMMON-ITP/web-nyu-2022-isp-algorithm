@@ -1,26 +1,13 @@
 import * as React from "react";
-import { Doughnut } from 'react-chartjs-2';
-import { useState, useEffect } from "react";
-import Paper from "@mui/material/Paper";
-import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
-import { Animation } from "@mui/icons-material";
-import CardActionArea from "@mui/material/CardActionArea";
+import { Doughnut } from "react-chartjs-2";
+import { ArcElement, Chart as ChartJS, Tooltip } from "chart.js";
 import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
-import CardActions from "@mui/material/CardActions";
 import Button from "@mui/material/Button";
-import CardMedia from '@mui/material/CardMedia';
-import IconButton from '@mui/material/IconButton';
-import SkipPreviousIcon from '@mui/icons-material/SkipPrevious';
-import PlayArrowIcon from '@mui/icons-material/PlayArrow';
-import SkipNextIcon from '@mui/icons-material/SkipNext';
-
-import Box from '@mui/material/Box';
+import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
 import { makeStyles } from "@mui/styles";
 import { Grid } from "@mui/material";
-import usePagination from "./Paginations";
-import { properties } from "../data-access/searches";
 
 ChartJS.register(ArcElement, Tooltip);
 
@@ -31,12 +18,12 @@ const useStyles = makeStyles({
   media: {
     height: 130,
   },
+  alignItemsAndJustifyContent: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
 });
-
-// interface chartData {
-//   data: number[];
-//   backgroundColor: string[];
-// }
 
 const chartData = {
   labels : ["Distance", "Price", "Date", "Time", "Market"],
@@ -49,9 +36,33 @@ const chartData = {
   ]
 }
 
+const boxStyle_wb={
+  display: 'block',
+  color: 'grey.800' ,
+  border: '1px solid',
+  borderColor: 'grey.300',
+  borderRadius: 1,
+  fontSize: '0.6rem',
+  fontWeight: '700',
+  m:0.2,
+  // display: 'inline'
+}
+
+const boxStyle_nb={
+  display: 'block',
+  color: 'grey.800' ,
+  borderColor: 'grey.300',
+  borderRadius: 1,
+  fontSize: '0.6rem',
+  fontWeight: '700',
+  alignCenter:"center",
+  m:0.2,
+}
+
 function PropCard({data}) {
   const classes = useStyles();
-  chartData.datasets[0].data=[1,2,3,4]
+  console.log(data.weights)
+  chartData.datasets[0].data=[data['weights'].wf_distance,data['weights'].wf_price,data['weights'].wf_time,data.weights.wf_market]
   return (
     <Card className={classes.root}>
       <Box display="flex" justifyContent="space-between">
@@ -59,81 +70,186 @@ function PropCard({data}) {
           <CardContent >
             <Button
               variant="outlined"
+              size='small'
+              sx={{
+                mb: 1,
+              }}
             >
               Briefing:
             </Button>
-            <Typography variant={"body2"} color="text.secondary" component="div">
+            <Box
+              component="span"
+              sx={boxStyle_nb}
+
+            >
               Name:
-            </Typography>
-            <Typography variant={"caption"} color="text.secondary" component="div">
-              {data.home_name}
-            </Typography>
-            <Typography variant={"body2"} color="text.secondary" component="div">
+            </Box>
+            <Box
+              component="span"
+              sx={boxStyle_wb}
+              className={classes.alignItemsAndJustifyContent}
+
+            >
+              {data.home_name.split('.')[1]}
+            </Box>
+            <Box
+              component="span"
+              sx={boxStyle_nb}
+            >
               ID:
-            </Typography>
-            <Typography variant={"caption"} color="text.secondary" component="div">
+            </Box>
+            <Box
+              component="span"
+              sx={boxStyle_wb}
+              className={classes.alignItemsAndJustifyContent}
+            >
               {data.id}
-            </Typography>
-            <Typography variant={"body2"} color="text.secondary" component="div">
+            </Box>
+            <Box
+              component="span"
+              sx={boxStyle_nb}
+            >
               City:
-            </Typography>
-            <Typography variant={"caption"} color="text.secondary" component="div">
-              {data.city_name}
-            </Typography>
-            <Typography variant={"body1"} color="text.secondary" component="div">
+            </Box>
+            <Box
+              component="span"
+              sx={boxStyle_wb}
+              className={classes.alignItemsAndJustifyContent}
+            >
+              {data.home_name.split('.')[0]+" "+data.city_name}
+            </Box>
+            <Box
+              component="span"
+              sx={boxStyle_nb}
+            >
               Price:
-            </Typography>
+            </Box>
+            <Box
+              component="span"
+              sx={boxStyle_wb}
+              className={classes.alignItemsAndJustifyContent}
+            >
+              {data.city_name}
+            </Box>
           </CardContent>
         </Grid>
         <Grid item xs={4}>
           <CardContent >
             <Button
               variant="outlined"
+              size='small'
+              sx={{
+                mb: 1,
+              }}
             >
               Weights:
             </Button>
-            <Typography variant={"body2"} color="text.secondary" component="div">
-              Dist:
-            </Typography>
-            <Typography align={"center"} variant={"body1"} color="text.secondary" component="div">
-              +
-            </Typography>
-            <Typography variant={"body2"} color="text.secondary" component="div">
-              Price:
-            </Typography>
-            <Typography align={"center"} variant={"body1"} color="text.secondary" component="div">
-              +
-            </Typography>
-            <Typography variant={"body2"} color="text.secondary" component="div">
-              Time:
-            </Typography>
-            <Typography align={"center"} variant={"body1"} color="text.secondary" component="div">
-              +
-            </Typography>
-            <Typography variant={"body2"} color="text.secondary" component="div">
-              Markt:
-            </Typography>
-            <Typography align={"center"} variant={"body1"} color="text.secondary" component="div">
-              =
-            </Typography>
-            <Typography variant={"body2"} color="text.secondary" component="div">
-              Sum:
-            </Typography>
+            <Box
+              component="span"
+              sx={boxStyle_nb}
+              >
+              {"Dist: "}
+            </Box>
+            <Box
+                component="span"
+                sx={boxStyle_wb}
+                className={classes.alignItemsAndJustifyContent}
+            >
+              {data.weights.wf_distance}
+            </Box>
+            <Box
+              component="span"
+              sx={boxStyle_nb}
+            >
+              {"Price: "}
+            </Box>
+            <Box
+              component="span"
+              sx={boxStyle_wb}
+              className={classes.alignItemsAndJustifyContent}
+            >
+              {data.weights.wf_price}
+            </Box>
+            <Box
+              component="span"
+              sx={boxStyle_nb}
+            >
+              {"Time: "}
+            </Box>
+            <Box
+              component="span"
+              sx={boxStyle_wb}
+              className={classes.alignItemsAndJustifyContent}
+            >
+              {data.weights.wf_time}
+            </Box>
+            <Box
+              component="span"
+              sx={boxStyle_nb}
+            >
+              {"Market: "}
+            </Box>
+            <Box
+              component="span"
+              sx={boxStyle_wb}
+              className={classes.alignItemsAndJustifyContent}
+            >
+              {data.weights.wf_market}
+            </Box>
+            <Box
+              component="span"
+              sx={boxStyle_nb}
+            >
+              {"Sum:"}
+            </Box>
+            <Box
+              component="span"
+              sx={boxStyle_wb}
+              className={classes.alignItemsAndJustifyContent}
+            >
+              {data.weights.wf_market}
+            </Box>
           </CardContent>
         </Grid>
-        <Grid item xs={4}>
-          <CardContent>
-          <Typography  variant={"body1"} color="text.secondary" component="div">
-            Weight
-            Distributions
-          </Typography>
-        </CardContent>
+        <Grid item xs={4} >
+          <CardContent sx={{
+            mb: 1,
+            fontSize: '0.8rem',
+            float: 'middle',
+          }}>
+            {/*<Button*/}
+            {/*  variant="outlined"*/}
+            {/*  size='small'*/}
+            {/*  sx={{*/}
+            {/*    mb: 1,*/}
+            {/*  }}*/}
+            {/*>*/}
+            {/*  Chart:*/}
+            {/*</Button>*/}
+          </CardContent>
           <Doughnut
             data={{labels: chartData.labels,
               datasets: chartData.datasets}}
           />
+          <Box
+            component="span"
+            sx={boxStyle_nb}
+            className={classes.alignItemsAndJustifyContent}
+          >
+            Distribution of Weights
+          </Box>
+
         </Grid>
       </Box>
+      <Grid item xs={12}>
+        <Box
+          component="span"
+          sx={boxStyle_wb}
+          className={classes.alignItemsAndJustifyContent}
+        >
+          Score: Factor x Weight x Score
+        </Box>
+      </Grid>
     </Card>
   );
 }

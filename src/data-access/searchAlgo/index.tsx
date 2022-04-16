@@ -26,11 +26,20 @@ export async function searchingAlgo(userSelection) {
         },
       },
       include: {
-        spaces: true,
+        spaces: {
+          where:{
+            status: {
+              contains: 'Available',
+            }
+          }
+        },
+        // spaces: true,
       }
     })
     console.log("result: ")
-    // console.log(data)
+    // var diffDays = parseInt((date2 - date1) / (1000 * 60 * 60 * 24)); //gives day difference
+    console.log(data)
+    // console.log(userSelection.variables.move_in)
     return data
   } else {
     return await prisma.properties.findMany()

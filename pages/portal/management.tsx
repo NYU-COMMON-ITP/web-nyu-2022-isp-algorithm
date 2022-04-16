@@ -1,37 +1,33 @@
-import * as React from 'react';
+import * as React from "react";
 import { GetStaticProps } from "next";
-import { styled, createTheme, ThemeProvider } from '@mui/material/styles';
-import CssBaseline from '@mui/material/CssBaseline';
-import MuiDrawer from '@mui/material/Drawer';
-import Box from '@mui/material/Box';
-import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar';
-import Toolbar from '@mui/material/Toolbar';
-import List from '@mui/material/List';
-import Typography from '@mui/material/Typography';
-import Divider from '@mui/material/Divider';
-import IconButton from '@mui/material/IconButton';
-import Badge from '@mui/material/Badge';
-import Container from '@mui/material/Container';
-import Grid from '@mui/material/Grid';
-import Link from '@mui/material/Link';
-import Paper from '@mui/material/Paper';
-import MenuIcon from '@mui/icons-material/Menu';
-import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
-import NotificationsIcon from '@mui/icons-material/Notifications';
-import { ListItems } from '../../src/components/ListItems';
-import PropSearchField from '../../src/components/PropSearch'
-import SpaceSearchField from '../../src/components/SpaceSearch'
-import PropAttrField from '../../src/components/PropAttr'
-import SpaceAttrField from '../../src/components/SpaceAttr'
-import Copyright from '../../src/components/Copyright'
-import AppBar from '../../src/components/AppBar'
-import Drawer from '../../src/components/Drawer'
+import { createTheme, ThemeProvider } from "@mui/material/styles";
+import CssBaseline from "@mui/material/CssBaseline";
+import Box from "@mui/material/Box";
+import Toolbar from "@mui/material/Toolbar";
+import List from "@mui/material/List";
+import Typography from "@mui/material/Typography";
+import Divider from "@mui/material/Divider";
+import IconButton from "@mui/material/IconButton";
+import Badge from "@mui/material/Badge";
+import Container from "@mui/material/Container";
+import Grid from "@mui/material/Grid";
+import Paper from "@mui/material/Paper";
+import MenuIcon from "@mui/icons-material/Menu";
+import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
+import NotificationsIcon from "@mui/icons-material/Notifications";
+import { ListItems } from "../../src/components/ListItems";
+import PropSearchField from "../../src/components/PropSearch";
+import SpaceSearchField from "../../src/components/SpaceSearch";
+import PropAttrField from "../../src/components/PropAttr";
+import SpaceAttrField from "../../src/components/SpaceAttr";
+import Copyright from "../../src/components/Copyright";
+import AppBar from "../../src/components/AppBar";
+import Drawer from "../../src/components/Drawer";
+import { properties, spaces } from "../../src/data-access/searches";
+import { DataGrid, GridColDef } from "@mui/x-data-grid";
 
-import { properties, spaces } from "../../src/data-access/searches"
-import { DataGrid, GridColDef } from '@mui/x-data-grid';
 const drawerWidth: number = 240;
 
-// This page will be statically rendered at build time
 export const getStaticProps: GetStaticProps = async () => {
     const spacesJson = []
     const propertiesJson = []
@@ -135,7 +131,7 @@ function PortalContent({ propertiesJson, spacesJson }) {
 
             setNewProp(propertiesJson);
             if (properties.length==1) {
-                const spaces: spaces[] = await properties[0]["spaces"]
+                const spaces: spaces[] = properties[0]["spaces"]
                 if (!spaces || spaces.length == 0) {
                     setNewSpace([]);
                     return

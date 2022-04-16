@@ -8,6 +8,10 @@ CREATE TABLE properties (
     timezone varchar,
     unit_count int4,
     rownum int4,
+    wf_distance int4,
+    wf_price int4,
+    wf_time int4,
+    wf_market int4,
     PRIMARY KEY (id)
 );
 
@@ -33,7 +37,7 @@ CREATE TABLE spaces (
     PRIMARY KEY (space_id)
 );
 
-COPY properties(id, home_name, property_id, brand, city_name, neighborhood, timezone, unit_count, rownum)
+COPY properties(id, home_name, property_id, brand, city_name, neighborhood, timezone, unit_count, rownum, wf_distance, wf_price, wf_time, wf_market)
 FROM '/usr/src/web/postgres/nyu-csv-data/properties.csv'
 DELIMITER ','
 CSV HEADER;

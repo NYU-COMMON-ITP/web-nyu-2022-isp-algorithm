@@ -17,6 +17,10 @@ model properties {
   timezone     String? @db.VarChar
   unit_count   Int?
   rownum       Int?
+  wf_distance  Int?
+  wf_price     Int?
+  wf_time      Int?
+  wf_market    Int?
   spaces       spaces[]
 }
 
