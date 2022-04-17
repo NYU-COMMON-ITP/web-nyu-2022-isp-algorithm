@@ -27,7 +27,7 @@ const useStyles = makeStyles({
 });
 
 const chartData = {
-  labels : ["Distance", "Price", "Date", "Time", "Market"],
+  labels : ["Distance", "Price", "Time", "Market"],
   datasets : [
     {
       label: '# of Votes',
@@ -62,8 +62,8 @@ const boxStyle_nb={
 
 function PropCard({data}) {
   const classes = useStyles();
-  console.log(data.weights)
-  chartData.datasets[0].data=[data['weights'].wf_distance,data['weights'].wf_price,data['weights'].wf_time,data.weights.wf_market]
+  chartData.datasets[0].data=[0, data['weights'].wf_price*data['weights'].diff_price,data['weights'].wf_time*data['weights'].diff_time,data['weights'].wf_market]
+  console.log(chartData.datasets[0].data)
   return (
     <Card className={classes.root}>
       <Box display="flex" justifyContent="space-between">
@@ -94,7 +94,7 @@ function PropCard({data}) {
               className={classes.alignItemsAndJustifyContent}
 
             >
-              {String(data.home_name).split('.')[1]}
+              {String(data.home_name).split('.')[1]!}
             </Box>
             <Box
               component="span"
@@ -120,7 +120,7 @@ function PropCard({data}) {
               sx={boxStyle_wb}
               className={classes.alignItemsAndJustifyContent}
             >
-              {data.home_name.split('.')[0]+" "+data.city_name}
+              {data.home_name.split('.')[0]!+" "+data.city_name!}
             </Box>
             <Box
               component="span"
@@ -133,7 +133,7 @@ function PropCard({data}) {
               sx={boxStyle_wb}
               className={classes.alignItemsAndJustifyContent}
             >
-              {data.city_name}
+              {data.room_name}
             </Box>
             <Box
               component="span"
@@ -146,7 +146,7 @@ function PropCard({data}) {
               sx={boxStyle_wb}
               className={classes.alignItemsAndJustifyContent}
             >
-              {data.city_name}
+              {data.price}
             </Box>
           </CardContent>
         </Grid>
@@ -175,7 +175,7 @@ function PropCard({data}) {
                 sx={boxStyle_wb}
                 className={classes.alignItemsAndJustifyContent}
             >
-              {data.weights.wf_distance}
+              {data.weights.wf_distance!+' x '}
             </Box>
             <Box
               component="span"
@@ -188,7 +188,7 @@ function PropCard({data}) {
               sx={boxStyle_wb}
               className={classes.alignItemsAndJustifyContent}
             >
-              {data.weights.wf_price}
+              {data.weights.wf_price!+' x '+data.weights.diff_price!}
             </Box>
             <Box
               component="span"
@@ -201,7 +201,7 @@ function PropCard({data}) {
               sx={boxStyle_wb}
               className={classes.alignItemsAndJustifyContent}
             >
-              {data.weights.wf_time}
+              {data.weights.wf_time!+' x '+data.weights.diff_time!}
             </Box>
             <Box
               component="span"
@@ -227,7 +227,7 @@ function PropCard({data}) {
               sx={boxStyle_wb}
               className={classes.alignItemsAndJustifyContent}
             >
-              {data.weights.wf_market}
+              {data['weights'].wf_price!*data['weights'].diff_price!+data['weights'].wf_time!*data['weights'].diff_time!+data['weights'].wf_market!}
             </Box>
           </CardContent>
         </Grid>

@@ -41,15 +41,7 @@ export const getStaticProps: GetStaticProps = async () => {
             }
         )
     }
-    let properties: properties[] = []
-    let  propertiesJson = []
-    try {
-      properties = await getProperties();
-      propertiesJson = resToJson(properties);
-    }catch (error) {
-      console.error(error);
-    }
-
+    const  propertiesJson = []
     return {
         props: { cityMenu, propertiesJson }
     }
@@ -68,17 +60,15 @@ function resToJson(props){
         neighborhood: prop['neighborhood'],
         timezone: prop['timezone'],
         unit_count: prop['unit_count'],
+        spaces: prop['spaces'],
+        room_name: prop['room_name'],
+        price:prop['price'],
         weights:{
-          wf_distance: prop['wf_distance'],
-          // wf_value:prop.dist_diff,
-          // distance_value:
           wf_price: prop['wf_price'],
-          // wf_value:prop.price_diff,
-          // price_value:
           wf_time: prop['wf_time'],
-          // wf_value:prop.time_diff,
-          // time_value:
           wf_market: prop['wf_market'],
+          diff_price: prop['diff_price'],
+          diff_time: prop['diff_time'],
         }
       }
     )
@@ -130,7 +120,7 @@ function PortalContent({ cityMenu, propertiesJson }) {
                 },
                 body: JSON.stringify(data)
             });
-            const properties: properties[] = await response.json();
+            const properties = await response.json();
             console.log(typeof properties)
             if (!properties || properties.length == 0) {
                 setNewProp([]);
@@ -224,10 +214,6 @@ function PortalContent({ cityMenu, propertiesJson }) {
                               <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
                                   <UserSearchFields
                                     cityMenu={cityMenu}
-                                    // setCitySelected={setCitySelected}
-                                    // setTermSelected={setTermSelected}
-                                    // setDateSelected={setDateSelected}
-                                    // setPetSelected={setPetSelected}
                                     searchConditions={searchConditions}
                                     setSearchConditions={setSearchConditions}
                                     setSearch={setSearch}
