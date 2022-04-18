@@ -140,7 +140,6 @@ function PortalContent({ cityMenu, propertiesJson }) {
     return (
       <ThemeProvider theme={mdTheme}>
           <Box sx={{ display: 'flex' }}>
-
               <CssBaseline />
               <AppBar position="absolute" open={open}>
                   <Toolbar

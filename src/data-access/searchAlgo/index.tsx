@@ -61,8 +61,6 @@ export async function searchingAlgo(userSelection) {
       spaceSort.sort(function(a,b){
         return b[1][1][0]-a[1][1][0]
       })
-      // const sortedSpaceMap = new Map(spaceSort.map(i=>[i[0],[i[1][0],i[1][1]]]))
-      // console.log(sortedSpaceMap)
       propList.push({
         id: prop.id,
         home_name: prop.home_name,
@@ -87,6 +85,7 @@ export async function searchingAlgo(userSelection) {
         spaces: [spaceSort[0][1][0]]
       })
     };
+    //prop 排序
     const propSort = Array.from(propList);
     propSort.sort(function(a,b){
       return b.scores_sum-a.scores_sum

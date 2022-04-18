@@ -9,74 +9,86 @@ import Card from "@mui/material/Card";
 import { makeStyles } from "@mui/styles";
 import { Grid } from "@mui/material";
 import { properties } from "../../src/data-access/searches";
+import { useEffect, useState } from "react";
 
 ChartJS.register(ArcElement, Tooltip);
 
 const useStyles = makeStyles({
   root: {
-    maxWidth: "100%",
+    maxWidth: "100%"
   },
   media: {
-    height: 130,
+    height: 130
   },
   alignItemsAndJustifyContent: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center"
+  }
 });
 
-const chartData = {
-  labels : ["Distance", "Price", "Time", "Market"],
-  datasets : [
-    {
-      label: '# of Votes',
-      data: [0, 0, 0, 0],
-      backgroundColor: ["#003f5c", "#58508d", "#bc5090", "#ff6361", "#ffa600"]
-    }
-  ]
-}
 
-const boxStyle_wb={
-  display: 'block',
-  color: 'grey.800' ,
-  border: '1px solid',
-  borderColor: 'grey.300',
+const boxStyle_wb = {
+  display: "block",
+  color: "grey.800",
+  border: "1px solid",
+  borderColor: "grey.300",
   borderRadius: 1,
-  fontSize: '0.6rem',
-  fontWeight: '700',
-  m:0.2,
-  overflow: 'auto'
-}
+  fontSize: "0.6rem",
+  fontWeight: "700",
+  m: 0.2,
+  overflow: "auto"
+};
 
-const boxStyle_nb={
-  display: 'block',
-  color: 'grey.800' ,
-  borderColor: 'grey.300',
+const boxStyle_nb = {
+  display: "block",
+  color: "grey.800",
+  borderColor: "grey.300",
   borderRadius: 1,
-  fontSize: '0.6rem',
-  fontWeight: '700',
-  alignCenter:"center",
-  m:0.2,
-}
+  fontSize: "0.6rem",
+  fontWeight: "700",
+  alignCenter: "center",
+  m: 0.2
+};
 
-function PropCard({data}) {
+function PropCard({ data }) {
   const classes = useStyles();
-  chartData.datasets[0].data=[0, data['weights'].wf_price*data['weights'].diff_price,data['weights'].wf_time*data['weights'].diff_time,data['weights'].wf_market]
-  console.log(chartData.datasets[0].data)
+  // const [values,setValue] = useState([0,0,0,0])
+  const [chartData, setChartData] = useState({
+    labels: ["Distance", "Price", "Time", "Market"],
+    datasets: [
+      {
+        data: [0, data["weights"].wf_price * data["weights"].diff_price, data["weights"].wf_time * data["weights"].diff_time, data["weights"].wf_market],
+        backgroundColor: ["#003f5c", "#58508d", "#bc5090", "#ff6361", "#ffa600"]
+      }
+    ]
+  });
+  useEffect(() => {
+    setChartData({
+        labels: ["Distance", "Price", "Time", "Market"],
+        datasets: [
+          {
+            data: [0, data["weights"].wf_price * data["weights"].diff_price, data["weights"].wf_time * data["weights"].diff_time, data["weights"].wf_market],
+            backgroundColor: ["#003f5c", "#58508d", "#bc5090", "#ff6361", "#ffa600"]
+          }
+        ]
+      }
+    );
+  }, [data["weights"].diff_price, data["weights"].diff_time]);
+
   return (
     <Card className={classes.root}>
       <Box display="flex" justifyContent="space-between">
-        <Grid item xs={4} >
-          <CardContent >
+        <Grid item xs={4}>
+          <CardContent>
             <Button
               variant="outlined"
-              size='small'
+              size="small"
               sx={{
                 mb: 0.5,
-                fontSize: '0.7rem',
-                fontWeight: '700',
-                m:0.2,
+                fontSize: "0.7rem",
+                fontWeight: "700",
+                m: 0.2
               }}
             >
               Briefing:
@@ -94,7 +106,7 @@ function PropCard({data}) {
               className={classes.alignItemsAndJustifyContent}
 
             >
-              {String(data.home_name).split('.')[1]!}
+              {String(data.home_name).split(".")[1]!}
             </Box>
             <Box
               component="span"
@@ -120,7 +132,7 @@ function PropCard({data}) {
               sx={boxStyle_wb}
               className={classes.alignItemsAndJustifyContent}
             >
-              {data.home_name.split('.')[0]!+" "+data.city_name!}
+              {data.home_name.split(".")[0]! + " " + data.city_name!}
             </Box>
             <Box
               component="span"
@@ -151,15 +163,15 @@ function PropCard({data}) {
           </CardContent>
         </Grid>
         <Grid item xs={4}>
-          <CardContent >
+          <CardContent>
             <Button
               variant="outlined"
-              size='small'
+              size="small"
               sx={{
                 mb: 0.5,
-                fontSize: '0.7rem',
-                fontWeight: '700',
-                m:0.2,
+                fontSize: "0.7rem",
+                fontWeight: "700",
+                m: 0.2
               }}
             >
               Weights:
@@ -167,15 +179,15 @@ function PropCard({data}) {
             <Box
               component="span"
               sx={boxStyle_nb}
-              >
+            >
               {"Dist Score: "}
             </Box>
             <Box
-                component="span"
-                sx={boxStyle_wb}
-                className={classes.alignItemsAndJustifyContent}
+              component="span"
+              sx={boxStyle_wb}
+              className={classes.alignItemsAndJustifyContent}
             >
-              {data.weights.wf_distance!+' x '}
+              {data.weights.wf_distance! + " x "}
             </Box>
             <Box
               component="span"
@@ -188,7 +200,7 @@ function PropCard({data}) {
               sx={boxStyle_wb}
               className={classes.alignItemsAndJustifyContent}
             >
-              {data.weights.wf_price!+' x '+data.weights.diff_price!}
+              {data.weights.wf_price! + " x " + data.weights.diff_price!}
             </Box>
             <Box
               component="span"
@@ -201,7 +213,7 @@ function PropCard({data}) {
               sx={boxStyle_wb}
               className={classes.alignItemsAndJustifyContent}
             >
-              {data.weights.wf_time!+' x '+data.weights.diff_time!}
+              {data.weights.wf_time! + " x " + data.weights.diff_time!}
             </Box>
             <Box
               component="span"
@@ -227,20 +239,22 @@ function PropCard({data}) {
               sx={boxStyle_wb}
               className={classes.alignItemsAndJustifyContent}
             >
-              {data['weights'].wf_price!*data['weights'].diff_price!+data['weights'].wf_time!*data['weights'].diff_time!+data['weights'].wf_market!}
+              {data["weights"].wf_price! * data["weights"].diff_price! + data["weights"].wf_time! * data["weights"].diff_time! + data["weights"].wf_market!}
             </Box>
           </CardContent>
         </Grid>
-        <Grid item xs={4} sx={{m:1}}>
+        <Grid item xs={4} sx={{ m: 1 }}>
           <CardContent sx={{
             mb: 1,
-            fontSize: '0.8rem',
-            float: 'middle',
+            fontSize: "0.8rem",
+            float: "middle"
           }}>
           </CardContent>
           <Doughnut
-            data={{labels: chartData.labels,
-              datasets: chartData.datasets}}
+            data={{
+              labels: chartData.labels,
+              datasets: chartData.datasets
+            }}
           />
           <Box
             component="span"
