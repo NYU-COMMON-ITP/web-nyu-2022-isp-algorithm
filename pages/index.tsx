@@ -32,6 +32,9 @@ function HomePage() {
         <li>
           <Button href="/portal/cards">Apartment Info Page</Button>
         </li>
+        <li>
+          <Button href="/portal/operations">Space and Property Management</Button>
+        </li>        
       </ul>
     </div>
     //   {/* </Wrapper> */}
