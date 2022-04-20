@@ -12,7 +12,7 @@ import ListItemText from "@mui/material/ListItemText";
 import ListItemButton from "@mui/material/ListItemButton";
 
 function CardField({data}){
-  const PER_PAGE = 6;
+  const PER_PAGE = 4;
   const [page, setPage] = useState(1);
   const count = Math.ceil(data.length / PER_PAGE);
   const pageData = usePagination(data, PER_PAGE);

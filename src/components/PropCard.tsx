@@ -281,7 +281,7 @@ function PropCard({ data }) {
           sx={boxStyle_wb}
           className={classes.alignItemsAndJustifyContent}
         >
-          Score: Factor x Weight x Score
+          Score: Factor x Score
         </Box>
       </Grid>
     </Card>
