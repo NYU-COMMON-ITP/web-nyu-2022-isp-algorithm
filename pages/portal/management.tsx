@@ -1,9 +1,10 @@
 import * as React from "react";
 import { GetStaticProps } from "next";
-
-import { createTheme, ThemeProvider } from "@mui/material/styles";
+import { styled, createTheme, ThemeProvider } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
+import MuiDrawer from "@mui/material/Drawer";
 import Box from "@mui/material/Box";
+import MuiAppBar, { AppBarProps as MuiAppBarProps } from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 import List from "@mui/material/List";
 import Typography from "@mui/material/Typography";
@@ -12,8 +13,7 @@ import IconButton from "@mui/material/IconButton";
 import Badge from "@mui/material/Badge";
 import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
-
-
+import Link from "@mui/material/Link";
 import Paper from "@mui/material/Paper";
 import MenuIcon from "@mui/icons-material/Menu";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
@@ -24,21 +24,44 @@ import SpaceSearchField from "../../src/components/SpaceSearch";
 import PropAttrField from "../../src/components/PropAttr";
 import SpaceAttrField from "../../src/components/SpaceAttr";
 
-import Copyright from "../../src/components/Copyright";
-import AppBar from "../../src/components/AppBar";
-import Drawer from "../../src/components/Drawer";
-import { properties, spaces } from "../../src/data-access/searches";
+import {
+  properties,
+  getCities,
+  getProperties,
+  spaces,
+} from "../../src/data-access/searches";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
-
 const drawerWidth: number = 240;
 
+// This page will be statically rendered at build time
 export const getStaticProps: GetStaticProps = async () => {
+  const cityLists = await getCities();
+  var cityMenu = [];
 
-    const spacesJson = []
-    const propertiesJson = []
-    return {
-        props: { propertiesJson, spacesJson }
-    }
+  for (var city of cityLists) {
+    cityMenu.push({
+      value: city.city_name,
+      label: city.city_name,
+    });
+  }
+  const properties: properties[] = await getProperties();
+  var spacesJson = [];
+  var propertiesJson = [];
+  for (var prop of properties) {
+    propertiesJson.push({
+      id: prop.id,
+      home_name: prop.home_name,
+      property_id: prop.property_id,
+      brand: prop.brand,
+      city_name: prop.city_name,
+      neighborhood: prop.neighborhood,
+      timezone: prop.timezone,
+      unit_count: prop.unit_count,
+    });
+  }
+  return {
+    props: { cityMenu, propertiesJson, spacesJson },
+  };
 };
 
 const propColumns: GridColDef[] = [
@@ -62,424 +85,318 @@ const spaceColumns: GridColDef[] = [
   // { field: 'mo12_price', headerName: '12MONTH_PRICE', width: 200 },
 ];
 
+interface AppBarProps extends MuiAppBarProps {
+  open?: boolean;
+}
+
+function Copyright(props: any) {
+  return (
+    <Typography
+      variant="body2"
+      color="text.secondary"
+      align="center"
+      {...props}
+    >
+      {"Copyright © "}
+      <Link color="inherit" href="https://mui.com/">
+        Common
+      </Link>{" "}
+      {new Date().getFullYear()}
+      {"."}
+    </Typography>
+  );
+}
+
+const AppBar = styled(MuiAppBar, {
+  shouldForwardProp: (prop) => prop !== "open",
+})<AppBarProps>(({ theme, open }) => ({
+  zIndex: theme.zIndex.drawer + 1,
+  transition: theme.transitions.create(["width", "margin"], {
+    easing: theme.transitions.easing.sharp,
+    duration: theme.transitions.duration.leavingScreen,
+  }),
+  ...(open && {
+    marginLeft: drawerWidth,
+    width: `calc(100% - ${drawerWidth}px)`,
+    transition: theme.transitions.create(["width", "margin"], {
+      easing: theme.transitions.easing.sharp,
+      duration: theme.transitions.duration.enteringScreen,
+    }),
+  }),
+}));
+
+const Drawer = styled(MuiDrawer, {
+  shouldForwardProp: (prop) => prop !== "open",
+})(({ theme, open }) => ({
+  "& .MuiDrawer-paper": {
+    position: "relative",
+    whiteSpace: "nowrap",
+    width: drawerWidth,
+    transition: theme.transitions.create("width", {
+      easing: theme.transitions.easing.sharp,
+      duration: theme.transitions.duration.enteringScreen,
+    }),
+    boxSizing: "border-box",
+    ...(!open && {
+      overflowX: "hidden",
+      transition: theme.transitions.create("width", {
+        easing: theme.transitions.easing.sharp,
+        duration: theme.transitions.duration.leavingScreen,
+      }),
+      width: theme.spacing(7),
+      [theme.breakpoints.up("sm")]: {
+        width: theme.spacing(9),
+      },
+    }),
+  },
+}));
+
 const mdTheme = createTheme();
 
 function PortalContent({ propertiesJson, spacesJson }) {
-    const [open, setOpen] = React.useState(false);
-    const [searchPropTrig, setSearchPropTrig] = React.useState(false);
-    const [searchSpaceTrig, setSearchSpaceTrig] = React.useState(false);
-    const [newProp, setNewProp] = React.useState([]);
-    const [newSpace, setNewSpace] = React.useState([]);
-
-
-    const [propAttr,setPropAttr] = React.useState({
-        id: "",
-        property_id:"",
-        brand: "",
-        home_name:"",
-        city_name:"",
-        neighborhood:"",
-    })
-
-    const [spaceAttr,setSpaceAttr] = React.useState({
-        space_id: "",
-        property_id: "",
-        room_name:"",
-        occupancy_type:"",
-        mo3_price:"",
-        mo6_price:"",
-        bedroom_count:"",
-        bath_count:"",
-    })
-
+  const [open, setOpen] = React.useState(false);
+  const [propSelected, setIdSelected] = React.useState(null);
+  const [spSelected, setSpSelected] = React.useState(null);
+  const [homeSelected, setHomeSelected] = React.useState("");
+  const [searchPropTrig, setPropSearch] = React.useState(false);
+  const [searchSpaceTrig, setSpaceSearch] = React.useState(false);
+  const [newProp, setNewProp] = React.useState(null);
+  const [newSpace, setNewSpace] = React.useState(null);
 
   const toggleDrawer = () => {
     setOpen(!open);
   };
 
-    React.useEffect(() => {
-        async function fetchProp() {
-            const data = {
-                "operation": "managePropSearch",
-                "variables": {
-                    "id": parseInt(propAttr.id),
-                    "home_name": propAttr.home_name,
-                }
-            }
-            const response = await fetch('/api/v1/managtPropSearch', {
-                method: 'POST',
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify(data)
-            });
-            const properties: properties[] = await response.json();
-
-            const propertiesJson = []
-            const spacesJson = []
-            if (!properties || properties.length == 0) {
-                setNewProp([]);
-                return
-            }
-            for (const line of properties) {
-                propertiesJson.push(
-                    {
-                        id: line.id,
-                        home_name: line.home_name,
-                        property_id: line.property_id,
-                        brand: line.brand,
-                        city_name: line.city_name,
-                        neighborhood: line.neighborhood,
-                        unit_count: line.unit_count,
-                    }
-                )
-            }
-
-            setNewProp(propertiesJson);
-            if (properties.length==1) {
-                const spaces: spaces[] = properties[0]["spaces"]
-                if (!spaces || spaces.length == 0) {
-                    setNewSpace([]);
-                    return
-                }
-                for (const sp of spaces) {
-                    spacesJson.push(
-                      {
-                          id: sp.space_id,
-                          space_id: sp.space_id,
-                          room_name: sp.room_name,
-                          status: sp.status,
-                          property_id:sp.property_id,
-                          occupancy_type: sp.occupancy_type
-                      }
-                    )
-                }
-                setNewSpace(spacesJson);
-            }else{
-                setNewSpace([])
-            }
+  React.useEffect(() => {
+    async function fetchProp() {
+      const data = {
+        operation: "managePropSearch",
+        variables: {
+          id: propSelected,
+          home_name: homeSelected,
+        },
+      };
+      const response = await fetch(
+        "http://localhost:6003/api/v1/managtPropSearch",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(data),
         }
-        fetchProp().then(()=>console.log('Search Properties'))
-        setSearchPropTrig(false)
-    }, [searchPropTrig])
+      );
+      const properties: properties[] = await response.json();
 
-    React.useEffect(() => {
-        async function fetchSpace() {
-            const data = {
-                "operation": "manageSpaceSearch",
-                "variables": {
-                    "space_id": parseInt(spaceAttr.space_id),
-                }
-            }
-            const response = await fetch('/api/v1/managtSpaceSearch', {
-                method: 'POST',
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify(data)
-            });
-            const spaces: spaces[] = await response.json();
-            const spacesJson = []
-            if (!spaces || spaces.length == 0) {
-                setNewSpace([]);
-                return
-            }
-            for (const sp of spaces) {
-                spacesJson.push(
-                  {
-                      id: sp.space_id,
-                      space_id: sp.space_id,
-                      room_name: sp.room_name,
-                      status: sp.status,
-                      property_id:sp.property_id,
-                      occupancy_type: sp.occupancy_type
-                  }
-                )
-            }
-            setNewProp([]);
-            setNewSpace(spacesJson);
+      var propertiesJson = [];
+      var spacesJson = [];
+      if (!properties || properties.length == 0) {
+        setNewProp({});
+        return;
+      }
+      for (var line of properties) {
+        propertiesJson.push({
+          id: line.id,
+          home_name: line.home_name,
+          property_id: line.property_id,
+          brand: line.brand,
+          city_name: line.city_name,
+          neighborhood: line.neighborhood,
+          unit_count: line.unit_count,
+        });
+      }
+
+      setNewProp(propertiesJson);
+      if (properties.length == 1) {
+        const spaces: spaces[] = await properties[0]["spaces"];
+        if (!spaces || spaces.length == 0) {
+          setNewSpace({});
+          return;
         }
-        fetchSpace().then(()=>console.log('Search Spaces'))
-        setSearchSpaceTrig(false)
-      }, [searchSpaceTrig])
+        for (var sp of spaces) {
+          spacesJson.push({
+            id: sp.space_id,
+            space_id: sp.space_id,
+            room_name: sp.room_name,
+            status: sp.status,
+          });
+        }
+        setNewSpace(spacesJson);
+      } else {
+        setNewSpace(null);
+      }
+    }
+    fetchProp();
+    setPropSearch(false);
+  }, [searchPropTrig]);
 
-    // React.useEffect(() => {
-    //     async function fetchCreateProp() {
-    //         const data = {
-    //             "operation": "managePropUpdate",
-    //             "variables": {
-    //                 "home_name":home_nameInput,
-    //                 "city_name":city_nameInput,
-    //                 "neighborhood":neighborhood_Input,
-    //             }
-    //         }
-    //         const response = await fetch('http://localhost:6003/api/v1/managtPropCreate', {
-    //             method: 'PUT',
-    //             headers: {
-    //                 "Content-Type": "application/json"
-    //             },
-    //             body: JSON.stringify(data)
-    //         });
-    //     }
-    //     fetchCreateProp()
-    //     setPropSearch(true)
-    //     setPropCreate(false)
-    // }, [createPropTrig])
+  React.useEffect(() => {
+    async function fetchSpace() {
+      const data = {
+        operation: "manageSpaceSearch",
+        variables: {
+          space_id: spSelected,
+        },
+      };
+      const response = await fetch(
+        "http://localhost:6003/api/v1/managtSpaceSearch",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(data),
+        }
+      );
+      const spaces: spaces[] = await response.json();
+      var spacesJson = [];
+      if (!spaces || spaces.length == 0) {
+        setNewSpace({});
+        return;
+      }
+      for (var sp of spaces) {
+        spacesJson.push({
+          id: sp.space_id,
+          space_id: sp.space_id,
+          room_name: sp.room_name,
+          status: sp.status,
+        });
+      }
+      setNewProp({});
+      setNewSpace(spacesJson);
+    }
+    fetchSpace();
+    setSpaceSearch(false);
+  }, [searchSpaceTrig]);
 
-    // React.useEffect(() => {
-    //     async function fetchCreateSpace() {
-    //         const data = {
-    //             "operation": "manageSpaceCreate",
-    //             "variables": {
-    //                 "property_id":
-    //                 "apartment_room":aptRoomInput,
-    //                 "room_name":roomNameInput,
-    //                 "occupancy_type":ocpyInput,
-    //                 "mo3_price":,
-    //                 "mo6_price":,
-    //                 "bedroom_count":
-    //                 "bath_count":
-    //             }
-    //         }
-    //         const response = await fetch('http://localhost:6003/api/v1/managtSpaceCreate', {
-    //             method: 'PUT',
-    //             headers: {
-    //                 "Content-Type": "application/json"
-    //             },
-    //             body: JSON.stringify(data)
-    //         });
-    //     }
-    //     fetchCreateSpace()
-    //     setSpaceSearch(true)
-    //     setSpCreate(false)
-    // }, [createSpaceTrig])
+  return (
+    <ThemeProvider theme={mdTheme}>
+      <Box sx={{ display: "flex" }}>
+        <CssBaseline />
+        <AppBar position="absolute" open={open}>
+          <Toolbar
+            sx={{
+              pr: "24px", // keep right padding when drawer closed
+            }}
+          >
+            <IconButton
+              edge="start"
+              color="inherit"
+              aria-label="open drawer"
+              onClick={toggleDrawer}
+              sx={{
+                marginRight: "36px",
+                ...(open && { display: "none" }),
+              }}
+            >
+              <MenuIcon />
+            </IconButton>
+            <Typography
+              component="h1"
+              variant="h6"
+              color="inherit"
+              noWrap
+              sx={{ flexGrow: 1 }}
+            >
+              Dashboard
+            </Typography>
+            <IconButton color="inherit">
+              <Badge badgeContent={0} color="secondary">
+                <NotificationsIcon />
+              </Badge>
+            </IconButton>
+          </Toolbar>
+        </AppBar>
+        <Drawer variant="permanent" open={open}>
+          <Toolbar
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "flex-end",
+              px: [1],
+            }}
+          >
+            <IconButton onClick={toggleDrawer}>
+              <ChevronLeftIcon />
+            </IconButton>
+          </Toolbar>
+          <Divider />
+          <List component="nav">{ListItems}</List>
+        </Drawer>
+        <Box
+          component="main"
+          sx={{
+            backgroundColor: (theme) =>
+              theme.palette.mode === "light"
+                ? theme.palette.grey[100]
+                : theme.palette.grey[900],
+            flexGrow: 1,
+            height: "100vh",
+            overflow: "auto",
+          }}
+        >
+          <Toolbar />
 
-    // React.useEffect(() => {
-    //     async function fetchDeleteProp() {
-    //         const data = {
-    //             "operation": "managePropDelete",
-    //             "variables": {
-    //                 "id":selectedId,
-    //             }
-    //         }
-    //         const response = await fetch('http://localhost:6003/api/v1/managtPropDelete', {
-    //             method: 'DELETE',
-    //             headers: {
-    //                 "Content-Type": "application/json"
-    //             },
-    //             body: JSON.stringify(data)
-    //         });
-    //     }
-    //     fetchDeleteProp()
-    //     setPropSearch(true)
-    //     setPropDelete(false)
-    // }, [delPropTrig])
-
-    // React.useEffect(() => {
-    //     async function fetchDeleteSpace() {
-    //         const data = {
-    //             "operation": "manageSpaceCreate",
-    //             "variables": {
-    //                 "space_id":,
-    //             }
-    //         }
-    //         const response = await fetch('http://localhost:6003/api/v1/managtSpaceDelete', {
-    //             method: 'DELETE',
-    //             headers: {
-    //                 "Content-Type": "application/json"
-    //             },
-    //             body: JSON.stringify(data)
-    //         });
-    //     }
-    //     fetchDeleteSpace()
-    //     setSpaceSearch(true)
-    //     setSppaceDel(false)
-    // }, [delSpaceTrig])
-
-    return (
-        <ThemeProvider theme={mdTheme}>
-            <Box sx={{ display: 'flex' }}>
-
-                <CssBaseline />
-                <AppBar position="absolute" open={open}>
-                    <Toolbar
-                        sx={{
-                            pr: '24px',
-                        }}
-                    >
-                        <IconButton
-                            edge="start"
-                            color="inherit"
-                            aria-label="open drawer"
-                            onClick={toggleDrawer}
-                            sx={{
-                                marginRight: '36px',
-                                ...(open && { display: 'none' }),
-                            }}
-                        >
-                            <MenuIcon />
-                        </IconButton>
-                        <Typography
-                            component="h1"
-                            variant="h6"
-                            color="inherit"
-                            noWrap
-                            sx={{ flexGrow: 1 }}
-                        >
-                            Dashboard
-                        </Typography>
-                        <IconButton color="inherit">
-                            <Badge badgeContent={0} color="secondary">
-                                <NotificationsIcon />
-                            </Badge>
-                        </IconButton>
-                    </Toolbar>
-                </AppBar>
-                <Drawer variant="permanent" open={open}>
-                    <Toolbar
-                        sx={{
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'flex-end',
-                            px: [1],
-                        }}
-                    >
-                        <IconButton onClick={toggleDrawer}>
-                            <ChevronLeftIcon />
-                        </IconButton>
-                    </Toolbar>
-                    <Divider />
-                    <List component="nav">
-                        {ListItems}
-                    </List>
-                </Drawer>
-                <Box
-                    component="main"
-                    sx={{
-                        backgroundColor: (theme) =>
-                            theme.palette.mode === 'light'
-                                ? theme.palette.grey[100]
-                                : theme.palette.grey[900],
-                        flexGrow: 1,
-                        height: '100vh',
-                        overflow: 'auto',
-                    }}
-                >
-                    <Toolbar />
-
-                    <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
-                        <Grid container spacing={3}>
-                            <Grid item xs={12} md={2} lg={2}>
-                                <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
-                                    <PropSearchField
-                                        // setIdSelected={setIdSelected}
-                                        // setHomeSelected={setHomeSelected}
-                                        propAttr={propAttr}
-                                        setPropAttr={setPropAttr}
-                                        setTrig={setSearchPropTrig}
-                                    />
-                                </Paper>
-                            </Grid>
-                            <Grid item xs={12} md={8} lg={8}>
-                                <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
-                                    <div style={{ height: 400, width: '100%', fontSize: 8 }}>
-                                        <DataGrid
-                                            rows={newProp != null ? newProp : propertiesJson}
-                                            columns={propColumns}
-                                            getRowId={(row) => row.id}
-                                            pageSize={5}
-                                            rowsPerPageOptions={[5, 20, 50]}
-                                            checkboxSelection={false}
-                                            onSelectionModelChange={
-                                                (ids) => {
-                                                    // let selectedProp = newProp.filter(e => e.id==ids)
-                                                    const selectedProp = newProp.filter(
-                                                      function(obj, index){
-                                                        return obj.id==ids;
-                                                    }
-                                                    )
-                                                    console.log(selectedProp)
-                                                    if (selectedProp.length!=0){
-                                                        setPropAttr({
-                                                            ...propAttr,
-                                                            id:String(ids),
-                                                            home_name:selectedProp[0].home_name,
-                                                            property_id:selectedProp[0].property_id,
-                                                            brand: selectedProp[0].brand,
-                                                            city_name:selectedProp[0].city_name,
-                                                            neighborhood:selectedProp[0].neighborhood,
-                                                        })
-
-                                                    }
-
-                                                }
-                                        }
-                                        />
-                                    </div>
-                                </Paper>
-                            </Grid>
-                            <Grid item xs={12} md={2} lg={2}>
-                                <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
-                                    <PropAttrField
-                                      propAttr={propAttr}
-                                      setPropAttr={setPropAttr}
-                                      setTrig = {setSearchPropTrig}
-                                    />
-                                </Paper>
-                            </Grid>
-                            <Grid item xs={12} md={2} lg={2}>
-                                <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
-                                    <SpaceSearchField
-                                        spaceAttr={spaceAttr}
-                                        setSpaceAttr={setSpaceAttr}
-                                        setTrig={setSearchSpaceTrig}
-                                    />
-                                </Paper>
-                            </Grid>
-                            <Grid item xs={12} md={8} lg={8}>
-                                <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
-                                    <div style={{ height: 400, width: '100%', fontSize: 8 }}>
-                                        <DataGrid
-                                            rows={newSpace != null ? newSpace : spacesJson}
-                                            columns={spaceColumns}
-                                            getRowId={(row) => row.space_id}
-                                            pageSize={5}
-                                            rowsPerPageOptions={[5, 20, 50]}
-                                            checkboxSelection={false}
-                                            onSelectionModelChange={
-                                                (ids) => {
-                                                    // const selectedSpace = newSpace.filter(e => e.id==ids)[0]
-                                                    const selectedSpace = newSpace.filter(
-                                                      function(obj, index){
-                                                          return obj.space_id==ids;
-                                                      }
-                                                    )
-                                                    console.log(selectedSpace)
-                                                    if(selectedSpace.length!=0){
-                                                        setSpaceAttr({
-                                                            ...spaceAttr,
-                                                            space_id: String(ids),
-                                                            room_name: selectedSpace[0].room_name,
-                                                            occupancy_type: selectedSpace[0].occupancy_type,
-                                                            // room_name:"",
-                                                            // mo3_price:"",
-                                                            // mo6_price:"",
-                                                            // bedroom_count:"",
-                                                            // bath_count:"",
-                                                        })
-                                                    }
-                                                }
-                                            }
-                                        />
-                                    </div>
-                                </Paper>
-                            </Grid>
-                            <Grid item xs={12} md={2} lg={2}>
+          <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
+            <Grid container spacing={3}>
+              <Grid item xs={12} md={2} lg={2}>
+                <Paper sx={{ p: 2, display: "flex", flexDirection: "column" }}>
+                  <PropSearchField
+                    setIdSelected={setIdSelected}
+                    setHomeSelected={setHomeSelected}
+                    setPropSearch={setPropSearch}
+                  />
+                </Paper>
+              </Grid>
+              <Grid item xs={12} md={8} lg={8}>
+                <Paper sx={{ p: 2, display: "flex", flexDirection: "column" }}>
+                  <div style={{ height: 400, width: "100%", fontSize: 8 }}>
+                    <DataGrid
+                      rows={newProp != null ? newProp : propertiesJson}
+                      columns={propColumns}
+                      getRowId={(row) => row.id}
+                      pageSize={5}
+                      rowsPerPageOptions={[20, 50]}
+                      checkboxSelection
+                    />
+                  </div>
+                </Paper>
+              </Grid>
+              <Grid item xs={12} md={2} lg={2}>
+                <Paper sx={{ p: 2, display: "flex", flexDirection: "column" }}>
+                  <PropAttrField
+                    setIdSelected={setIdSelected}
+                    setHomeSelected={setHomeSelected}
+                  />
+                </Paper>
+              </Grid>
+              <Grid item xs={12} md={2} lg={2}>
+                <Paper sx={{ p: 2, display: "flex", flexDirection: "column" }}>
+                  <SpaceSearchField
+                    setSpaceSelected={setSpSelected}
+                    setSpaceSearch={setSpaceSearch}
+                  />
+                </Paper>
+              </Grid>
+              <Grid item xs={12} md={8} lg={8}>
+                <Paper sx={{ p: 2, display: "flex", flexDirection: "column" }}>
+                  <div style={{ height: 400, width: "100%", fontSize: 8 }}>
+                    <DataGrid
+                      rows={newSpace != null ? newSpace : spacesJson}
+                      columns={spaceColumns}
+                      getRowId={(row) => row.id}
+                      pageSize={5}
+                      rowsPerPageOptions={[20, 50]}
+                      checkboxSelection
+                    />
+                  </div>
+                </Paper>
+              </Grid>
+              {/* <Grid item xs={12} md={2} lg={2}>
                                 <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
                                     <SpaceAttrField
-                                      spaceAttr={spaceAttr}
-                                      setSpaceAttr={setSpaceAttr}
-                                      setTrig = {setSearchSpaceTrig}
+                                        setIdSelected={setIdSelected}
+                                        setHomeSelected={setHomeSelected}
                                     />
                                 </Paper>
                             </Grid> */}
