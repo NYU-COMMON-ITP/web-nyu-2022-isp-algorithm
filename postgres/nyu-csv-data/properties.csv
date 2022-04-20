@@ -1,95 +1,95 @@
-id,home_name,property_id,brand,city_name,neighborhood,timezone,unit_count,rownum
-7914,BOS.4thandbroadway,8099e3c98b4,noah,Chelsea,Chelsea,Eastern Time (US & Canada),27,1
-8451,BOS.Joneshill,7c3fbfcceb4,noah,Dorchester,Dorchester,Eastern Time (US & Canada),37,1
-9607,BOS.Powderhornhill,06c92aa88e2,noah,Chelsea,Chelsea,Eastern Time (US & Canada),32,1
-8499,BOS.Themeetinghouse,3ab8086e29a,noah,Dorchester,Dorchester,Eastern Time (US & Canada),37,1
-9559,BOS.ashmont,5f80fdd652a,noah,Dorchester,Dorchester,Eastern Time (US & Canada),12,1
-9585,BOS.theelaine,692f1a3a275,noah,Mattapan,Mattapan,Eastern Time (US & Canada),27,1
-11522,CHI.Briar,2e151e15747,common,Chicago,Lakeview East,Central Time (US & Canada),14,1
-11483,CHI.Damen,ab83d5c56ad,common,Chicago,Ukranian Village,Central Time (US & Canada),12,1
-15399,CHI.LINEA,2ed1a44fea2,common,Chicago,Downtown Loop,Central Time (US & Canada),349,1
-7873,CHI.Sable,27f081bb1ff,common,Chicago,Pilsen,Central Time (US & Canada),16,1
-11506,CHI.Violet,73bacf1aaa5,common,Chicago,Pilsen,Central Time (US & Canada),13,1
-15101,JC.Agnes,b93b3fd31c7,common,Jersey City,West Side,Eastern Time (US & Canada),64,1
-9745,JC.Nest,4c81b4331e8,common,Jersey City,Journal Square,Eastern Time (US & Canada),1,1
-10487,LAX.1164.N Kenmore,4793f66b678,common,Los Angeles,East Hollywood,Pacific Time (US & Canada),29,1
-14989,LAX.Beverly,2cf2d32c1cb,common,Los Angeles,Hancock Park,Pacific Time (US & Canada),91,1
-10047,LAX.Bonner,356c0d2c16c,common,North Hollywood,North Hollywood,Pacific Time (US & Canada),31,1
-10274,LAX.C1,a3cac7b5df8,common,Marina Del Rey,Marina Del Rey,Pacific Time (US & Canada),119,1
-13501,LAX.Centinela,10af9b5ab0c,common,Los Angeles,Playa Vista,Pacific Time (US & Canada),84,1
-10458,LAX.Edenhaus,fd131a26f9a,common,Los Angeles,Hollywood,Pacific Time (US & Canada),17,1
-13980,LAX.Elmwood,6a077a53a9a,common,Los Angeles,Larchmont Village,Pacific Time (US & Canada),140,1
-13643,LAX.Fountain,0ccff593eab,common,Los Angeles,Hollywood,Pacific Time (US & Canada),198,1
-12945,LAX.Melrose,d1d50969112,common,Los Angeles,Melrose,Pacific Time (US & Canada),24,1
-12202,LAX.Paramount,56b5384dd01,common,Los Angeles,Hollywood,Pacific Time (US & Canada),96,1
-10439,LAX.Penmar,d7580e46953,common,Venice,Venice,Pacific Time (US & Canada),20,1
-11416,LAX.Sycamore,5be49bcaec9,common,Los Angeles,Mid-City,Pacific Time (US & Canada),30,1
-11202,MD.Yorkewood,1f0a7b62e68,noah,Baltimore,Baltimore,Eastern Time (US & Canada),286,1
-9278,NYC.ALTA,dcee0e1bb0c,common,Long Island City,Long Island City,Eastern Time (US & Canada),525,1
-13110,NYC.Albany,ee49432b413,common,Brooklyn,Crown Heights,Eastern Time (US & Canada),9,1
-14923,NYC.Baker,3be6ff68ca4,common,Brooklyn,Bed-Stuy,Eastern Time (US & Canada),20,1
-7942,NYC.Bleecker,255749f1851,kin,New York,Greenwich Village,Eastern Time (US & Canada),25,1
-13300,NYC.Brower,fb2d3c4da89,common,Brooklyn,Crown Heights,Eastern Time (US & Canada),23,1
-11360,NYC.Clark,20f01093c5e,common,New York,Harlem,Eastern Time (US & Canada),32,1
-12843,NYC.Classon,73249ed0590,common,Brooklyn,Clinton Hill,Eastern Time (US & Canada),28,1
-11340,NYC.Cypress,fcdcf24100c,common,Flushing,Ridgewood,Eastern Time (US & Canada),23,1
-11570,NYC.Dean,80654d4ec45,common,Brooklyn,Prospect Heights,Eastern Time (US & Canada),13,1
-10872,NYC.Evergreen,2535d656089,common,Brooklyn,Bushwick,Eastern Time (US & Canada),32,1
-10833,NYC.Gates,95164acafa1,common,Brooklyn,Bushwick,Eastern Time (US & Canada),50,1
-13020,NYC.Grand,c83830a37cf,common,Brooklyn,Clinton Hill,Eastern Time (US & Canada),23,1
-11322,NYC.Halsey,f547a8e3d52,common,Brooklyn,Bed-Stuy,Eastern Time (US & Canada),18,1
-11300,NYC.Hamilton,509155b4d04,common,New York,Hamilton Heights,Eastern Time (US & Canada),11,1
-13175,NYC.Hancock,f4ff58ccc2b,common,Brooklyn,Bed-Stuy,Eastern Time (US & Canada),24,1
-13083,NYC.Havemeyer,171dea57b9b,common,Brooklyn,Williamsburg,Eastern Time (US & Canada),51,1
-15157,NYC.Heritage,573950699ed,common,New York,Harlem,Eastern Time (US & Canada),80,1
-13090,NYC.Herkimer,abf2fcec8db,common,Brooklyn,Crown Heights,Eastern Time (US & Canada),18,1
-12968,NYC.Kingston,512cdfea704,common,Brooklyn,Crown Heights,Eastern Time (US & Canada),21,1
-13149,NYC.Lenox,1b4f780018c,common,New York,Harlem,Eastern Time (US & Canada),21,1
-12102,NYC.Lincoln,88fa432c1c8,common,Brooklyn,Prospect Lefferts Garden,Eastern Time (US & Canada),17,1
-8230,NYC.Marcy,67b77e7230f,common,Brooklyn,Williamsburg,Eastern Time (US & Canada),38,1
-14921,NYC.Owens,25f5396f3ca,common,Brooklyn,Bedford Stuyvesant,Eastern Time (US & Canada),44,1
-13133,NYC.Robinson,730184ab3fb,common,New York,Harlem,Eastern Time (US & Canada),27,1
-8165,NYC.Roebling,239264c2d53,kin,Brooklyn,Williamsburg,Eastern Time (US & Canada),7,1
-11596,NYC.Sterling,bc2785915bd,common,Brooklyn,Crown Heights,Eastern Time (US & Canada),15,1
-12783,NYC.TheLanes,e409c6ee403,common,Long Island City,Long Island City,Eastern Time (US & Canada),147,1
-7944,NYC.Union,e3583029302,kin,Brooklyn,Williamsburg,Eastern Time (US & Canada),19,1
-11584,NYC.Wyckoff,bffbaae89f9,common,Brooklyn,Bushwick,Eastern Time (US & Canada),14,1
-9859,PHI.Broadridge,9363646ec37,common,Philadelphia,Fairmount,Eastern Time (US & Canada),291,1
-13340,PHI.Civic,3119b05384d,common,Philadelphia,Fairmount,Eastern Time (US & Canada),28,1
-13402,PHI.Frankford,63e38da82d8,common,Philadelphia,Fishtown,Eastern Time (US & Canada),71,1
-12868,PHI.LincolnSquare,c0440765e13,common,Philadelphia,Southwest Center City,Eastern Time (US & Canada),12,1
-12340,SD.Parco,c9e8bbfaa72,common,National City,National City,Pacific Time (US & Canada),150,1
-9479,SEA.510.Broadway,241ef8cfa0b,common,Seattle,First Hill,Pacific Time (US & Canada),84,1
-8969,SEA.Anderson,6277509302b,common,Seattle,Capitol Hill,Pacific Time (US & Canada),78,1
-8933,SEA.Capitol,3adc3528087,common,Seattle,Capitol Hill,Pacific Time (US & Canada),58,1
-9083,SEA.Madison,1e763ec134f,common,Seattle,Capitol Hill,Pacific Time (US & Canada),61,1
-9332,SEA.Rogers,779aef7d0f4,common,Seattle,East Lake,Pacific Time (US & Canada),35,1
-8898,SEA.Summit,6acba213696,common,Seattle,Capitol Hill,Pacific Time (US & Canada),49,1
-9449,SEA.Terry,167b5911f80,common,Seattle,First Hill,Pacific Time (US & Canada),112,1
-10152,SFO.BEI,e855b881439,common,San Francisco,Civic Center,Pacific Time (US & Canada),120,1
-14374,SFO.CityGardens,a46823bd816,common,San Francisco,SoMa,Pacific Time (US & Canada),579,1
-11462,SFO.Cottage,c5c995416dd,common,Richmond,Point Richmond,Pacific Time (US & Canada),25,1
-12227,SFO.Jefferson,30df09473c3,common,Oakland,Oakland,Pacific Time (US & Canada),43,1
-13931,SFO.MacArthur,4dbd256e555,common,Oakland,Oakland,Pacific Time (US & Canada),45,1
-11391,SFO.Minna,0913d13847b,common,San Francisco,SoMa,Pacific Time (US & Canada),12,1
-7883,SFO.Piedmont,27b0916c9a6,kin,Oakland,Piedmont Avenue,Pacific Time (US & Canada),9,1
-13255,SFO.Powell,f3d7523e60e,common,San Francisco,Union Square,Pacific Time (US & Canada),55,1
-11478,SFO.Valencia,9eb35b4932b,common,San Francisco,SoMa,Pacific Time (US & Canada),12,1
-10393,SFO.Webster,cfad68ecc07,common,Oakland,Downtown Oakland,Pacific Time (US & Canada),66,1
-12493,SPL.Alvera,a6e98b71b42,common,St. Paul,West Seventh,Central Time (US & Canada),193,1
-11689,STP.TheWayland,02fd49e1b7e,common,St. Petersburg,Downtown St. Petersburg,Eastern Time (US & Canada),481,1
-8344,VA.Barrington Woods,ee672a15cf9,noah,Hampton,Hampton Roads,Eastern Time (US & Canada),136,1
-8206,VA.Beamons Mill,28c3f2700d3,noah,Suffolk,Suffolk,Eastern Time (US & Canada),55,1
-8095,VA.LongwoodManor,b29aa272864,noah,Woodbridge,Woodbridge,Eastern Time (US & Canada),138,1
-13544,VA.NationalLanding,fa6e061ea39,common,ARLINGTON,National Landing,Eastern Time (US & Canada),316,1
-8583,VA.Pine Plaza,1832fd0d618,noah,Winchester,Winchester,Eastern Time (US & Canada),136,1
-7972,VA.WRIGHT Apartments,534bc6b066e,noah,Winchester,Winchester,Eastern Time (US & Canada),59,1
-14114,WAS.Bowman,0dec6ade2b0,common,Washington,Chinatown,Eastern Time (US & Canada),14,1
-12801,WAS.Cassell,2cefa14a58b,common,Washington,Shaw,Eastern Time (US & Canada),51,1
+id,home_name,property_id,brand,city_name,neighborhood,timezone,unit_count,rownum,wf_distance,wf_price,wf_tme,wf_market
+7914,BOS.4thandbroadway,8099e3c98b4,noah,Chelsea,Chelsea,Eastern Time (US & Canada),27,1,1,1,1,1
+8451,BOS.Joneshill,7c3fbfcceb4,noah,Dorchester,Dorchester,Eastern Time (US & Canada),37,1,1,1,1,1
+9607,BOS.Powderhornhill,06c92aa88e2,noah,Chelsea,Chelsea,Eastern Time (US & Canada),32,1,1,1,1,1
+8499,BOS.Themeetinghouse,3ab8086e29a,noah,Dorchester,Dorchester,Eastern Time (US & Canada),37,1,1,1,1,1
+9559,BOS.ashmont,5f80fdd652a,noah,Dorchester,Dorchester,Eastern Time (US & Canada),12,1,1,1,1,1
+9585,BOS.theelaine,692f1a3a275,noah,Mattapan,Mattapan,Eastern Time (US & Canada),27,1,1,1,1,1
+11522,CHI.Briar,2e151e15747,common,Chicago,Lakeview East,Central Time (US & Canada),14,1,1,1,1,1
+11483,CHI.Damen,ab83d5c56ad,common,Chicago,Ukranian Village,Central Time (US & Canada),12,1,1,1,1,1
+15399,CHI.LINEA,2ed1a44fea2,common,Chicago,Downtown Loop,Central Time (US & Canada),349,1,1,1,1,1
+7873,CHI.Sable,27f081bb1ff,common,Chicago,Pilsen,Central Time (US & Canada),16,1,1,1,1,1
+11506,CHI.Violet,73bacf1aaa5,common,Chicago,Pilsen,Central Time (US & Canada),13,1,1,1,1,1
+15101,JC.Agnes,b93b3fd31c7,common,Jersey City,West Side,Eastern Time (US & Canada),64,1,1,1,1,1
+9745,JC.Nest,4c81b4331e8,common,Jersey City,Journal Square,Eastern Time (US & Canada),1,1,1,1,1,1
+10487,LAX.1164.N Kenmore,4793f66b678,common,Los Angeles,East Hollywood,Pacific Time (US & Canada),29,1,1,1,1,1
+14989,LAX.Beverly,2cf2d32c1cb,common,Los Angeles,Hancock Park,Pacific Time (US & Canada),91,1,1,1,1,1
+10047,LAX.Bonner,356c0d2c16c,common,North Hollywood,North Hollywood,Pacific Time (US & Canada),31,1,1,1,1,1
+10274,LAX.C1,a3cac7b5df8,common,Marina Del Rey,Marina Del Rey,Pacific Time (US & Canada),119,1,1,1,1,1
+13501,LAX.Centinela,10af9b5ab0c,common,Los Angeles,Playa Vista,Pacific Time (US & Canada),84,1,1,1,1,1
+10458,LAX.Edenhaus,fd131a26f9a,common,Los Angeles,Hollywood,Pacific Time (US & Canada),17,1,1,1,1,1
+13980,LAX.Elmwood,6a077a53a9a,common,Los Angeles,Larchmont Village,Pacific Time (US & Canada),140,1,1,1,1,1
+13643,LAX.Fountain,0ccff593eab,common,Los Angeles,Hollywood,Pacific Time (US & Canada),198,1,1,1,1,1
+12945,LAX.Melrose,d1d50969112,common,Los Angeles,Melrose,Pacific Time (US & Canada),24,1,1,1,1,1
+12202,LAX.Paramount,56b5384dd01,common,Los Angeles,Hollywood,Pacific Time (US & Canada),96,1,1,1,1,1
+10439,LAX.Penmar,d7580e46953,common,Venice,Venice,Pacific Time (US & Canada),20,1,1,1,1,1
+11416,LAX.Sycamore,5be49bcaec9,common,Los Angeles,Mid-City,Pacific Time (US & Canada),30,1,1,1,1,1
+11202,MD.Yorkewood,1f0a7b62e68,noah,Baltimore,Baltimore,Eastern Time (US & Canada),286,1,1,1,1,1
+9278,NYC.ALTA,dcee0e1bb0c,common,Long Island City,Long Island City,Eastern Time (US & Canada),525,1,1,1,1,1
+13110,NYC.Albany,ee49432b413,common,Brooklyn,Crown Heights,Eastern Time (US & Canada),9,1,1,1,1,1
+14923,NYC.Baker,3be6ff68ca4,common,Brooklyn,Bed-Stuy,Eastern Time (US & Canada),20,1,1,1,1,1
+7942,NYC.Bleecker,255749f1851,kin,New York,Greenwich Village,Eastern Time (US & Canada),25,1,1,1,1,1
+13300,NYC.Brower,fb2d3c4da89,common,Brooklyn,Crown Heights,Eastern Time (US & Canada),23,1,1,1,1,1
+11360,NYC.Clark,20f01093c5e,common,New York,Harlem,Eastern Time (US & Canada),32,1,1,1,1,1
+12843,NYC.Classon,73249ed0590,common,Brooklyn,Clinton Hill,Eastern Time (US & Canada),28,1,1,1,1,1
+11340,NYC.Cypress,fcdcf24100c,common,Flushing,Ridgewood,Eastern Time (US & Canada),23,1,1,1,1,1
+11570,NYC.Dean,80654d4ec45,common,Brooklyn,Prospect Heights,Eastern Time (US & Canada),13,1,1,1,1,1
+10872,NYC.Evergreen,2535d656089,common,Brooklyn,Bushwick,Eastern Time (US & Canada),32,1,1,1,1,1
+10833,NYC.Gates,95164acafa1,common,Brooklyn,Bushwick,Eastern Time (US & Canada),50,1,1,1,1,1
+13020,NYC.Grand,c83830a37cf,common,Brooklyn,Clinton Hill,Eastern Time (US & Canada),23,1,1,1,1,1
+11322,NYC.Halsey,f547a8e3d52,common,Brooklyn,Bed-Stuy,Eastern Time (US & Canada),18,1,1,1,1,1
+11300,NYC.Hamilton,509155b4d04,common,New York,Hamilton Heights,Eastern Time (US & Canada),11,1,1,1,1,1
+13175,NYC.Hancock,f4ff58ccc2b,common,Brooklyn,Bed-Stuy,Eastern Time (US & Canada),24,1,1,1,1,1
+13083,NYC.Havemeyer,171dea57b9b,common,Brooklyn,Williamsburg,Eastern Time (US & Canada),51,1,1,1,1,1
+15157,NYC.Heritage,573950699ed,common,New York,Harlem,Eastern Time (US & Canada),80,1,1,1,1,1
+13090,NYC.Herkimer,abf2fcec8db,common,Brooklyn,Crown Heights,Eastern Time (US & Canada),18,1,1,1,1,1
+12968,NYC.Kingston,512cdfea704,common,Brooklyn,Crown Heights,Eastern Time (US & Canada),21,1,1,1,1,1
+13149,NYC.Lenox,1b4f780018c,common,New York,Harlem,Eastern Time (US & Canada),21,1,1,1,1,1
+12102,NYC.Lincoln,88fa432c1c8,common,Brooklyn,Prospect Lefferts Garden,Eastern Time (US & Canada),17,1,1,1,1,1
+8230,NYC.Marcy,67b77e7230f,common,Brooklyn,Williamsburg,Eastern Time (US & Canada),38,1,1,1,1,1
+14921,NYC.Owens,25f5396f3ca,common,Brooklyn,Bedford Stuyvesant,Eastern Time (US & Canada),44,1,1,1,1,1
+13133,NYC.Robinson,730184ab3fb,common,New York,Harlem,Eastern Time (US & Canada),27,1,1,1,1,1
+8165,NYC.Roebling,239264c2d53,kin,Brooklyn,Williamsburg,Eastern Time (US & Canada),7,1,1,1,1,1
+11596,NYC.Sterling,bc2785915bd,common,Brooklyn,Crown Heights,Eastern Time (US & Canada),15,1,1,1,1,1
+12783,NYC.TheLanes,e409c6ee403,common,Long Island City,Long Island City,Eastern Time (US & Canada),147,1,1,1,1,1
+7944,NYC.Union,e3583029302,kin,Brooklyn,Williamsburg,Eastern Time (US & Canada),19,1,1,1,1,1
+11584,NYC.Wyckoff,bffbaae89f9,common,Brooklyn,Bushwick,Eastern Time (US & Canada),14,1,1,1,1,1
+9859,PHI.Broadridge,9363646ec37,common,Philadelphia,Fairmount,Eastern Time (US & Canada),291,1,1,1,1,1
+13340,PHI.Civic,3119b05384d,common,Philadelphia,Fairmount,Eastern Time (US & Canada),28,1,1,1,1,1
+13402,PHI.Frankford,63e38da82d8,common,Philadelphia,Fishtown,Eastern Time (US & Canada),71,1,1,1,1,1
+12868,PHI.LincolnSquare,c0440765e13,common,Philadelphia,Southwest Center City,Eastern Time (US & Canada),12,1,1,1,1,1
+12340,SD.Parco,c9e8bbfaa72,common,National City,National City,Pacific Time (US & Canada),150,1,1,1,1,1
+9479,SEA.510.Broadway,241ef8cfa0b,common,Seattle,First Hill,Pacific Time (US & Canada),84,1,1,1,1,1
+8969,SEA.Anderson,6277509302b,common,Seattle,Capitol Hill,Pacific Time (US & Canada),78,1,1,1,1,1
+8933,SEA.Capitol,3adc3528087,common,Seattle,Capitol Hill,Pacific Time (US & Canada),58,1,1,1,1,1
+9083,SEA.Madison,1e763ec134f,common,Seattle,Capitol Hill,Pacific Time (US & Canada),61,1,1,1,1,1
+9332,SEA.Rogers,779aef7d0f4,common,Seattle,East Lake,Pacific Time (US & Canada),35,1,1,1,1,1
+8898,SEA.Summit,6acba213696,common,Seattle,Capitol Hill,Pacific Time (US & Canada),49,1,1,1,1,1
+9449,SEA.Terry,167b5911f80,common,Seattle,First Hill,Pacific Time (US & Canada),112,1,1,1,1,1
+10152,SFO.BEI,e855b881439,common,San Francisco,Civic Center,Pacific Time (US & Canada),120,1,1,1,1,1
+14374,SFO.CityGardens,a46823bd816,common,San Francisco,SoMa,Pacific Time (US & Canada),579,1,1,1,1,1
+11462,SFO.Cottage,c5c995416dd,common,Richmond,Point Richmond,Pacific Time (US & Canada),25,1,1,1,1,1
+12227,SFO.Jefferson,30df09473c3,common,Oakland,Oakland,Pacific Time (US & Canada),43,1,1,1,1,1
+13931,SFO.MacArthur,4dbd256e555,common,Oakland,Oakland,Pacific Time (US & Canada),45,1,1,1,1,1
+11391,SFO.Minna,0913d13847b,common,San Francisco,SoMa,Pacific Time (US & Canada),12,1,1,1,1,1
+7883,SFO.Piedmont,27b0916c9a6,kin,Oakland,Piedmont Avenue,Pacific Time (US & Canada),9,1,1,1,1,1
+13255,SFO.Powell,f3d7523e60e,common,San Francisco,Union Square,Pacific Time (US & Canada),55,1,1,1,1,1
+11478,SFO.Valencia,9eb35b4932b,common,San Francisco,SoMa,Pacific Time (US & Canada),12,1,1,1,1,1
+10393,SFO.Webster,cfad68ecc07,common,Oakland,Downtown Oakland,Pacific Time (US & Canada),66,1,1,1,1,1
+12493,SPL.Alvera,a6e98b71b42,common,St. Paul,West Seventh,Central Time (US & Canada),193,1,1,1,1,1
+11689,STP.TheWayland,02fd49e1b7e,common,St. Petersburg,Downtown St. Petersburg,Eastern Time (US & Canada),481,1,1,1,1,1
+8344,VA.Barrington Woods,ee672a15cf9,noah,Hampton,Hampton Roads,Eastern Time (US & Canada),136,1,1,1,1,1
+8206,VA.Beamons Mill,28c3f2700d3,noah,Suffolk,Suffolk,Eastern Time (US & Canada),55,1,1,1,1,1
+8095,VA.LongwoodManor,b29aa272864,noah,Woodbridge,Woodbridge,Eastern Time (US & Canada),138,1,1,1,1,1
+13544,VA.NationalLanding,fa6e061ea39,common,ARLINGTON,National Landing,Eastern Time (US & Canada),316,1,1,1,1,1
+8583,VA.Pine Plaza,1832fd0d618,noah,Winchester,Winchester,Eastern Time (US & Canada),136,1,1,1,1,1
+7972,VA.WRIGHT Apartments,534bc6b066e,noah,Winchester,Winchester,Eastern Time (US & Canada),59,1,1,1,1,1
+14114,WAS.Bowman,0dec6ade2b0,common,Washington,Chinatown,Eastern Time (US & Canada),14,1,1,1,1,1
+12801,WAS.Cassell,2cefa14a58b,common,Washington,Shaw,Eastern Time (US & Canada),51,1,1,1,1,1
 13882,WAS.Clifton,391dc8019b3,common,Washington,"
-Columbia Heights",Eastern Time (US & Canada),25,1
-13843,WAS.Monroe,c31dc2bef46,common,Washington,Columbia Heights,Eastern Time (US & Canada),46,1
-13804,WAS.Perry,5791ad25e9e,common,Washington,University Heights,Eastern Time (US & Canada),27,1
-13563,WAS.Richardson,f3e4e0576f6,common,Washington,Shaw,Eastern Time (US & Canada),24,1
-12925,WAS.Wilson,ee7695fe014,common,Washington,Capitol Hill,Eastern Time (US & Canada),53,1
-14699,WAS.i5Union,b82f01a7ba3,common,Washington,Union Market,Eastern Time (US & Canada),239,1
+Columbia Heights",Eastern Time (US & Canada),25,1,1,1,1,1
+13843,WAS.Monroe,c31dc2bef46,common,Washington,Columbia Heights,Eastern Time (US & Canada),46,1,1,1,1,1
+13804,WAS.Perry,5791ad25e9e,common,Washington,University Heights,Eastern Time (US & Canada),27,1,1,1,1,1
+13563,WAS.Richardson,f3e4e0576f6,common,Washington,Shaw,Eastern Time (US & Canada),24,1,1,1,1,1
+12925,WAS.Wilson,ee7695fe014,common,Washington,Capitol Hill,Eastern Time (US & Canada),53,1,1,1,1,1
+14699,WAS.i5Union,b82f01a7ba3,common,Washington,Union Market,Eastern Time (US & Canada),239,1,1,1,1,1

@@ -1,15 +1,25 @@
-import * as React from "react";
-import Box from "@mui/material/Box";
-import Link from "next/link";
-import { useState } from "react";
-import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
-import DeleteIcon from "@mui/icons-material/Delete";
-import EditIcon from "@mui/icons-material/Edit";
+import * as React from 'react';
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+import TextField from '@mui/material/TextField';
+// import SearchIcon from '@mui/icons-material/Search';
 
-export default function PropAttrField({ setIdSelected, setHomeSelected }) {
-  const [isUpdate, setData] = useState({ isUpdate: false });
-  const [isCreate, setData1] = useState({ isCreate: false });
-  const [isDelete, setData2] = useState({ isDelete: false });
+
+export default function PropAttrField({propAttr,setPropAttr,setTrig }) {
+    // const [id, setId] = React.useState(null);
+    // const [home, setHome] = React.useState("");
+
+    // const handleIdChange = (event) => {
+    //     setIdSelected(event.target.value);
+    // };
+
+    // const handleHomeChange = (event) => {
+    //     setHome(event.target.value);
+    // };
+
+    const handleClick = (event) => {
+        setTrig(true)
+    }
 
   return (
     <Box
@@ -52,10 +62,70 @@ export default function PropAttrField({ setIdSelected, setHomeSelected }) {
             query: { isUpdate: false, isCreate: false, isDelete: true }, // the data
           }}
         >
-          <a style={{ color: "#1876d1" }}>Delete Property or/and Space</a>
-        </Link>
-        <DeleteIcon style={{ color: "#1876d1" }}></DeleteIcon>
-      </div>
-    </Box>
-  );
+            <div style={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+            }}>Property Attributes</div>
+            <div style={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+            }}>
+                <TextField
+                    id="input-zipcode"
+                    label="ID"
+                    size="small"
+                    value={propAttr.id}
+                    // onChange={handleIdChange}
+                    InputLabelProps={{
+                        shrink: true,
+                    }}
+                />
+            </div>
+            <div style={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+            }}>
+                <TextField
+                    id="input-zipcode"
+                    label="Home Name"
+                    size="small"
+                    value={propAttr.home_name}
+                    // onChange={handleHomeChange}
+                    InputLabelProps={{
+                        shrink: true,
+                    }}
+                />
+            </div>
+            <div style={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+            }}>
+                <TextField
+                  label="Home Brand"
+                  size="small"
+                  value={propAttr.brand}
+                  InputLabelProps={{
+                      shrink: true,
+                  }}
+                />
+            </div>
+
+            <div style={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+            }}>
+                <Button
+                  variant="outlined"
+                  // onClick={handleClick}
+                >
+                    Update
+                </Button>
+            </div>
+        </Box >
+    );
 }

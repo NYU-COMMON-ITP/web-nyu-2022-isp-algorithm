@@ -17,6 +17,10 @@ model properties {
   timezone     String? @db.VarChar
   unit_count   Int?
   rownum       Int?
+  wf_distance  Int?
+  wf_price     Int?
+  wf_time      Int?
+  wf_market    Int?
   spaces       spaces[]
 }
 
@@ -29,8 +33,8 @@ model spaces {
   security_deposit Int?
   date_available   DateTime   @db.Date
   status           String   @db.VarChar
-  created_at       DateTime @db.Timestamp(6)
-  updated_at       DateTime @db.Timestamp(6)
+  created_at       DateTime @db.Timestamp(6) @default(now())
+  updated_at       DateTime @db.Timestamp(6) @updatedAt
   mo3_price        Int
   mo6_price        Int
   mo9_price        Int

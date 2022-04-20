@@ -5,15 +5,28 @@ import TextField from '@mui/material/TextField';
 import SearchIcon from '@mui/icons-material/Search';
 
 
-export default function SpaceSearchField({ setSpaceSelected, setSpaceSearch }) {
-    const [space_id, setId] = React.useState(null);
+export default function SpaceSearchField({ spaceAttr, setSpaceAttr,setTrig }) {
+    const [id, setId] = React.useState(null);
     const handleIdChange = (event) => {
         setId(parseInt(event.target.value));
-        setSpaceSelected(parseInt(event.target.value))
+        setSpaceAttr({
+            ...spaceAttr,
+            space_id: event.target.value
+        })
     };
 
     const handleClick = (event) => {
-        setSpaceSearch(true)
+        setSpaceAttr({
+            space_id:id,
+            property_id: "",
+            room_name:"",
+            occupancy_type:"",
+            mo3_price:"",
+            mo6_price:"",
+            bedroom_count:"",
+            bath_count:"",
+        })
+        setTrig(true)
     }
 
     return (
