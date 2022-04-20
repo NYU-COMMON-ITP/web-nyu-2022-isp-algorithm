@@ -1,9 +1,13 @@
 import prisma from "../prisma";
-import { properties } from "../../data-access/searches";
+import { properties } from "../searches";
 export async function searchingAlgo(userSelection) {
-
+  let resData: properties[] = []
   if (userSelection.variables.city_name != 'any') {
-    const resData: properties[] = await prisma.properties.findMany({
+    // if (userSelection.variables.term == "12Mon"){}
+    // if (userSelection.variables.term == "9Mon"){}
+    // if (userSelection.variables.term == "6Mon"){}
+    // if (userSelection.variables.term == "3on"){}
+    resData = await prisma.properties.findMany({
       where: {
         city_name: userSelection.variables.city_name,
         spaces: {
@@ -54,8 +58,8 @@ export async function searchingAlgo(userSelection) {
           //sum
           const sum = new Number(diffTime+diffPrice+market_wf);
           spaceMap.set(space_value.space_id,[space_value,[parseInt(String(sum)),diffPrice,diffTime,market_wf]]);
-        };
-      };
+        }
+      }
       //space排序
       const spaceSort = Array.from(spaceMap);
       spaceSort.sort(function(a,b){
@@ -84,16 +88,23 @@ export async function searchingAlgo(userSelection) {
         scores_sum: spaceSort[0][1][1][0],
         spaces: [spaceSort[0][1][0]]
       })
-    };
+    }
     //prop 排序
     const propSort = Array.from(propList);
     propSort.sort(function(a,b){
       return b.scores_sum-a.scores_sum
     })
+    console.log("Search condition :")
+    console.log(userSelection.variables)
     console.log("best result :")
     console.log(propSort)
     return propSort
   } else {
-    return await prisma.properties.findMany()
+    return await prisma.properties.findMany({
+        include: {
+          spaces: true,
+        },
+      }
+    );
   }
 }

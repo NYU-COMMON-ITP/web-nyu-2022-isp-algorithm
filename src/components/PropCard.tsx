@@ -81,18 +81,23 @@ function PropCard({ data }) {
       <Box display="flex" justifyContent="space-between">
         <Grid item xs={4}>
           <CardContent>
-            <Button
-              variant="outlined"
-              size="small"
+            <Box
               sx={{
                 mb: 0.5,
+                p: 0.5,
                 fontSize: "0.7rem",
                 fontWeight: "700",
-                m: 0.2
+                colorScheme: "init",
+                display: "block",
+                color: "#1a76d2",
+                border: "1px solid",
+                borderColor: "#8cbae8",
+                borderRadius: 1,
+                alignCenter: "center",
               }}
             >
               Briefing:
-            </Button>
+            </Box>
             <Box
               component="span"
               sx={boxStyle_nb}
@@ -132,7 +137,7 @@ function PropCard({ data }) {
               sx={boxStyle_wb}
               className={classes.alignItemsAndJustifyContent}
             >
-              {data.home_name.split(".")[0]! + " " + data.city_name!}
+              {String(data!.home_name).split(".")[0] + " " + data!.city_name}
             </Box>
             <Box
               component="span"
@@ -164,18 +169,23 @@ function PropCard({ data }) {
         </Grid>
         <Grid item xs={4}>
           <CardContent>
-            <Button
-              variant="outlined"
-              size="small"
+            <Box
               sx={{
                 mb: 0.5,
+                p: 0.5,
                 fontSize: "0.7rem",
                 fontWeight: "700",
-                m: 0.2
+                colorScheme: "init",
+                display: "block",
+                color: "#1a76d2",
+                border: "1px solid",
+                borderColor: "#8cbae8",
+                borderRadius: 1,
+                alignCenter: "center",
               }}
             >
               Weights:
-            </Button>
+            </Box>
             <Box
               component="span"
               sx={boxStyle_nb}
@@ -187,7 +197,7 @@ function PropCard({ data }) {
               sx={boxStyle_wb}
               className={classes.alignItemsAndJustifyContent}
             >
-              {data.weights.wf_distance! + " x "}
+              {data!.weights.wf_distance + " x "}
             </Box>
             <Box
               component="span"
@@ -200,7 +210,7 @@ function PropCard({ data }) {
               sx={boxStyle_wb}
               className={classes.alignItemsAndJustifyContent}
             >
-              {data.weights.wf_price! + " x " + data.weights.diff_price!}
+              {data!.weights.wf_price + " x " + data!.weights.diff_price}
             </Box>
             <Box
               component="span"
@@ -213,7 +223,7 @@ function PropCard({ data }) {
               sx={boxStyle_wb}
               className={classes.alignItemsAndJustifyContent}
             >
-              {data.weights.wf_time! + " x " + data.weights.diff_time!}
+              {data!.weights.wf_time + " x " + data!.weights.diff_time}
             </Box>
             <Box
               component="span"
@@ -239,7 +249,7 @@ function PropCard({ data }) {
               sx={boxStyle_wb}
               className={classes.alignItemsAndJustifyContent}
             >
-              {data["weights"].wf_price! * data["weights"].diff_price! + data["weights"].wf_time! * data["weights"].diff_time! + data["weights"].wf_market!}
+              {data!["weights"].wf_price * data!["weights"].diff_price + data!["weights"].wf_time * data!["weights"].diff_time + data!["weights"].wf_market}
             </Box>
           </CardContent>
         </Grid>
