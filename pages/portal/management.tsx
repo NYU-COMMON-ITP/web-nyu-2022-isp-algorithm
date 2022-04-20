@@ -1,5 +1,6 @@
 import * as React from "react";
 import { GetStaticProps } from "next";
+
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 import Box from "@mui/material/Box";
@@ -11,6 +12,8 @@ import IconButton from "@mui/material/IconButton";
 import Badge from "@mui/material/Badge";
 import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
+
+
 import Paper from "@mui/material/Paper";
 import MenuIcon from "@mui/icons-material/Menu";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
@@ -20,6 +23,7 @@ import PropSearchField from "../../src/components/PropSearch";
 import SpaceSearchField from "../../src/components/SpaceSearch";
 import PropAttrField from "../../src/components/PropAttr";
 import SpaceAttrField from "../../src/components/SpaceAttr";
+
 import Copyright from "../../src/components/Copyright";
 import AppBar from "../../src/components/AppBar";
 import Drawer from "../../src/components/Drawer";
@@ -29,6 +33,7 @@ import { DataGrid, GridColDef } from "@mui/x-data-grid";
 const drawerWidth: number = 240;
 
 export const getStaticProps: GetStaticProps = async () => {
+
     const spacesJson = []
     const propertiesJson = []
     return {
@@ -37,24 +42,24 @@ export const getStaticProps: GetStaticProps = async () => {
 };
 
 const propColumns: GridColDef[] = [
-    { field: 'id', headerName: 'ID', width: 50 },
-    { field: 'home_name', headerName: 'Home', width: 150 },
-    { field: 'property_id', headerName: 'Prop_ID', width: 120 },
-    { field: 'brand', headerName: 'Brand', width: 70 },
-    { field: 'city_name', headerName: 'City', width: 100 },
-    { field: 'neighborhood', headerName: 'Neighborhood', width: 150 },
-    { field: 'unit_count', headerName: 'Unit', width: 70 },
+  { field: "id", headerName: "ID", width: 50 },
+  { field: "home_name", headerName: "Home", width: 150 },
+  { field: "property_id", headerName: "Prop_ID", width: 120 },
+  { field: "brand", headerName: "Brand", width: 70 },
+  { field: "city_name", headerName: "City", width: 100 },
+  { field: "neighborhood", headerName: "Neighborhood", width: 150 },
+  { field: "unit_count", headerName: "Unit", width: 70 },
 ];
 
 const spaceColumns: GridColDef[] = [
-    { field: 'space_id', headerName: 'ID', width: 70 },
-    // { field: 'date_available', headerName: 'DATE_AVALBE', width: 70 },
-    { field: 'property_id', headerName: 'P_NAME', width: 150 },
-    { field: 'room_name', headerName: 'ROOM', width: 200 },
-    { field: 'status', headerName: 'STATUS', width: 200 },
-    // { field: 'mo6_price', headerName: '6MONTH_PRICE', width: 200 },
-    // { field: 'mo9_price', headerName: '9MONTH_PRICE', width: 200 },
-    // { field: 'mo12_price', headerName: '12MONTH_PRICE', width: 200 },
+  { field: "space_id", headerName: "ID", width: 70 },
+  // { field: 'date_available', headerName: 'DATE_AVALBE', width: 70 },
+  { field: "property_id", headerName: "P_NAME", width: 150 },
+  { field: "room_name", headerName: "ROOM", width: 200 },
+  { field: "status", headerName: "STATUS", width: 200 },
+  // { field: 'mo6_price', headerName: '6MONTH_PRICE', width: 200 },
+  // { field: 'mo9_price', headerName: '9MONTH_PRICE', width: 200 },
+  // { field: 'mo12_price', headerName: '12MONTH_PRICE', width: 200 },
 ];
 
 const mdTheme = createTheme();
@@ -87,9 +92,10 @@ function PortalContent({ propertiesJson, spacesJson }) {
         bath_count:"",
     })
 
-    const toggleDrawer = () => {
-        setOpen(!open);
-    };
+
+  const toggleDrawer = () => {
+    setOpen(!open);
+  };
 
     React.useEffect(() => {
         async function fetchProp() {
@@ -476,17 +482,18 @@ function PortalContent({ propertiesJson, spacesJson }) {
                                       setTrig = {setSearchSpaceTrig}
                                     />
                                 </Paper>
-                            </Grid>
-                        </Grid>
-                        <Copyright sx={{ pt: 4 }} />
-                    </Container>
-                </Box>
-            </Box>
-        </ThemeProvider >
-    );
+                            </Grid> */}
+            </Grid>
+            <Copyright sx={{ pt: 4 }} />
+          </Container>
+        </Box>
+      </Box>
+    </ThemeProvider>
+  );
 }
 
 export default function Portal({ propertiesJson, spacesJson }) {
-
-    return <PortalContent spacesJson={spacesJson} propertiesJson={propertiesJson} />;
+  return (
+    <PortalContent spacesJson={spacesJson} propertiesJson={propertiesJson} />
+  );
 }

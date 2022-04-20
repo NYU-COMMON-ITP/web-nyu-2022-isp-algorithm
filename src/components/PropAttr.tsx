@@ -21,15 +21,46 @@ export default function PropAttrField({propAttr,setPropAttr,setTrig }) {
         setTrig(true)
     }
 
-    return (
-        <Box
-            component="form"
-            sx={{
-                '& .MuiTextField-root': { m: 1, width: '20ch' },
-            }}
-            noValidate
-            autoComplete="off"
-            justifyContent="center"
+  return (
+    <Box
+      component="form"
+      sx={{
+        "& .MuiTextField-root": { m: 1, width: "50px" },
+      }}
+      noValidate
+      autoComplete="off"
+      justifyContent="center"
+    >
+      <div className="editButton">
+        <Link
+          href={{
+            pathname: "/portal/operations",
+            query: { isUpdate: true, isCreate: false, isDelete: false }, // the data
+          }}
+        >
+          <a style={{ color: "#1876d1" }}>Update Property or/and Space</a>
+        </Link>
+        <EditIcon style={{ color: "#1876d1" }}></EditIcon>
+      </div>
+      <div className="editButton">
+        <Link
+          href={{
+            pathname: "/portal/operations",
+            query: { isUpdate: false, isCreate: true, isDelete: false }, // the data
+          }}
+        >
+          <a style={{ color: "#1876d1" }}>create Property or/and Space</a>
+        </Link>
+        <AddCircleOutlineIcon
+          style={{ color: "#1876d1" }}
+        ></AddCircleOutlineIcon>
+      </div>
+      <div className="editButton">
+        <Link
+          href={{
+            pathname: "/portal/operations",
+            query: { isUpdate: false, isCreate: false, isDelete: true }, // the data
+          }}
         >
             <div style={{
                 display: 'flex',
