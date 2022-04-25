@@ -27,7 +27,6 @@ const useStyles = makeStyles({
   }
 });
 
-
 const boxStyle_wb = {
   display: "block",
   color: "grey.800",
@@ -37,7 +36,8 @@ const boxStyle_wb = {
   fontSize: "0.6rem",
   fontWeight: "700",
   m: 0.2,
-  overflow: "auto"
+  overflow: "hidden",
+  textOverflow: 'ellipsis',
 };
 
 const boxStyle_nb = {
@@ -53,12 +53,31 @@ const boxStyle_nb = {
 
 function PropCard({ data }) {
   const classes = useStyles();
-  // const [values,setValue] = useState([0,0,0,0])
+  //String
+  const home_name = String(data.home_name).split(".")[1] ? String(data.home_name).split(".")[1]:"";
+  const home_id = String(data.id) ? String(data.id):"";
+  const city_1 = String(data.home_name).split(".")[0] ? String(data.home_name).split(".")[0]:"";
+  const city_2 = String(data.city_name) ? String(data.city_name):"";
+  const room_name = String(data.space_info.room_name) ? data.space_info.room_name: "";
+  const space_id = String(data.space_info.space_id) ? data.space_info.space_id: "";
+
+  //Diff Score
+  const dist_score = data.weights.diff_dist ? data.weights.diff_dist:0;
+  const price_score = data.weights.diff_price ? data.weights.diff_price:0;
+  const time_score = data.weights.diff_time ? data.weights.diff_time:0;
+
+  //Weight factors
+  const price_wf = data.weights.price_wf ? data.weights.price_wf:0;
+  const dist_wf = data.weights.dist_wf ? data.weights.distance_wf:0;
+  const time_wf = data.weights.time_wf ? data.weights.time_wf:0;
+  const market_wf = data.weights.market_wf ? data.weights.market_wf:0;
+
+
   const [chartData, setChartData] = useState({
     labels: ["Distance", "Price", "Time", "Market"],
     datasets: [
       {
-        data: [0, data["weights"].wf_price * data["weights"].diff_price, data["weights"].wf_time * data["weights"].diff_time, data["weights"].wf_market],
+        data: [0, price_wf*price_score, time_wf*time_score, market_wf],
         backgroundColor: ["#003f5c", "#58508d", "#bc5090", "#ff6361", "#ffa600"]
       }
     ]
@@ -68,13 +87,15 @@ function PropCard({ data }) {
         labels: ["Distance", "Price", "Time", "Market"],
         datasets: [
           {
-            data: [0, data["weights"].wf_price * data["weights"].diff_price, data["weights"].wf_time * data["weights"].diff_time, data["weights"].wf_market],
+            data: [0, price_wf*price_score, time_wf*time_score, market_wf],
             backgroundColor: ["#003f5c", "#58508d", "#bc5090", "#ff6361", "#ffa600"]
           }
         ]
       }
     );
-  }, [data["weights"].diff_price, data["weights"].diff_time]);
+  }, [price_score, time_score]);
+
+
 
   return (
     <Card className={classes.root}>
@@ -111,20 +132,20 @@ function PropCard({ data }) {
               className={classes.alignItemsAndJustifyContent}
 
             >
-              {String(data.home_name).split(".")[1]!}
+              {home_name}
             </Box>
             <Box
               component="span"
               sx={boxStyle_nb}
             >
-              ID:
+              Home ID:
             </Box>
             <Box
               component="span"
               sx={boxStyle_wb}
               className={classes.alignItemsAndJustifyContent}
             >
-              {data.id}
+              {home_id}
             </Box>
             <Box
               component="span"
@@ -137,7 +158,7 @@ function PropCard({ data }) {
               sx={boxStyle_wb}
               className={classes.alignItemsAndJustifyContent}
             >
-              {String(data!.home_name).split(".")[0] + " " + data!.city_name}
+              {city_1+ " " + city_2}
             </Box>
             <Box
               component="span"
@@ -150,20 +171,20 @@ function PropCard({ data }) {
               sx={boxStyle_wb}
               className={classes.alignItemsAndJustifyContent}
             >
-              {data.room_name}
+              {room_name}
             </Box>
             <Box
               component="span"
               sx={boxStyle_nb}
             >
-              Price:
+              Room ID:
             </Box>
             <Box
               component="span"
               sx={boxStyle_wb}
               className={classes.alignItemsAndJustifyContent}
             >
-              {data.price}
+              {space_id}
             </Box>
           </CardContent>
         </Grid>
@@ -197,7 +218,9 @@ function PropCard({ data }) {
               sx={boxStyle_wb}
               className={classes.alignItemsAndJustifyContent}
             >
-              {data!.weights.wf_distance + " x "}
+              {
+                 dist_wf+ " x " + dist_score
+              }
             </Box>
             <Box
               component="span"
@@ -210,7 +233,7 @@ function PropCard({ data }) {
               sx={boxStyle_wb}
               className={classes.alignItemsAndJustifyContent}
             >
-              {data!.weights.wf_price + " x " + data!.weights.diff_price}
+              {price_wf + " x " + price_score}
             </Box>
             <Box
               component="span"
@@ -223,7 +246,7 @@ function PropCard({ data }) {
               sx={boxStyle_wb}
               className={classes.alignItemsAndJustifyContent}
             >
-              {data!.weights.wf_time + " x " + data!.weights.diff_time}
+              {time_wf + " x " + time_score}
             </Box>
             <Box
               component="span"
@@ -236,7 +259,7 @@ function PropCard({ data }) {
               sx={boxStyle_wb}
               className={classes.alignItemsAndJustifyContent}
             >
-              {data.weights.wf_market}
+              {market_wf}
             </Box>
             <Box
               component="span"
@@ -249,7 +272,7 @@ function PropCard({ data }) {
               sx={boxStyle_wb}
               className={classes.alignItemsAndJustifyContent}
             >
-              {data!["weights"].wf_price * data!["weights"].diff_price + data!["weights"].wf_time * data!["weights"].diff_time + data!["weights"].wf_market}
+              {dist_wf*dist_score+price_wf+price_score+time_wf*time_score+market_wf}
             </Box>
           </CardContent>
         </Grid>

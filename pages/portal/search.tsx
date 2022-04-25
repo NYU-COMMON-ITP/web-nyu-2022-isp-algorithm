@@ -60,13 +60,16 @@ function resToJson(props){
         neighborhood: prop['neighborhood'],
         timezone: prop['timezone'],
         unit_count: prop['unit_count'],
-        spaces: prop['spaces'],
-        room_name: prop['room_name'],
-        price:prop['price'],
+        space_info:{
+          space: prop['space'],
+          space_id: prop['space_id'],
+          room_name: prop['room_name'],
+          price:prop['price'],
+        },
         weights:{
-          wf_price: prop['wf_price'],
-          wf_time: prop['wf_time'],
-          wf_market: prop['wf_market'],
+          price_wf: prop['wf_price'],
+          time_wf: prop['wf_time'],
+          market_wf: prop['wf_market'],
           diff_price: prop['diff_price'],
           diff_time: prop['diff_time'],
         }

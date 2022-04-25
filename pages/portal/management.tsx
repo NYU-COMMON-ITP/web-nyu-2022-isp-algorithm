@@ -36,18 +36,18 @@ const drawerWidth: number = 240;
 // This page will be statically rendered at build time
 export const getStaticProps: GetStaticProps = async () => {
   const cityLists = await getCities();
-  var cityMenu = [];
+  const cityMenu = [];
 
-  for (var city of cityLists) {
+  for (const city of cityLists) {
     cityMenu.push({
       value: city.city_name,
       label: city.city_name,
     });
   }
   const properties: properties[] = await getProperties();
-  var spacesJson = [];
-  var propertiesJson = [];
-  for (var prop of properties) {
+  const spacesJson = [];
+  const propertiesJson = [];
+  for (const prop of properties) {
     propertiesJson.push({
       id: prop.id,
       home_name: prop.home_name,
@@ -188,13 +188,13 @@ function PortalContent({ propertiesJson, spacesJson }) {
       );
       const properties: properties[] = await response.json();
 
-      var propertiesJson = [];
-      var spacesJson = [];
+      const propertiesJson = [];
+      const spacesJson = [];
       if (!properties || properties.length == 0) {
         setNewProp({});
         return;
       }
-      for (var line of properties) {
+      for (const line of properties) {
         propertiesJson.push({
           id: line.id,
           home_name: line.home_name,
@@ -213,7 +213,7 @@ function PortalContent({ propertiesJson, spacesJson }) {
           setNewSpace({});
           return;
         }
-        for (var sp of spaces) {
+        for (const sp of spaces) {
           spacesJson.push({
             id: sp.space_id,
             space_id: sp.space_id,
@@ -249,12 +249,12 @@ function PortalContent({ propertiesJson, spacesJson }) {
         }
       );
       const spaces: spaces[] = await response.json();
-      var spacesJson = [];
+      const spacesJson = [];
       if (!spaces || spaces.length == 0) {
         setNewSpace({});
         return;
       }
-      for (var sp of spaces) {
+      for (const sp of spaces) {
         spacesJson.push({
           id: sp.space_id,
           space_id: sp.space_id,
@@ -386,7 +386,7 @@ function PortalContent({ propertiesJson, spacesJson }) {
                       columns={spaceColumns}
                       getRowId={(row) => row.id}
                       pageSize={5}
-                      rowsPerPageOptions={[20, 50]}
+                      rowsPerPageOptions={[5, 20, 50]}
                       checkboxSelection
                     />
                   </div>
