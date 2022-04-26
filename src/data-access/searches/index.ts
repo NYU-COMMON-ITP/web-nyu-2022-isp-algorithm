@@ -27,14 +27,11 @@ export type properties = {
 }
 
 export async function getPropertiesforManagt(userSelection) {
-  if (userSelection.id == null && userSelection.home_name == "") {
-    return await prisma.properties.findMany({ include: { spaces: true } });
-  }
+  const prop_id = (userSelection.variables.id != null && userSelection.variables.id != "") ? userSelection.variables.id : undefined;
+  const home_name = (userSelection.variables.home_name != null && userSelection.variables.home_name != "") ? userSelection.variables.home_name : undefined;
+  const space_status = userSelection.variables.space_status != "Any" ? userSelection.variables.space_status : undefined;
 
-    const prop_id=  (userSelection.id != null && userSelection.id != "") ? userSelection.id : undefined
-    const home_name= (userSelection.home_name != null && userSelection.home_name != "") ? userSelection.home_name : undefined
-
-  return await prisma.properties.findMany({
+  const data = await prisma.properties.findMany({
     where: {
       AND: [
         { id: prop_id },
@@ -42,25 +39,35 @@ export async function getPropertiesforManagt(userSelection) {
           home_name: {
             contains: home_name
           }
-        }
-      ]
+        },
+      ],
+      // spaces: {
+      //   some: {
+      //     status: space_status,
+      //   }
+      // },
     },
     include: {
-      spaces: true
-    }
+      spaces: {
+        where: {
+          status: space_status
+        }
+      }
+    },
   });
+  return data
 }
 
 export async function getSpacesforManagt(userSelection) {
-  console.log(userSelection);
   const space_id = (userSelection.variables.space_id != null && userSelection.variables.space_id != "") ? userSelection.variables.space_id : undefined;
+
   const data = await prisma.properties.findMany(
     {
       where: {
-        spaces:{
+        spaces: {
           some: {
-            space_id: space_id,
-          },
+            space_id: space_id
+          }
         }
       },
       include: {
@@ -72,12 +79,10 @@ export async function getSpacesforManagt(userSelection) {
       }
     }
   );
-  console.log(data)
   return data;
 }
 
 export async function getPropertiesbyCity(userSelection) {
-  console.log(userSelection);
 
   if (userSelection.city_name != "any") {
     const data = await prisma.properties.findMany({
@@ -85,8 +90,6 @@ export async function getPropertiesbyCity(userSelection) {
         city_name: userSelection.city_name
       }
     });
-    // console.log("result: ")
-    // console.log(data)
     return data;
   } else {
     return await prisma.properties.findMany();

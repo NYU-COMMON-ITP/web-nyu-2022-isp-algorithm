@@ -29,7 +29,7 @@ import AppBar from "../../src/components/AppBar";
 import Drawer from "../../src/components/Drawer";
 import SpaceAttrField from "../../src/components/SpaceAttr";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
-import { properties } from "../../src/data-access/searches";
+import { properties, spaces } from "../../src/data-access/searches";
 
 export const getStaticProps: GetStaticProps = async () => {
   const spacesJson = []
@@ -79,7 +79,8 @@ function resToJson(props){
         wf_market: prop["wf_market"],
       }
     )
-    for (const space of prop["spaces"]){
+    if(prop["spaces"]){
+      for (const space of prop["spaces"]){
         spacesJson.push({
           id: space["space_id"],
           space_id: space["space_id"],
@@ -88,6 +89,7 @@ function resToJson(props){
           room_name: space["room_name"],
           status: space["status"],
         });
+      }
     }
   }
   return {propertiesJson , spacesJson};
@@ -97,6 +99,7 @@ function PortalContent({ propertiesJson, spacesJson }) {
   const [open, setOpen] = React.useState(false);
   const [propSelected, setIdSelected] = React.useState(null);
   const [spSelected, setSpSelected] = React.useState(null);
+  const [spStatus, setSpaceStatus] = React.useState(String("Any"));
   const [homeSelected, setHomeSelected] = React.useState("");
   const [searchPropTrig, setPropSearch] = React.useState(false);
   const [searchSpaceTrig, setSpaceSearch] = React.useState(false);
@@ -120,6 +123,7 @@ function PortalContent({ propertiesJson, spacesJson }) {
         variables: {
           id: propSelected,
           home_name: homeSelected,
+          space_status: spStatus,
         },
       };
       const response = await fetch(
@@ -253,6 +257,7 @@ function PortalContent({ propertiesJson, spacesJson }) {
                   <PropSearchField
                     setIdSelected={setIdSelected}
                     setHomeSelected={setHomeSelected}
+                    setSpaceStatus={setSpaceStatus}
                     setPropSearch={setPropSearch}
                   />
                 </Paper>
@@ -261,9 +266,9 @@ function PortalContent({ propertiesJson, spacesJson }) {
                 <Paper sx={{ p: 2, display: "flex", flexDirection: "column" }}>
                   <div style={{ height: 400, width: "100%", fontSize: 8 }}>
                     <DataGrid
-                      rows={newProp != null ? Array.from(newProp) : Array.from(propertiesJson)}
-                      columns={propColumns}
                       getRowId={(row) => row.id}
+                      rows={newProp != null ? Array.from(newProp) : []}
+                      columns={propColumns}
                       pageSize={5}
                       rowsPerPageOptions={[5, 20, 50]}
                       checkboxSelection={false}
@@ -319,9 +324,9 @@ function PortalContent({ propertiesJson, spacesJson }) {
                 <Paper sx={{ p: 2, display: "flex", flexDirection: "column" }}>
                   <div style={{ height: 400, width: "100%", fontSize: 8 }}>
                     <DataGrid
+                      getRowId={(row) => row["space_id"]}
                       rows={newSpace != null ? Array.from(newSpace) : Array.from(spacesJson)}
                       columns={spaceColumns}
-                      getRowId={(row) => row.id}
                       pageSize={5}
                       rowsPerPageOptions={[5, 20, 50]}
                       checkboxSelection={false}
