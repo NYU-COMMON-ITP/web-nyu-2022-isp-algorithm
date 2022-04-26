@@ -1,61 +1,104 @@
-import * as React from "react";
-import Box from "@mui/material/Box";
-import Link from "next/link";
-import { useState } from "react";
-import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
-import DeleteIcon from "@mui/icons-material/Delete";
-import EditIcon from "@mui/icons-material/Edit";
+import * as React from 'react';
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+import TextField from '@mui/material/TextField';
+import MenuItem from '@mui/material/MenuItem';
+import { Grid } from "@mui/material";
+import CardContent from "@mui/material/CardContent";
+import { Doughnut } from "react-chartjs-2";
+import Card from "@mui/material/Card";
+import { makeStyles } from "@mui/styles";
 
-export default function PropAttrField({ setIdSelected, setHomeSelected }) {
-  const [isUpdate, setData] = useState({ isUpdate: false });
-  const [isCreate, setData1] = useState({ isCreate: false });
-  const [isDelete, setData2] = useState({ isDelete: false });
+// alignItemsAndJustifyContent: {
+//   display: "flex",
+//     alignItems: "center",
+//     justifyContent: "center"
+// }
 
+
+const boxStyle_wb = {
+  display: "block",
+  color: "#1a76d1",
+  border: "1px solid",
+  borderColor: "#1a76d1",
+  borderRadius: 1,
+  fontSize: "0.8rem",
+  fontWeight: "700",
+  m: 0.2,
+  overflow: "hidden",
+  textOverflow: 'ellipsis',
+  alignItems: "center",
+  justifyContent: "center",
+  textAlign: "center"
+};
+
+const boxStyle_nb = {
+  display: "block",
+  color: "#1a76d1",
+  borderColor: "#1a76d1",
+  borderRadius: 1,
+  fontSize: "0.8rem",
+  fontWeight: "700",
+  alignCenter: "center",
+  m: 0.2,
+};
+
+export default function PropAttrField({ wfs }) {
   return (
-    <Box
-      component="form"
-      sx={{
-        "& .MuiTextField-root": { m: 1, width: "50px" },
-      }}
-      noValidate
-      autoComplete="off"
-      justifyContent="center"
-    >
-      <div className="editButton">
-        <Link
-          href={{
-            pathname: "/portal/operations",
-            query: { isUpdate: true, isCreate: false, isDelete: false }, // the data
-          }}
-        >
-          <a style={{ color: "#1876d1" }}>Update Property or/and Space</a>
-        </Link>
-        <EditIcon style={{ color: "#1876d1" }}></EditIcon>
-      </div>
-      <div className="editButton">
-        <Link
-          href={{
-            pathname: "/portal/operations",
-            query: { isUpdate: false, isCreate: true, isDelete: false }, // the data
-          }}
-        >
-          <a style={{ color: "#1876d1" }}>create Property or/and Space</a>
-        </Link>
-        <AddCircleOutlineIcon
-          style={{ color: "#1876d1" }}
-        ></AddCircleOutlineIcon>
-      </div>
-      <div className="editButton">
-        <Link
-          href={{
-            pathname: "/portal/operations",
-            query: { isUpdate: false, isCreate: false, isDelete: true }, // the data
-          }}
-        >
-          <a style={{ color: "#1876d1" }}>Delete Property or/and Space</a>
-        </Link>
-        <DeleteIcon style={{ color: "#1876d1" }}></DeleteIcon>
-      </div>
-    </Box>
+
+      <Box display="flex" justifyContent="space-between"
+      >
+          <CardContent >
+            <Box
+              component="span"
+              sx={boxStyle_nb}
+            >
+              Distance Factor:
+            </Box>
+            <Box
+              component="span"
+              sx={boxStyle_wb}
+            >
+              {wfs.wf_dist}
+            </Box>
+            <Box
+              component="span"
+              sx={boxStyle_nb}
+            >
+              Price Factor:
+            </Box>
+            <Box
+              component="span"
+              sx={boxStyle_wb}
+            >
+              {wfs.wf_price}
+            </Box>
+            <Box
+              component="span"
+              sx={boxStyle_nb}
+            >
+              Time Factor:
+            </Box>
+            <Box
+              component="span"
+              sx={boxStyle_wb}
+            >
+              {wfs.wf_time}
+            </Box>
+            <Box
+              component="span"
+              sx={boxStyle_nb}
+            >
+              Market Factor:
+            </Box>
+            <Box
+              component="span"
+              sx={boxStyle_wb}
+            >
+              {wfs.wf_market}
+            </Box>
+          </CardContent>
+      </Box>
+
   );
 }

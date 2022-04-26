@@ -22,7 +22,7 @@ import UserSearchFields from "../../src/components/UserSearch";
 import Copyright from "../../src/components/Copyright";
 import AppBar from "../../src/components/AppBar";
 import Drawer from "../../src/components/Drawer";
-import { getCities, getProperties, properties } from "../../src/data-access/searches";
+import { getCities } from "../../src/data-access/searches";
 
 export const getStaticProps: GetStaticProps = async () => {
     let cityLists = []
@@ -124,7 +124,6 @@ function PortalContent({ cityMenu, propertiesJson }) {
                 body: JSON.stringify(data)
             });
             const properties = await response.json();
-            console.log(typeof properties)
             if (!properties || properties.length == 0) {
                 setNewProp([]);
                 return
