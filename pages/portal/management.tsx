@@ -266,8 +266,8 @@ function PortalContent({ propertiesJson, spacesJson }) {
                 <Paper sx={{ p: 2, display: "flex", flexDirection: "column" }}>
                   <div style={{ height: 400, width: "100%", fontSize: 8 }}>
                     <DataGrid
+                      rows={(newProp != null && newProp.length!=0) ? Array.from(newProp) : []}
                       getRowId={(row) => row.id}
-                      rows={newProp != null ? Array.from(newProp) : []}
                       columns={propColumns}
                       pageSize={5}
                       rowsPerPageOptions={[5, 20, 50]}
@@ -324,8 +324,8 @@ function PortalContent({ propertiesJson, spacesJson }) {
                 <Paper sx={{ p: 2, display: "flex", flexDirection: "column" }}>
                   <div style={{ height: 400, width: "100%", fontSize: 8 }}>
                     <DataGrid
+                      rows={(newSpace != null && newSpace.length!=0) ? Array.from(newSpace) : []}
                       getRowId={(row) => row["space_id"]}
-                      rows={newSpace != null ? Array.from(newSpace) : Array.from(spacesJson)}
                       columns={spaceColumns}
                       pageSize={5}
                       rowsPerPageOptions={[5, 20, 50]}
