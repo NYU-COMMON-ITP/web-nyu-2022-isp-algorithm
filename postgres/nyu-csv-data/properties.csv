@@ -86,8 +86,7 @@ id,home_name,property_id,brand,city_name,neighborhood,timezone,unit_count,rownum
 7972,VA.WRIGHT Apartments,534bc6b066e,noah,Winchester,Winchester,Eastern Time (US & Canada),59,1,1,1,1,1
 14114,WAS.Bowman,0dec6ade2b0,common,Washington,Chinatown,Eastern Time (US & Canada),14,1,1,1,1,1
 12801,WAS.Cassell,2cefa14a58b,common,Washington,Shaw,Eastern Time (US & Canada),51,1,1,1,1,1
-13882,WAS.Clifton,391dc8019b3,common,Washington,"
-Columbia Heights",Eastern Time (US & Canada),25,1,1,1,1,1
+13882,WAS.Clifton,391dc8019b3,common,Washington,Columbia Heights,Eastern Time (US & Canada),25,1,1,1,1,1
 13843,WAS.Monroe,c31dc2bef46,common,Washington,Columbia Heights,Eastern Time (US & Canada),46,1,1,1,1,1
 13804,WAS.Perry,5791ad25e9e,common,Washington,University Heights,Eastern Time (US & Canada),27,1,1,1,1,1
 13563,WAS.Richardson,f3e4e0576f6,common,Washington,Shaw,Eastern Time (US & Canada),24,1,1,1,1,1
