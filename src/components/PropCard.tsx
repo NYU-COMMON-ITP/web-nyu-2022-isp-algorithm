@@ -12,16 +12,16 @@ ChartJS.register(ArcElement, Tooltip);
 
 const useStyles = makeStyles({
   root: {
-    maxWidth: "100%"
+    maxWidth: "100%",
   },
   media: {
-    height: 130
+    height: 130,
   },
   alignItemsAndJustifyContent: {
     display: "flex",
     alignItems: "center",
-    justifyContent: "center"
-  }
+    justifyContent: "center",
+  },
 });
 
 const boxStyle_wb = {
@@ -34,7 +34,7 @@ const boxStyle_wb = {
   fontWeight: "700",
   m: 0.2,
   overflow: "hidden",
-  textOverflow: "ellipsis"
+  textOverflow: "ellipsis",
 };
 
 const boxStyle_nb = {
@@ -45,18 +45,26 @@ const boxStyle_nb = {
   fontSize: "0.6rem",
   fontWeight: "700",
   alignCenter: "center",
-  m: 0.2
+  m: 0.2,
 };
 
 function PropCard({ data }) {
   const classes = useStyles();
   //String
-  const home_name = String(data.home_name).split(".")[1] ? String(data.home_name).split(".")[1] : "";
+  const home_name = String(data.home_name).split(".")[1]
+    ? String(data.home_name).split(".")[1]
+    : "";
   const home_id = String(data.id) ? String(data.id) : "";
-  const city_1 = String(data.home_name).split(".")[0] ? String(data.home_name).split(".")[0] : "";
+  const city_1 = String(data.home_name).split(".")[0]
+    ? String(data.home_name).split(".")[0]
+    : "";
   const city_2 = String(data.city_name) ? String(data.city_name) : "";
-  const room_name = String(data.space_info.room_name) ? data.space_info.room_name : "";
-  const space_id = String(data.space_info.space_id) ? data.space_info.space_id : "";
+  const room_name = String(data.space_info.room_name)
+    ? data.space_info.room_name
+    : "";
+  const space_id = String(data.space_info.space_id)
+    ? data.space_info.space_id
+    : "";
 
   //Diff Score
   const dist_score = data.weights.diff_dist ? data.weights.diff_dist : 0;
@@ -69,29 +77,40 @@ function PropCard({ data }) {
   const time_wf = data.weights.time_wf ? data.weights.time_wf : 0;
   const market_wf = data.weights.market_wf ? data.weights.market_wf : 0;
 
+  const scores = data.sumWeight ? data.sumWeight : 0;
 
   const [chartData, setChartData] = useState({
     labels: ["Distance", "Price", "Time", "Market"],
     datasets: [
       {
         data: [0, price_wf * price_score, time_wf * time_score, market_wf],
-        backgroundColor: ["#003f5c", "#58508d", "#bc5090", "#ff6361", "#ffa600"]
-      }
-    ]
+        backgroundColor: [
+          "#003f5c",
+          "#58508d",
+          "#bc5090",
+          "#ff6361",
+          "#ffa600",
+        ],
+      },
+    ],
   });
   useEffect(() => {
     setChartData({
-        labels: ["Distance", "Price", "Time", "Market"],
-        datasets: [
-          {
-            data: [0, price_wf * price_score, time_wf * time_score, market_wf],
-            backgroundColor: ["#003f5c", "#58508d", "#bc5090", "#ff6361", "#ffa600"]
-          }
-        ]
-      }
-    );
+      labels: ["Distance", "Price", "Time", "Market"],
+      datasets: [
+        {
+          data: [0, price_wf * price_score, time_wf * time_score, market_wf],
+          backgroundColor: [
+            "#003f5c",
+            "#58508d",
+            "#bc5090",
+            "#ff6361",
+            "#ffa600",
+          ],
+        },
+      ],
+    });
   }, [price_score, time_score]);
-
 
   return (
     <Card className={classes.root}>
@@ -110,30 +129,22 @@ function PropCard({ data }) {
                 border: "1px solid",
                 borderColor: "#8cbae8",
                 borderRadius: 1,
-                alignCenter: "center"
+                alignCenter: "center",
               }}
             >
               Briefing:
             </Box>
-            <Box
-              component="span"
-              sx={boxStyle_nb}
-
-            >
+            <Box component="span" sx={boxStyle_nb}>
               Home:
             </Box>
             <Box
               component="span"
               sx={boxStyle_wb}
               className={classes.alignItemsAndJustifyContent}
-
             >
               {home_name}
             </Box>
-            <Box
-              component="span"
-              sx={boxStyle_nb}
-            >
+            <Box component="span" sx={boxStyle_nb}>
               Home ID:
             </Box>
             <Box
@@ -143,10 +154,7 @@ function PropCard({ data }) {
             >
               {home_id}
             </Box>
-            <Box
-              component="span"
-              sx={boxStyle_nb}
-            >
+            <Box component="span" sx={boxStyle_nb}>
               City:
             </Box>
             <Box
@@ -156,10 +164,7 @@ function PropCard({ data }) {
             >
               {city_1 + " " + city_2}
             </Box>
-            <Box
-              component="span"
-              sx={boxStyle_nb}
-            >
+            <Box component="span" sx={boxStyle_nb}>
               Room:
             </Box>
             <Box
@@ -169,10 +174,7 @@ function PropCard({ data }) {
             >
               {room_name}
             </Box>
-            <Box
-              component="span"
-              sx={boxStyle_nb}
-            >
+            <Box component="span" sx={boxStyle_nb}>
               Room ID:
             </Box>
             <Box
@@ -198,15 +200,12 @@ function PropCard({ data }) {
                 border: "1px solid",
                 borderColor: "#8cbae8",
                 borderRadius: 1,
-                alignCenter: "center"
+                alignCenter: "center",
               }}
             >
               Weights:
             </Box>
-            <Box
-              component="span"
-              sx={boxStyle_nb}
-            >
+            <Box component="span" sx={boxStyle_nb}>
               {"Dist Score: "}
             </Box>
             <Box
@@ -214,14 +213,9 @@ function PropCard({ data }) {
               sx={boxStyle_wb}
               className={classes.alignItemsAndJustifyContent}
             >
-              {
-                dist_wf + " x " + dist_score
-              }
+              {dist_wf + " x " + dist_score}
             </Box>
-            <Box
-              component="span"
-              sx={boxStyle_nb}
-            >
+            <Box component="span" sx={boxStyle_nb}>
               {"Price Score: "}
             </Box>
             <Box
@@ -231,10 +225,7 @@ function PropCard({ data }) {
             >
               {price_wf + " x " + price_score}
             </Box>
-            <Box
-              component="span"
-              sx={boxStyle_nb}
-            >
+            <Box component="span" sx={boxStyle_nb}>
               {"Time Score: "}
             </Box>
             <Box
@@ -244,10 +235,7 @@ function PropCard({ data }) {
             >
               {time_wf + " x " + time_score}
             </Box>
-            <Box
-              component="span"
-              sx={boxStyle_nb}
-            >
+            <Box component="span" sx={boxStyle_nb}>
               {"Market Score: "}
             </Box>
             <Box
@@ -257,10 +245,7 @@ function PropCard({ data }) {
             >
               {market_wf}
             </Box>
-            <Box
-              component="span"
-              sx={boxStyle_nb}
-            >
+            <Box component="span" sx={boxStyle_nb}>
               {"Scores Sum:"}
             </Box>
             <Box
@@ -268,21 +253,22 @@ function PropCard({ data }) {
               sx={boxStyle_wb}
               className={classes.alignItemsAndJustifyContent}
             >
-              {dist_wf * dist_score + price_wf + price_score + time_wf * time_score + market_wf}
+              {scores}
             </Box>
           </CardContent>
         </Grid>
         <Grid item xs={4} sx={{ m: 1 }}>
-          <CardContent sx={{
-            mb: 1,
-            fontSize: "0.8rem",
-            float: "middle"
-          }}>
-          </CardContent>
+          <CardContent
+            sx={{
+              mb: 1,
+              fontSize: "0.8rem",
+              float: "middle",
+            }}
+          ></CardContent>
           <Doughnut
             data={{
               labels: chartData.labels,
-              datasets: chartData.datasets
+              datasets: chartData.datasets,
             }}
           />
           <Box
