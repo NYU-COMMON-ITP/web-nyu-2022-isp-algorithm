@@ -67,7 +67,7 @@ function PropCard({ data }) {
     : "";
 
   //Diff Score
-  const dist_score = data.weights.diff_dist ? data.weights.diff_dist : 0;
+  // const dist_score = data.weights.diff_dist ? data.weights.diff_dist : 0;
   const price_score = data.weights.diff_price ? data.weights.diff_price : 0;
   const time_score = data.weights.diff_time ? data.weights.diff_time : 0;
 
@@ -78,6 +78,9 @@ function PropCard({ data }) {
   const market_wf = data.weights.market_wf ? data.weights.market_wf : 0;
 
   const scores = data.sumWeight ? data.sumWeight : 0;
+
+  const disValue = data.distance_values ? data.distance_values : 0;
+  console.log("?????", data);
 
   const [chartData, setChartData] = useState({
     labels: ["Distance", "Price", "Time", "Market"],
@@ -213,7 +216,7 @@ function PropCard({ data }) {
               sx={boxStyle_wb}
               className={classes.alignItemsAndJustifyContent}
             >
-              {dist_wf + " x " + dist_score}
+              {dist_wf + " x " + disValue}
             </Box>
             <Box component="span" sx={boxStyle_nb}>
               {"Price Score: "}
