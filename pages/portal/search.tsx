@@ -25,56 +25,53 @@ import Drawer from "../../src/components/Drawer";
 import { getCities } from "../../src/data-access/searches";
 
 export const getStaticProps: GetStaticProps = async () => {
-    let cityLists = []
-    try {
-      cityLists = await getCities();
-    }catch (error) {
-      console.error(error);
-    }
-    const cityMenu = []
+  let cityLists = [];
+  try {
+    cityLists = await getCities();
+  } catch (error) {
+    console.error(error);
+  }
+  const cityMenu = [];
 
-    for (const city of cityLists) {
-        cityMenu.push(
-            {
-                value: city.city_name,
-                label: city.city_name,
-            }
-        )
-    }
-    const  propertiesJson = []
-    return {
-        props: { cityMenu, propertiesJson }
-    }
+  for (const city of cityLists) {
+    cityMenu.push({
+      value: city.city_name,
+      label: city.city_name,
+    });
+  }
+  const propertiesJson = [];
+  return {
+    props: { cityMenu, propertiesJson },
+  };
 };
 
-function resToJson(props){
-  const propertiesJson = []
-  for (const [index, prop] of Object.entries(props)){
-    propertiesJson.push(
-      {
-        id: prop['id'],
-        home_name: prop['home_name'],
-        property_id: prop['property_id'],
-        brand: prop['brand'],
-        city_name: prop['city_name'],
-        neighborhood: prop['neighborhood'],
-        timezone: prop['timezone'],
-        unit_count: prop['unit_count'],
-        space_info:{
-          space: prop['space'],
-          space_id: prop['space_id'],
-          room_name: prop['room_name'],
-          price:prop['price'],
-        },
-        weights:{
-          price_wf: prop['wf_price'],
-          time_wf: prop['wf_time'],
-          market_wf: prop['wf_market'],
-          diff_price: prop['diff_price'],
-          diff_time: prop['diff_time'],
-        }
-      }
-    )
+function resToJson(props) {
+  const propertiesJson = [];
+  for (const [index, prop] of Object.entries(props)) {
+    propertiesJson.push({
+      id: prop["id"],
+      home_name: prop["home_name"],
+      property_id: prop["property_id"],
+      brand: prop["brand"],
+      city_name: prop["city_name"],
+      neighborhood: prop["neighborhood"],
+      timezone: prop["timezone"],
+      unit_count: prop["unit_count"],
+      space_info: {
+        space: prop["space"],
+        space_id: prop["space_id"],
+        room_name: prop["room_name"],
+        price: prop["price"],
+      },
+      sumWeight: prop["scores_sum"],
+      weights: {
+        price_wf: prop["wf_price"],
+        time_wf: prop["wf_time"],
+        market_wf: prop["wf_market"],
+        diff_price: prop["diff_price"],
+        diff_time: prop["diff_time"],
+      },
+    });
   }
   return propertiesJson;
 }
@@ -82,157 +79,155 @@ function resToJson(props){
 const mdTheme = createTheme();
 
 function PortalContent({ cityMenu, propertiesJson }) {
-    const [open, setOpen] = React.useState(false);
-    const [searchTrig, setSearch] = React.useState(false);
-    const [newProp, setNewProp] = React.useState([]);
-    const [searchConditions,setSearchConditions] = useState({
-        brand:"common",
-        city: "any",
-        zip_code:"",
-        move_in: new Date(),
-        term:"12Mon",
-        pet: false,
-        budget:"",
-    })
+  const [open, setOpen] = React.useState(false);
+  const [searchTrig, setSearch] = React.useState(false);
+  const [newProp, setNewProp] = React.useState([]);
+  const [searchConditions, setSearchConditions] = useState({
+    brand: "common",
+    city: "any",
+    zip_code: "",
+    move_in: new Date(),
+    term: "12Mon",
+    pet: false,
+    budget: "",
+  });
 
-    const toggleDrawer = () => {
-      setOpen(!open);
-    };
+  const toggleDrawer = () => {
+    setOpen(!open);
+  };
 
-    React.useEffect(() => {
-        async function fetchMyAPI() {
-            const data = {
-                "operation": "UserSearch",
-                "variables": {
-                    "brand": searchConditions.brand,
-                    "city_name": searchConditions.city,
-                    "zip_code":searchConditions.zip_code,
-                    "budget": parseInt(searchConditions.budget),
-                    "term": searchConditions.term,
-                    "move_in": searchConditions.move_in,
-                    "with_pet": searchConditions.pet,
-                },
-                "weight":{
-                    "price_factor": 1.2,
-                }
-            }
-            const response = await fetch(`/api/v1/userSearch`, {
-                method: 'POST',
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify(data)
-            });
-            const properties = await response.json();
-            if (!properties || properties.length == 0) {
-                setNewProp([]);
-                return
-            }
-            const propertiesJson = resToJson(properties)
-            setNewProp(propertiesJson);
-        }
-      try {
-        fetchMyAPI().then(() => console.log('Search by User Inputs'))
-        setSearch(false);
-      }catch (error) {
-        console.error(error);
+  React.useEffect(() => {
+    async function fetchMyAPI() {
+      const data = {
+        operation: "UserSearch",
+        variables: {
+          brand: searchConditions.brand,
+          city_name: searchConditions.city,
+          zip_code: searchConditions.zip_code,
+          budget: parseInt(searchConditions.budget),
+          term: searchConditions.term,
+          move_in: searchConditions.move_in,
+          with_pet: searchConditions.pet,
+        },
+        weight: {
+          price_factor: 1,
+        },
+      };
+      const response = await fetch(`/api/v1/userSearch`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
+      const properties = await response.json();
+      if (!properties || properties.length == 0) {
+        setNewProp([]);
+        return;
       }
-    }, [searchTrig])
+      const propertiesJson = resToJson(properties);
+      setNewProp(propertiesJson);
+    }
+    try {
+      fetchMyAPI().then(() => console.log("Search by User Inputs"));
+      setSearch(false);
+    } catch (error) {
+      console.error(error);
+    }
+  }, [searchTrig]);
 
-    return (
-      <ThemeProvider theme={mdTheme}>
-          <Box sx={{ display: 'flex' }}>
-              <CssBaseline />
-              <AppBar position="absolute" open={open}>
-                  <Toolbar
-                    sx={{
-                        pr: '24px',
-                    }}
-                  >
-                      <IconButton
-                        edge="start"
-                        color="inherit"
-                        aria-label="open drawer"
-                        onClick={toggleDrawer}
-                        sx={{
-                            marginRight: '36px',
-                            ...(open && { display: 'none' }),
-                        }}
-                      >
-                          <MenuIcon />
-                      </IconButton>
-                      <Typography
-                        component="h1"
-                        variant="h6"
-                        color="inherit"
-                        noWrap
-                        sx={{ flexGrow: 1 }}
-                      >
-                          Dashboard
-                      </Typography>
-                      <IconButton color="inherit">
-                          <Badge badgeContent={0} color="secondary">
-                              <NotificationsIcon />
-                          </Badge>
-                      </IconButton>
-                  </Toolbar>
-              </AppBar>
-              <Drawer variant="permanent" open={open}>
-                  <Toolbar
-                    sx={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'flex-end',
-                        px: [1],
-                    }}
-                  >
-                      <IconButton onClick={toggleDrawer}>
-                          <ChevronLeftIcon />
-                      </IconButton>
-                  </Toolbar>
-                  <Divider />
-                  <List component="nav">
-                      {ListItems}
-                  </List>
-              </Drawer>
-              <Box
-                component="main"
-                sx={{
-                    backgroundColor: (theme) =>
-                      theme.palette.mode === 'light'
-                        ? theme.palette.grey[100]
-                        : theme.palette.grey[900],
-                    flexGrow: 1,
-                    height: '100vh',
-                    overflow: 'auto',
-                }}
-              >
-                  <Toolbar />
+  return (
+    <ThemeProvider theme={mdTheme}>
+      <Box sx={{ display: "flex" }}>
+        <CssBaseline />
+        <AppBar position="absolute" open={open}>
+          <Toolbar
+            sx={{
+              pr: "24px",
+            }}
+          >
+            <IconButton
+              edge="start"
+              color="inherit"
+              aria-label="open drawer"
+              onClick={toggleDrawer}
+              sx={{
+                marginRight: "36px",
+                ...(open && { display: "none" }),
+              }}
+            >
+              <MenuIcon />
+            </IconButton>
+            <Typography
+              component="h1"
+              variant="h6"
+              color="inherit"
+              noWrap
+              sx={{ flexGrow: 1 }}
+            >
+              Dashboard
+            </Typography>
+            <IconButton color="inherit">
+              <Badge badgeContent={0} color="secondary">
+                <NotificationsIcon />
+              </Badge>
+            </IconButton>
+          </Toolbar>
+        </AppBar>
+        <Drawer variant="permanent" open={open}>
+          <Toolbar
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "flex-end",
+              px: [1],
+            }}
+          >
+            <IconButton onClick={toggleDrawer}>
+              <ChevronLeftIcon />
+            </IconButton>
+          </Toolbar>
+          <Divider />
+          <List component="nav">{ListItems}</List>
+        </Drawer>
+        <Box
+          component="main"
+          sx={{
+            backgroundColor: (theme) =>
+              theme.palette.mode === "light"
+                ? theme.palette.grey[100]
+                : theme.palette.grey[900],
+            flexGrow: 1,
+            height: "100vh",
+            overflow: "auto",
+          }}
+        >
+          <Toolbar />
 
-                  <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
-                      <Grid container spacing={3}>
-                          <Grid item xs={3}>
-                              <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
-                                  <UserSearchFields
-                                    cityMenu={cityMenu}
-                                    searchConditions={searchConditions}
-                                    setSearchConditions={setSearchConditions}
-                                    setSearch={setSearch}
-                                  />
-                              </Paper>
-                          </Grid>
-                          <Grid item xs={9}>
-                            <CardsField data={newProp}/>
-                          </Grid>
-                      </Grid>
-                      <Copyright sx={{ pt: 4 }} />
-                  </Container>
-              </Box>
-          </Box>
-      </ThemeProvider >
-    );
+          <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
+            <Grid container spacing={3}>
+              <Grid item xs={3}>
+                <Paper sx={{ p: 2, display: "flex", flexDirection: "column" }}>
+                  <UserSearchFields
+                    cityMenu={cityMenu}
+                    searchConditions={searchConditions}
+                    setSearchConditions={setSearchConditions}
+                    setSearch={setSearch}
+                  />
+                </Paper>
+              </Grid>
+              <Grid item xs={9}>
+                <CardsField data={newProp} />
+              </Grid>
+            </Grid>
+            <Copyright sx={{ pt: 4 }} />
+          </Container>
+        </Box>
+      </Box>
+    </ThemeProvider>
+  );
 }
 
 export default function Portal({ cityMenu, propertiesJson }) {
-    return <PortalContent cityMenu={cityMenu} propertiesJson={propertiesJson} />;
+  return <PortalContent cityMenu={cityMenu} propertiesJson={propertiesJson} />;
 }
