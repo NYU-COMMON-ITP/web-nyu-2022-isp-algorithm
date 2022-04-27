@@ -4,7 +4,7 @@ export default async function handler(req, res) {
     try {
         const userSelection = req.body
         console.log('API')
-        const result = await getSpacesforManagt(userSelection.variables)
+        const result = await getSpacesforManagt(userSelection)
         console.log("result")
         console.log(result)
         res.send(JSON.stringify(result));

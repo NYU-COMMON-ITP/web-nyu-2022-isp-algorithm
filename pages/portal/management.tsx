@@ -21,47 +21,22 @@ import NotificationsIcon from "@mui/icons-material/Notifications";
 import { ListItems } from "../../src/components/ListItems";
 import PropSearchField from "../../src/components/PropSearch";
 import SpaceSearchField from "../../src/components/SpaceSearch";
+import PropOpsField from "../../src/components/PropOps";
+import SpaceOpsField from "../../src/components/SpaceOps";
 import PropAttrField from "../../src/components/PropAttr";
+import Copyright from "../../src/components/Copyright";
+import AppBar from "../../src/components/AppBar";
+import Drawer from "../../src/components/Drawer";
 import SpaceAttrField from "../../src/components/SpaceAttr";
-
-import {
-  properties,
-  getCities,
-  getProperties,
-  spaces,
-} from "../../src/data-access/searches";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
-const drawerWidth: number = 240;
+import { properties, spaces } from "../../src/data-access/searches";
 
-// This page will be statically rendered at build time
 export const getStaticProps: GetStaticProps = async () => {
-  const cityLists = await getCities();
-  var cityMenu = [];
-
-  for (var city of cityLists) {
-    cityMenu.push({
-      value: city.city_name,
-      label: city.city_name,
-    });
-  }
-  const properties: properties[] = await getProperties();
-  var spacesJson = [];
-  var propertiesJson = [];
-  for (var prop of properties) {
-    propertiesJson.push({
-      id: prop.id,
-      home_name: prop.home_name,
-      property_id: prop.property_id,
-      brand: prop.brand,
-      city_name: prop.city_name,
-      neighborhood: prop.neighborhood,
-      timezone: prop.timezone,
-      unit_count: prop.unit_count,
-    });
-  }
+  const spacesJson = []
+  const propertiesJson = []
   return {
-    props: { cityMenu, propertiesJson, spacesJson },
-  };
+    props: { propertiesJson, spacesJson }
+  }
 };
 
 const propColumns: GridColDef[] = [
@@ -76,92 +51,66 @@ const propColumns: GridColDef[] = [
 
 const spaceColumns: GridColDef[] = [
   { field: "space_id", headerName: "ID", width: 70 },
-  // { field: 'date_available', headerName: 'DATE_AVALBE', width: 70 },
-  { field: "property_id", headerName: "P_NAME", width: 150 },
-  { field: "room_name", headerName: "ROOM", width: 200 },
+  { field: 'date_available', headerName: "DATE_AVA", width: 100 },
+  { field: "property_id", headerName: "Prop_ID", width: 100 },
+  { field: "room_name", headerName: "ROOM", width: 150 },
   { field: "status", headerName: "STATUS", width: 200 },
-  // { field: 'mo6_price', headerName: '6MONTH_PRICE', width: 200 },
-  // { field: 'mo9_price', headerName: '9MONTH_PRICE', width: 200 },
-  // { field: 'mo12_price', headerName: '12MONTH_PRICE', width: 200 },
 ];
 
-interface AppBarProps extends MuiAppBarProps {
-  open?: boolean;
-}
-
-function Copyright(props: any) {
-  return (
-    <Typography
-      variant="body2"
-      color="text.secondary"
-      align="center"
-      {...props}
-    >
-      {"Copyright © "}
-      <Link color="inherit" href="https://mui.com/">
-        Common
-      </Link>{" "}
-      {new Date().getFullYear()}
-      {"."}
-    </Typography>
-  );
-}
-
-const AppBar = styled(MuiAppBar, {
-  shouldForwardProp: (prop) => prop !== "open",
-})<AppBarProps>(({ theme, open }) => ({
-  zIndex: theme.zIndex.drawer + 1,
-  transition: theme.transitions.create(["width", "margin"], {
-    easing: theme.transitions.easing.sharp,
-    duration: theme.transitions.duration.leavingScreen,
-  }),
-  ...(open && {
-    marginLeft: drawerWidth,
-    width: `calc(100% - ${drawerWidth}px)`,
-    transition: theme.transitions.create(["width", "margin"], {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.enteringScreen,
-    }),
-  }),
-}));
-
-const Drawer = styled(MuiDrawer, {
-  shouldForwardProp: (prop) => prop !== "open",
-})(({ theme, open }) => ({
-  "& .MuiDrawer-paper": {
-    position: "relative",
-    whiteSpace: "nowrap",
-    width: drawerWidth,
-    transition: theme.transitions.create("width", {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.enteringScreen,
-    }),
-    boxSizing: "border-box",
-    ...(!open && {
-      overflowX: "hidden",
-      transition: theme.transitions.create("width", {
-        easing: theme.transitions.easing.sharp,
-        duration: theme.transitions.duration.leavingScreen,
-      }),
-      width: theme.spacing(7),
-      [theme.breakpoints.up("sm")]: {
-        width: theme.spacing(9),
-      },
-    }),
-  },
-}));
-
 const mdTheme = createTheme();
+
+function resToJson(props){
+  const propertiesJson = []
+  const spacesJson = []
+  for (const [index, prop] of Object.entries(props)){
+    propertiesJson.push(
+      {
+        id: prop['id'],
+        home_name: prop['home_name'],
+        property_id: prop['property_id'],
+        brand: prop['brand'],
+        city_name: prop['city_name'],
+        neighborhood: prop['neighborhood'],
+        timezone: prop['timezone'],
+        unit_count: prop['unit_count'],
+        wf_dist: prop["wf_distance"],
+        wf_price: prop["wf_price"],
+        wf_time: prop["wf_time"],
+        wf_market: prop["wf_market"],
+      }
+    )
+    if(prop["spaces"]){
+      for (const space of prop["spaces"]){
+        spacesJson.push({
+          id: space["space_id"],
+          space_id: space["space_id"],
+          date_available: String(space["date_available"]).split("T")[0],
+          property_id:space["property_id"],
+          room_name: space["room_name"],
+          status: space["status"],
+        });
+      }
+    }
+  }
+  return {propertiesJson , spacesJson};
+}
 
 function PortalContent({ propertiesJson, spacesJson }) {
   const [open, setOpen] = React.useState(false);
   const [propSelected, setIdSelected] = React.useState(null);
   const [spSelected, setSpSelected] = React.useState(null);
+  const [spStatus, setSpaceStatus] = React.useState(String("Any"));
   const [homeSelected, setHomeSelected] = React.useState("");
   const [searchPropTrig, setPropSearch] = React.useState(false);
   const [searchSpaceTrig, setSpaceSearch] = React.useState(false);
-  const [newProp, setNewProp] = React.useState(null);
-  const [newSpace, setNewSpace] = React.useState(null);
+  const [newProp, setNewProp] = React.useState([]);
+  const [newSpace, setNewSpace] = React.useState([]);
+  const [propWfs,setPropWfs] = React.useState({
+    wf_price: 0,
+    wf_time: 0,
+    wf_market: 0,
+    wf_dist: 0,
+  })
 
   const toggleDrawer = () => {
     setOpen(!open);
@@ -174,6 +123,7 @@ function PortalContent({ propertiesJson, spacesJson }) {
         variables: {
           id: propSelected,
           home_name: homeSelected,
+          space_status: spStatus,
         },
       };
       const response = await fetch(
@@ -186,47 +136,17 @@ function PortalContent({ propertiesJson, spacesJson }) {
           body: JSON.stringify(data),
         }
       );
-      const properties: properties[] = await response.json();
-
-      var propertiesJson = [];
-      var spacesJson = [];
+      const properties = await response.json();
       if (!properties || properties.length == 0) {
-        setNewProp({});
-        return;
+        setNewProp([]);
+        setNewSpace([]);
+        return
       }
-      for (var line of properties) {
-        propertiesJson.push({
-          id: line.id,
-          home_name: line.home_name,
-          property_id: line.property_id,
-          brand: line.brand,
-          city_name: line.city_name,
-          neighborhood: line.neighborhood,
-          unit_count: line.unit_count,
-        });
-      }
-
+      const{ propertiesJson, spacesJson }= resToJson(properties)
       setNewProp(propertiesJson);
-      if (properties.length == 1) {
-        const spaces: spaces[] = await properties[0]["spaces"];
-        if (!spaces || spaces.length == 0) {
-          setNewSpace({});
-          return;
-        }
-        for (var sp of spaces) {
-          spacesJson.push({
-            id: sp.space_id,
-            space_id: sp.space_id,
-            room_name: sp.room_name,
-            status: sp.status,
-          });
-        }
-        setNewSpace(spacesJson);
-      } else {
-        setNewSpace(null);
-      }
+      setNewSpace(spacesJson);
     }
-    fetchProp();
+    fetchProp().then(() => console.log('Search Prop'));
     setPropSearch(false);
   }, [searchPropTrig]);
 
@@ -248,24 +168,17 @@ function PortalContent({ propertiesJson, spacesJson }) {
           body: JSON.stringify(data),
         }
       );
-      const spaces: spaces[] = await response.json();
-      var spacesJson = [];
-      if (!spaces || spaces.length == 0) {
-        setNewSpace({});
+      const properties = await response.json();
+      if (!properties || properties.length == 0) {
+        setNewProp([]);
+        setNewSpace([]);
         return;
       }
-      for (var sp of spaces) {
-        spacesJson.push({
-          id: sp.space_id,
-          space_id: sp.space_id,
-          room_name: sp.room_name,
-          status: sp.status,
-        });
-      }
-      setNewProp({});
+      const{ propertiesJson, spacesJson }= resToJson(properties)
+      setNewProp(propertiesJson);
       setNewSpace(spacesJson);
     }
-    fetchSpace();
+    fetchSpace().then(() => console.log('Search Space'))
     setSpaceSearch(false);
   }, [searchSpaceTrig]);
 
@@ -344,6 +257,7 @@ function PortalContent({ propertiesJson, spacesJson }) {
                   <PropSearchField
                     setIdSelected={setIdSelected}
                     setHomeSelected={setHomeSelected}
+                    setSpaceStatus={setSpaceStatus}
                     setPropSearch={setPropSearch}
                   />
                 </Paper>
@@ -352,24 +266,52 @@ function PortalContent({ propertiesJson, spacesJson }) {
                 <Paper sx={{ p: 2, display: "flex", flexDirection: "column" }}>
                   <div style={{ height: 400, width: "100%", fontSize: 8 }}>
                     <DataGrid
-                      rows={newProp != null ? newProp : propertiesJson}
-                      columns={propColumns}
+                      rows={(newProp != null && newProp.length!=0) ? Array.from(newProp) : []}
                       getRowId={(row) => row.id}
+                      columns={propColumns}
                       pageSize={5}
-                      rowsPerPageOptions={[20, 50]}
-                      checkboxSelection
+                      rowsPerPageOptions={[5, 20, 50]}
+                      checkboxSelection={false}
+                      onSelectionModelChange={
+                        (ids)=>{
+                          if (ids) {
+                            const selectedProp:properties[] = newProp.filter(
+                              function(obj, index){
+                                return obj.id==ids;
+                              }
+                            )
+                            if(selectedProp.length!=0){
+                              setPropWfs({
+                                ...propWfs,
+                                wf_price: selectedProp[0].wf_price ? parseInt(String(selectedProp[0].wf_price)):0,
+                                wf_time: selectedProp[0].wf_time ? parseInt(String(selectedProp[0].wf_time)):0,
+                                wf_market: selectedProp[0].wf_market? parseInt(String(selectedProp[0].wf_market)):0,
+                                wf_dist: selectedProp[0].wf_distance? parseInt(String(selectedProp[0].wf_distance)):0,
+                              })
+                            }
+                          }
+                        }
+                      }
                     />
                   </div>
                 </Paper>
               </Grid>
               <Grid item xs={12} md={2} lg={2}>
                 <Paper sx={{ p: 2, display: "flex", flexDirection: "column" }}>
-                  <PropAttrField
+                  <PropOpsField
                     setIdSelected={setIdSelected}
                     setHomeSelected={setHomeSelected}
                   />
                 </Paper>
+
+                  <Paper sx={{ mt:2, p: 2, display: 'flex', flexDirection: 'column' }}>
+                    <PropAttrField
+                      wfs={propWfs}
+                    />
+                  </Paper>
+
               </Grid>
+
               <Grid item xs={12} md={2} lg={2}>
                 <Paper sx={{ p: 2, display: "flex", flexDirection: "column" }}>
                   <SpaceSearchField
@@ -382,24 +324,24 @@ function PortalContent({ propertiesJson, spacesJson }) {
                 <Paper sx={{ p: 2, display: "flex", flexDirection: "column" }}>
                   <div style={{ height: 400, width: "100%", fontSize: 8 }}>
                     <DataGrid
-                      rows={newSpace != null ? newSpace : spacesJson}
+                      rows={(newSpace != null && newSpace.length!=0) ? Array.from(newSpace) : []}
+                      getRowId={(row) => row["space_id"]}
                       columns={spaceColumns}
-                      getRowId={(row) => row.id}
                       pageSize={5}
-                      rowsPerPageOptions={[20, 50]}
-                      checkboxSelection
+                      rowsPerPageOptions={[5, 20, 50]}
+                      checkboxSelection={false}
                     />
                   </div>
                 </Paper>
               </Grid>
-              {/* <Grid item xs={12} md={2} lg={2}>
+              <Grid item xs={12} md={2} lg={2}>
                                 <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
-                                    <SpaceAttrField
+                                    <SpaceOpsField
                                         setIdSelected={setIdSelected}
                                         setHomeSelected={setHomeSelected}
                                     />
                                 </Paper>
-                            </Grid> */}
+                            </Grid>
             </Grid>
             <Copyright sx={{ pt: 4 }} />
           </Container>

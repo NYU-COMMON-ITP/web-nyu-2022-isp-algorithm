@@ -1,8 +1,9 @@
 import prisma from "../prisma";
 import { properties } from "../searches";
+
 export async function searchingAlgo(userSelection) {
-  let resData: properties[] = []
-  if (userSelection.variables.city_name != 'any') {
+  let resData: properties[] = [];
+  if (userSelection.variables.city_name != "any") {
     // if (userSelection.variables.term == "12Mon"){}
     // if (userSelection.variables.term == "9Mon"){}
     // if (userSelection.variables.term == "6Mon"){}
@@ -15,43 +16,59 @@ export async function searchingAlgo(userSelection) {
             AND: [
               {
                 status: {
-                  contains: 'Available',
+
+                  contains: "(Available)"
                 }
               },
               {
                 mo12_price: {
                   gt: 0,
-                  lt: userSelection.variables.budget * userSelection.weight.price_factor != 0 ? userSelection.variables.budget : undefined,
+                  
+                  // lt: userSelection.variables.budget * userSelection.weight.price_factor != 0 ? userSelection.variables.budget : undefined
+
                 }
               },
+              {
+                date_available:{
+                  lt: new Date("3000-01-01")
+                }
+              }
             ]
-          },
-        },
+          }
+        }
       },
       include: {
         spaces: {
           where: {
-            status: {
-              contains: 'Available',
-            }
+            AND: [
+              {
+                status: {
+                  contains: "Available"
+                }
+            },
+              {
+                date_available:{
+                  lt: new Date("3000-01-01")
+                }
+              }
+            ]
           }
-        },
+        }
       }
-    })
-    const propList = []
+    });
+    const propList = [];
     for (const prop of resData) {
-      console.log("I am here in the search algo")
-      const str = JSON.stringify(prop, null, 4);
-      console.log(str);
-      console.log("I am here in the search algo")
       const spaceMap = new Map<Number, any[]>();
-      for (const [key, space_value] of Object.entries(prop.spaces)) {
+      // for (const [key, space_value] of Object.entries(prop.spaces)) {
+      for (const space_value of Array.from(prop.spaces)) {
         if (space_value.status.includes("Available")) {
-          // console.log(space_value.date_available.getFullYear()!=3000)
           //time
           const timeMoveIn = new Date(userSelection.variables.move_in);
           let diffTime = Math.abs(Math.floor((timeMoveIn.getTime() - space_value.date_available.getTime()) / (1000 * 60 * 60 * 24)));
-          if (diffTime > 500) { diffTime = 500 }
+          if (diffTime > 500) {
+            diffTime = 500;
+          }
+          
           //price
           let diffPrice = 0;
           if (userSelection.variables.budget != null && userSelection.variables.budget != 0) {
@@ -66,9 +83,11 @@ export async function searchingAlgo(userSelection) {
       }
       //space排序
       const spaceSort = Array.from(spaceMap);
-      spaceSort.sort(function (a, b) {
-        return b[1][1][0] - a[1][1][0]
-      })
+
+      spaceSort.sort(function(a, b) {
+        return b[1][1][0] - a[1][1][0];
+      });
+
       propList.push({
         id: prop.id,
         home_name: prop.home_name,
@@ -79,6 +98,7 @@ export async function searchingAlgo(userSelection) {
         timezone: prop.timezone,
         unit_count: prop.unit_count,
         rownum: prop.rownum,
+        space_id: spaceSort[0][1][0].space_id,
         room_name: spaceSort[0][1][0].room_name,
         price: spaceSort[0][1][0].mo12_price,
         wf_distance: prop.wf_distance,
@@ -92,25 +112,27 @@ export async function searchingAlgo(userSelection) {
         diff_time: spaceSort[0][1][1][2],
         market_weight: spaceSort[0][1][1][3],
         scores_sum: spaceSort[0][1][1][0],
-        spaces: [spaceSort[0][1][0]]
-      })
+        space: [spaceSort[0][1][0]]
+      });
     }
     //prop 排序
     const propSort = Array.from(propList);
-    propSort.sort(function (a, b) {
-      return b.scores_sum - a.scores_sum
-    })
-    console.log("Search condition :")
-    console.log(userSelection.variables)
-    console.log("best result :")
-    console.log(propSort)
-    return propSort
+
+    propSort.sort(function(a, b) {
+      return b.scores_sum - a.scores_sum;
+    });
+    console.log("Search condition :");
+    console.log(userSelection.variables);
+    console.log("best result :");
+    console.log(propSort);
+    return propSort;
   } else {
     return await prisma.properties.findMany({
-      include: {
-        spaces: true,
-      },
-    }
+        include: {
+          spaces: true
+        }
+      }
+
     );
   }
 }
