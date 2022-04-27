@@ -16,13 +16,16 @@ export async function searchingAlgo(userSelection) {
             AND: [
               {
                 status: {
+
                   contains: "(Available)"
                 }
               },
               {
                 mo12_price: {
                   gt: 0,
+                  
                   // lt: userSelection.variables.budget * userSelection.weight.price_factor != 0 ? userSelection.variables.budget : undefined
+
                 }
               },
               {
@@ -65,6 +68,7 @@ export async function searchingAlgo(userSelection) {
           if (diffTime > 500) {
             diffTime = 500;
           }
+          
           //price
           let diffPrice = 0;
           if (userSelection.variables.budget != null && userSelection.variables.budget != 0) {
@@ -79,9 +83,11 @@ export async function searchingAlgo(userSelection) {
       }
       //space排序
       const spaceSort = Array.from(spaceMap);
+
       spaceSort.sort(function(a, b) {
         return b[1][1][0] - a[1][1][0];
       });
+
       propList.push({
         id: prop.id,
         home_name: prop.home_name,
@@ -99,6 +105,8 @@ export async function searchingAlgo(userSelection) {
         wf_price: prop.wf_price,
         wf_time: prop.wf_time,
         wf_market: prop.wf_market,
+        longitude: prop.longitude,
+        latitude: prop.latitude,
         // distance_values: spaceSort[0][1][1][X],
         diff_price: spaceSort[0][1][1][1],
         diff_time: spaceSort[0][1][1][2],
@@ -109,6 +117,7 @@ export async function searchingAlgo(userSelection) {
     }
     //prop 排序
     const propSort = Array.from(propList);
+
     propSort.sort(function(a, b) {
       return b.scores_sum - a.scores_sum;
     });
@@ -123,6 +132,7 @@ export async function searchingAlgo(userSelection) {
           spaces: true
         }
       }
+
     );
   }
 }

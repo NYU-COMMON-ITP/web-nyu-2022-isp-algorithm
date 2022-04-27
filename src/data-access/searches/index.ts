@@ -10,6 +10,33 @@ import { spaces as _spaces } from "@prisma/client";
 // export type properties = _properties;
 export type spaces = _spaces;
 export type properties = {
+// <<<<<<< with_distance
+//     id: Number,
+//     home_name: String,
+//     property_id: String,
+//     brand: String,
+//     city_name: String,
+//     neighborhood: String,
+//     timezone: String,
+//     unit_count: Number,
+//     rownum: Number,
+//     wf_distance?: Number,
+//     wf_price?: Number,
+//     wf_time?: Number,
+//     wf_market?: Number,
+//     longitude?: Number,
+//     latitude?: Number,
+//     spaces?: spaces[],
+// }
+
+// export async function getProperties() {
+//     return await prisma.properties.findMany({
+//         include: {
+//             spaces: true,
+//         },
+//       }
+//     );
+//=======
   id: Number,
   home_name: String,
   property_id: String,
@@ -23,7 +50,10 @@ export type properties = {
   wf_price?: Number,
   wf_time?: Number,
   wf_market?: Number,
+  longitude?: Number,
+  latitude?: Number,
   spaces?: spaces[],
+//>>>>>>> main
 }
 
 export async function getPropertiesforManagt(userSelection) {
