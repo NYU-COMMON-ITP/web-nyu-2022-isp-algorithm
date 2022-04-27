@@ -17,6 +17,7 @@ import SearchIcon from '@mui/icons-material/Search';
 
 export default function UserSearchField({ cityMenu, searchConditions,setSearchConditions,setSearch }) {
   const [city, setCity] = React.useState("");
+  // const [prefer_neighborhood, set_prefer_neighborhood] = React.useState("");
   const [date, setDate] = React.useState(new Date());
   const [budget, setBudget] = React.useState("");
   const [pet, setPet] = React.useState(false);
@@ -29,6 +30,14 @@ export default function UserSearchField({ cityMenu, searchConditions,setSearchCo
       city: event.target.value
     })
   };
+
+  //   const handlePreferChange = (event) => {
+  //   set_prefer_neighborhood(event.target.value);
+  //   setSearchConditions({
+  //     ...searchConditions,
+  //     prefer_location: event.target.value
+  //   })
+  // };
 
   const handleZipChange = (event) => {
     setTerm(event.target.value);
@@ -106,6 +115,21 @@ export default function UserSearchField({ cityMenu, searchConditions,setSearchCo
           ))}
         </TextField>
       </div>
+      {/* <div style={{
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+      }}>
+        <TextField
+          id="input-prefer-location"
+          label="Preference Neighbourhood"
+          size="small"
+          onChange={handleZipChange}
+          InputLabelProps={{
+            shrink: true,
+          }}
+        />
+      </div> */}
       <div style={{
         display: 'flex',
         alignItems: 'center',

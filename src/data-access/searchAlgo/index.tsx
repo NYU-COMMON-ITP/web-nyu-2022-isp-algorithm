@@ -12,16 +12,16 @@ export async function searchingAlgo(userSelection) {
         city_name: userSelection.variables.city_name,
         spaces: {
           some: {
-            AND:[
+            AND: [
               {
                 status: {
-                contains: 'Available',
-              }
+                  contains: 'Available',
+                }
               },
               {
                 mo12_price: {
                   gt: 0,
-                  lt: userSelection.variables.budget*userSelection.weight.price_factor!=0 ? userSelection.variables.budget:undefined,
+                  lt: userSelection.variables.budget * userSelection.weight.price_factor != 0 ? userSelection.variables.budget : undefined,
                 }
               },
             ]
@@ -30,7 +30,7 @@ export async function searchingAlgo(userSelection) {
       },
       include: {
         spaces: {
-          where:{
+          where: {
             status: {
               contains: 'Available',
             }
@@ -39,31 +39,35 @@ export async function searchingAlgo(userSelection) {
       }
     })
     const propList = []
-    for(const prop of resData){
-        const spaceMap = new Map<Number, any[]>();
-        for (const [key, space_value] of Object.entries(prop.spaces)) {
-          if(space_value.status.includes("Available")){
+    for (const prop of resData) {
+      console.log("I am here in the search algo")
+      const str = JSON.stringify(prop, null, 4);
+      console.log(str);
+      console.log("I am here in the search algo")
+      const spaceMap = new Map<Number, any[]>();
+      for (const [key, space_value] of Object.entries(prop.spaces)) {
+        if (space_value.status.includes("Available")) {
           // console.log(space_value.date_available.getFullYear()!=3000)
-            //time
+          //time
           const timeMoveIn = new Date(userSelection.variables.move_in);
-          let diffTime = Math.abs(Math.floor((timeMoveIn.getTime()-space_value.date_available.getTime())  / (1000 * 60 * 60 * 24)));
-          if (diffTime > 500){diffTime=500}
+          let diffTime = Math.abs(Math.floor((timeMoveIn.getTime() - space_value.date_available.getTime()) / (1000 * 60 * 60 * 24)));
+          if (diffTime > 500) { diffTime = 500 }
           //price
           let diffPrice = 0;
-          if ( userSelection.variables.budget != null && userSelection.variables.budget != 0){
-            diffPrice = Math.abs(space_value.mo12_price-userSelection.variables.budget);
+          if (userSelection.variables.budget != null && userSelection.variables.budget != 0) {
+            diffPrice = Math.abs(space_value.mo12_price - userSelection.variables.budget);
           }
           //market
           const market_wf = Math.abs(Math.floor(parseInt(String(prop.wf_market))));
           //sum
-          const sum = new Number(diffTime+diffPrice+market_wf);
-          spaceMap.set(space_value.space_id,[space_value,[parseInt(String(sum)),diffPrice,diffTime,market_wf]]);
+          const sum = new Number(diffTime + diffPrice + market_wf);
+          spaceMap.set(space_value.space_id, [space_value, [parseInt(String(sum)), diffPrice, diffTime, market_wf]]);
         }
       }
       //space排序
       const spaceSort = Array.from(spaceMap);
-      spaceSort.sort(function(a,b){
-        return b[1][1][0]-a[1][1][0]
+      spaceSort.sort(function (a, b) {
+        return b[1][1][0] - a[1][1][0]
       })
       propList.push({
         id: prop.id,
@@ -81,6 +85,8 @@ export async function searchingAlgo(userSelection) {
         wf_price: prop.wf_price,
         wf_time: prop.wf_time,
         wf_market: prop.wf_market,
+        longitude: prop.longitude,
+        latitude: prop.latitude,
         // distance_values: spaceSort[0][1][1][X],
         diff_price: spaceSort[0][1][1][1],
         diff_time: spaceSort[0][1][1][2],
@@ -91,8 +97,8 @@ export async function searchingAlgo(userSelection) {
     }
     //prop 排序
     const propSort = Array.from(propList);
-    propSort.sort(function(a,b){
-      return b.scores_sum-a.scores_sum
+    propSort.sort(function (a, b) {
+      return b.scores_sum - a.scores_sum
     })
     console.log("Search condition :")
     console.log(userSelection.variables)
@@ -101,10 +107,10 @@ export async function searchingAlgo(userSelection) {
     return propSort
   } else {
     return await prisma.properties.findMany({
-        include: {
-          spaces: true,
-        },
-      }
+      include: {
+        spaces: true,
+      },
+    }
     );
   }
 }

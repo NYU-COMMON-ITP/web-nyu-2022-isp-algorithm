@@ -22,15 +22,18 @@ interface Props {
     home_name: string,
     property_id: string,
     brand: string,
+    price: string,
     city_name: string,
     neighborhood: string,
     timezone: string,
     unit_count: string,
     rownum: string,
+    distance: number,
 }
 
-export default function MediaCard({ id, home_name, brand, city_name, neighborhood }: Props) {
+export default function MediaCard({ id, home_name, brand, price, city_name, neighborhood, distance }: Props) {
     const classes = useStyles();
+    const dis = Math.ceil(distance);
     return (
         <Card className={classes.root}>
             <CardActionArea>
@@ -48,22 +51,14 @@ export default function MediaCard({ id, home_name, brand, city_name, neighborhoo
                     <Typography gutterBottom component="h2">
                         Neighbor: {neighborhood}
                     </Typography>
-                    {/* <Typography gutterBottom variant="subtitle1" color="textSecondary" component="h2">
+                    <Typography gutterBottom color="textSecondary">
                         Price at: {price} $
                     </Typography>
-                    <Typography variant="body2" color="textSecondary" component="p">
-                        {description}
-                    </Typography> */}
+                    <Typography gutterBottom color="textSecondary">
+                        Distance: {dis} miles.
+                    </Typography>
                 </CardContent>
             </CardActionArea>
-            <CardActions>
-                <Button size="small" color="primary">
-                    Explore the detail
-                </Button>
-                <Button size="small" color="primary">
-                    Get Info
-                </Button>
-            </CardActions>
         </Card>
     );
 }

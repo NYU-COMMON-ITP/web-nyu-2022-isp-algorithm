@@ -21,6 +21,8 @@ model properties {
   wf_price     Int?
   wf_time      Int?
   wf_market    Int?
+  longitude    Float?
+  latitude     Float?
   spaces       spaces[]
 }
 

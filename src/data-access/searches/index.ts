@@ -23,6 +23,8 @@ export type properties = {
     wf_price?: Number,
     wf_time?: Number,
     wf_market?: Number,
+    longitude?: Number,
+    latitude?: Number,
     spaces?: spaces[],
 }
 
