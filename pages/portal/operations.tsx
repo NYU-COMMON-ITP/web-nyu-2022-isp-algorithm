@@ -18,6 +18,7 @@ import { ListItems } from "../../src/components/ListItems";
 import AddProperty from "../../src/components/AddProperty";
 import AddSpace from "../../src/components/AddSpace";
 import UpdateProperty from "../../src/components/UpdateProperty";
+import UpdatePropertyWeight from "../../src/components/UpdatePropertyWeight";
 import UpdateSpace from "../../src/components/UpdateSpace";
 import DeleteSpace from "../../src/components/DeleteSpace";
 import DeleteProperty from "../../src/components/DeleteProperty";
@@ -36,6 +37,7 @@ function PortalContent({ propertiesJson }) {
   const isUpdate = query.isUpdate;
   const isCreate = query.isCreate;
   const isDelete = query.isDelete;
+  const isUpdateWeight = query.isUpdateWeight;
 
   const [open, setOpen] = React.useState(false);
   const [home_name, sethome_name] = React.useState(null);
@@ -66,10 +68,15 @@ function PortalContent({ propertiesJson }) {
   const [bath_count, setbath_count] = React.useState(null);
   const [min_price, set_min_price] = React.useState(null);
   const [max_price, set_max_price] = React.useState(null);
+  const [wf_distance, set_wf_distance] = React.useState(null);
+  const [wf_price, set_wf_price] = React.useState(null);
+  const [wf_time, set_wf_time] = React.useState(null);
+  const [wf_market, set_wf_market] = React.useState(null);
   const [deleteSpaceTrig, setDeleteSpaceTrig] = React.useState(false);
   const [deletePropTrig, setDeletePropTrig] = React.useState(false);
   const [updateSpaceTrig, setUpdateSpaceTrig] = React.useState(false);
   const [updatePropTrig, setUpdatePropTrig] = React.useState(false);
+  const [updatePropWeightTrig, setUpdatePropWeightTrig] = React.useState(false);
 
   const toggleDrawer = () => {
     setOpen(!open);
@@ -285,6 +292,43 @@ function PortalContent({ propertiesJson }) {
       } else console.log("Space ID missing");
     }
 
+    async function updatePropWeight() {
+      const data = {
+        operation: "UserModification",
+        variables: {
+          property_id: property_id,
+          wf_distance: parseInt(wf_distance),
+          wf_price: parseInt(wf_price),
+          wf_time: parseInt(wf_time),
+          wf_market: parseInt(wf_market),
+        },
+      };
+      const tempVar = data.variables;
+      Object.keys(tempVar).forEach((key) => {
+        if (tempVar[key] == null) {
+          delete tempVar[key];
+        }
+        if ((key == "unit_count" || key == "rownum") && isNaN(tempVar[key])) {
+          delete tempVar[key];
+        }
+      });
+      data.variables = tempVar;
+      if (data.variables.property_id) {
+        const response = await fetch(
+          `http://localhost:6003/api/v1/userPropWeightUpdate`,
+          {
+            method: "PATCH",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(data),
+          }
+        );
+        console.log("result: ");
+        console.log(response);
+      } else console.log("Property ID missing");
+    }
+
     if (createPropTrig) {
       console.log("Property Add");
       createProperty();
@@ -318,6 +362,12 @@ function PortalContent({ propertiesJson }) {
       setUpdatePropTrig(false);
     }
 
+    if (updatePropWeightTrig) {
+      console.log("Property Weight Update");
+      updatePropWeight();
+      setUpdatePropWeightTrig(false);
+    }
+
     if (isUpdate == "true") {
       var cp = document.getElementById("createProperty");
       cp.style.display = "none";
@@ -327,6 +377,8 @@ function PortalContent({ propertiesJson }) {
       dp.style.display = "none";
       var ds = document.getElementById("deleteSpace");
       ds.style.display = "none";
+      var upw = document.getElementById("updatePropertyWeight");
+      upw.style.display = "none";
     }
     if (isCreate == "true") {
       var up = document.getElementById("updateProperty");
@@ -337,6 +389,8 @@ function PortalContent({ propertiesJson }) {
       dp.style.display = "none";
       var ds = document.getElementById("deleteSpace");
       ds.style.display = "none";
+      var upw = document.getElementById("updatePropertyWeight");
+      upw.style.display = "none";
     }
     if (isDelete == "true") {
       var cp = document.getElementById("createProperty");
@@ -347,6 +401,22 @@ function PortalContent({ propertiesJson }) {
       up.style.display = "none";
       var us = document.getElementById("updateSpace");
       us.style.display = "none";
+      var upw = document.getElementById("updatePropertyWeight");
+      upw.style.display = "none";
+    }
+    if (isUpdateWeight == "true") {
+      var cp = document.getElementById("createProperty");
+      cp.style.display = "none";
+      var cs = document.getElementById("createSpace");
+      cs.style.display = "none";
+      var up = document.getElementById("updateProperty");
+      up.style.display = "none";
+      var us = document.getElementById("updateSpace");
+      us.style.display = "none";
+      var dp = document.getElementById("deleteProperty");
+      dp.style.display = "none";
+      var ds = document.getElementById("deleteSpace");
+      ds.style.display = "none";
     }
   }, [
     createPropTrig,
@@ -355,9 +425,11 @@ function PortalContent({ propertiesJson }) {
     deletePropTrig,
     updateSpaceTrig,
     updatePropTrig,
+    updatePropWeightTrig,
     isUpdate,
     isCreate,
     isDelete,
+    isUpdateWeight,
   ]);
   return (
     <ThemeProvider theme={mdTheme}>
@@ -497,6 +569,24 @@ function PortalContent({ propertiesJson }) {
                       setunit_count={setunit_count}
                       setrownum={setrownum}
                       setUpdatePropTrig={setUpdatePropTrig}
+                    />
+                  </Paper>
+                </Grid>
+              </div>
+              <div id="updatePropertyWeight" style={{ width: "inherit" }}>
+                <Grid item xs={4}>
+                  <Paper
+                    sx={{ p: 3, display: "flex", flexDirection: "column" }}
+                  >
+                    {" "}
+                    Update Property Weight
+                    <UpdatePropertyWeight
+                      setproperty_id={setproperty_id}
+                      set_wf_distance={set_wf_distance}
+                      set_wf_price={set_wf_price}
+                      set_wf_time={set_wf_time}
+                      set_wf_market={set_wf_market}
+                      setUpdatePropWeightTrig={setUpdatePropWeightTrig}
                     />
                   </Paper>
                 </Grid>
