@@ -57,8 +57,11 @@ export async function searchingAlgo(userSelection) {
     const propList = [];
     let timeWeight = 1;
     let priceWeight = 1;
+
+
     for (const prop of resData) {
       const spaceMap = new Map<Number, any[]>();
+
       // for (const [key, space_value] of Object.entries(prop.spaces)) {
       for (const space_value of Array.from(prop.spaces)) {
         if (space_value.status.includes("Available")) {
@@ -67,7 +70,7 @@ export async function searchingAlgo(userSelection) {
           let diffTime = Math.abs(
             Math.floor(
               (timeMoveIn.getTime() - space_value.date_available.getTime()) /
-                (1000 * 60 * 60 * 24)
+              (1000 * 60 * 60 * 24)
             )
           );
 
@@ -97,8 +100,24 @@ export async function searchingAlgo(userSelection) {
         }
       }
 
-      //
-      //space排序
+      //distance
+      var lat1 = Math.abs(userSelection.variables.longitude);
+      var lon1 = Math.abs(userSelection.variables.latitude);
+      var lat2 = Math.abs(prop.latitude.valueOf());
+      var lon2 = Math.abs(prop.longitude.valueOf());
+
+      var R = 6371; // Radius of the earth in km
+      var dLat = (lat2 - lat1) * (Math.PI / 180);  // deg2rad below
+      var dLon = (lon2 - lon1) * (Math.PI / 180);
+      var a =
+        Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+        Math.cos((lat1) * (Math.PI / 180)) * Math.cos((lat2) * (Math.PI / 180)) *
+        Math.sin(dLon / 2) * Math.sin(dLon / 2)
+        ;
+      var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+      var distance = (R * c / 1.6).toFixed(1); // Distance in km
+
+      //space Sort
       const spaceSort = Array.from(spaceMap);
       spaceSort.sort(function (a, b) {
         return b[1][1][0] - a[1][1][0];
@@ -123,7 +142,7 @@ export async function searchingAlgo(userSelection) {
         wf_market: prop.wf_market,
         longitude: prop.longitude,
         latitude: prop.latitude,
-        // distance_values: spaceSort[0][1][1][X],
+        distance_values: distance,
         scores_sum: spaceSort[0][1][1][0],
         diff_price: spaceSort[0][1][1][1],
         diff_time: spaceSort[0][1][1][2],
@@ -179,10 +198,7 @@ export async function searchingAlgo(userSelection) {
     });
 
     propList.forEach((element) => {
-      element.scores_sum = parseFloat(
-        100 -
-          (element.diff_time * timeWeight + element.diff_price * priceWeight)
-      ).toFixed(2);
+      element.scores_sum = (100 - (element.diff_time * timeWeight + element.diff_price * priceWeight)).toFixed(3);
     });
 
     //prop 排序
