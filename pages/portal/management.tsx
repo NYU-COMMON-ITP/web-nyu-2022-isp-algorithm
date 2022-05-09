@@ -32,11 +32,11 @@ import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import { properties, spaces } from "../../src/data-access/searches";
 
 export const getStaticProps: GetStaticProps = async () => {
-  const spacesJson = []
-  const propertiesJson = []
+  const spacesJson = [];
+  const propertiesJson = [];
   return {
-    props: { propertiesJson, spacesJson }
-  }
+    props: { propertiesJson, spacesJson },
+  };
 };
 
 const propColumns: GridColDef[] = [
@@ -51,7 +51,7 @@ const propColumns: GridColDef[] = [
 
 const spaceColumns: GridColDef[] = [
   { field: "space_id", headerName: "ID", width: 70 },
-  { field: 'date_available', headerName: "DATE_AVA", width: 100 },
+  { field: "date_available", headerName: "DATE_AVA", width: 100 },
   { field: "property_id", headerName: "Prop_ID", width: 100 },
   { field: "room_name", headerName: "ROOM", width: 150 },
   { field: "status", headerName: "STATUS", width: 200 },
@@ -59,40 +59,38 @@ const spaceColumns: GridColDef[] = [
 
 const mdTheme = createTheme();
 
-function resToJson(props){
-  const propertiesJson = []
-  const spacesJson = []
-  for (const [index, prop] of Object.entries(props)){
-    propertiesJson.push(
-      {
-        id: prop['id'],
-        home_name: prop['home_name'],
-        property_id: prop['property_id'],
-        brand: prop['brand'],
-        city_name: prop['city_name'],
-        neighborhood: prop['neighborhood'],
-        timezone: prop['timezone'],
-        unit_count: prop['unit_count'],
-        wf_dist: prop["wf_distance"],
-        wf_price: prop["wf_price"],
-        wf_time: prop["wf_time"],
-        wf_market: prop["wf_market"],
-      }
-    )
-    if(prop["spaces"]){
-      for (const space of prop["spaces"]){
+function resToJson(props) {
+  const propertiesJson = [];
+  const spacesJson = [];
+  for (const [index, prop] of Object.entries(props)) {
+    propertiesJson.push({
+      id: prop["id"],
+      home_name: prop["home_name"],
+      property_id: prop["property_id"],
+      brand: prop["brand"],
+      city_name: prop["city_name"],
+      neighborhood: prop["neighborhood"],
+      timezone: prop["timezone"],
+      unit_count: prop["unit_count"],
+      wf_distance: prop["wf_distance"],
+      wf_price: prop["wf_price"],
+      wf_time: prop["wf_time"],
+      wf_market: prop["wf_market"],
+    });
+    if (prop["spaces"]) {
+      for (const space of prop["spaces"]) {
         spacesJson.push({
           id: space["space_id"],
           space_id: space["space_id"],
           date_available: String(space["date_available"]).split("T")[0],
-          property_id:space["property_id"],
+          property_id: space["property_id"],
           room_name: space["room_name"],
           status: space["status"],
         });
       }
     }
   }
-  return {propertiesJson , spacesJson};
+  return { propertiesJson, spacesJson };
 }
 
 function PortalContent({ propertiesJson, spacesJson }) {
@@ -105,12 +103,12 @@ function PortalContent({ propertiesJson, spacesJson }) {
   const [searchSpaceTrig, setSpaceSearch] = React.useState(false);
   const [newProp, setNewProp] = React.useState([]);
   const [newSpace, setNewSpace] = React.useState([]);
-  const [propWfs,setPropWfs] = React.useState({
+  const [propWfs, setPropWfs] = React.useState({
     wf_price: 0,
     wf_time: 0,
     wf_market: 0,
-    wf_dist: 0,
-  })
+    wf_distance: 0,
+  });
 
   const toggleDrawer = () => {
     setOpen(!open);
@@ -140,13 +138,13 @@ function PortalContent({ propertiesJson, spacesJson }) {
       if (!properties || properties.length == 0) {
         setNewProp([]);
         setNewSpace([]);
-        return
+        return;
       }
-      const{ propertiesJson, spacesJson }= resToJson(properties)
+      const { propertiesJson, spacesJson } = resToJson(properties);
       setNewProp(propertiesJson);
       setNewSpace(spacesJson);
     }
-    fetchProp().then(() => console.log('Search Prop'));
+    fetchProp().then(() => console.log("Search Prop"));
     setPropSearch(false);
   }, [searchPropTrig]);
 
@@ -174,11 +172,11 @@ function PortalContent({ propertiesJson, spacesJson }) {
         setNewSpace([]);
         return;
       }
-      const{ propertiesJson, spacesJson }= resToJson(properties)
+      const { propertiesJson, spacesJson } = resToJson(properties);
       setNewProp(propertiesJson);
       setNewSpace(spacesJson);
     }
-    fetchSpace().then(() => console.log('Search Space'))
+    fetchSpace().then(() => console.log("Search Space"));
     setSpaceSearch(false);
   }, [searchSpaceTrig]);
 
@@ -272,26 +270,32 @@ function PortalContent({ propertiesJson, spacesJson }) {
                       pageSize={5}
                       rowsPerPageOptions={[5, 20, 50]}
                       checkboxSelection={false}
-                      onSelectionModelChange={
-                        (ids)=>{
-                          if (ids) {
-                            const selectedProp:properties[] = newProp.filter(
-                              function(obj, index){
-                                return obj.id==ids;
-                              }
-                            )
-                            if(selectedProp.length!=0){
-                              setPropWfs({
-                                ...propWfs,
-                                wf_price: selectedProp[0].wf_price ? parseInt(String(selectedProp[0].wf_price)):0,
-                                wf_time: selectedProp[0].wf_time ? parseInt(String(selectedProp[0].wf_time)):0,
-                                wf_market: selectedProp[0].wf_market? parseInt(String(selectedProp[0].wf_market)):0,
-                                wf_dist: selectedProp[0].wf_distance? parseInt(String(selectedProp[0].wf_distance)):0,
-                              })
+                      onSelectionModelChange={(ids) => {
+                        if (ids) {
+                          const selectedProp: properties[] = newProp.filter(
+                            function (obj, index) {
+                              return obj.id == ids;
                             }
+                          );
+                          if (selectedProp.length != 0) {
+                            setPropWfs({
+                              ...propWfs,
+                              wf_price: selectedProp[0].wf_price
+                                ? parseInt(String(selectedProp[0].wf_price))
+                                : 0,
+                              wf_time: selectedProp[0].wf_time
+                                ? parseInt(String(selectedProp[0].wf_time))
+                                : 0,
+                              wf_market: selectedProp[0].wf_market
+                                ? parseInt(String(selectedProp[0].wf_market))
+                                : 0,
+                              wf_distance: selectedProp[0].wf_distance
+                                ? parseInt(String(selectedProp[0].wf_distance))
+                                : 0,
+                            });
                           }
                         }
-                      }
+                      }}
                     />
                   </div>
                 </Paper>
@@ -304,12 +308,11 @@ function PortalContent({ propertiesJson, spacesJson }) {
                   />
                 </Paper>
 
-                  <Paper sx={{ mt:2, p: 2, display: 'flex', flexDirection: 'column' }}>
-                    <PropAttrField
-                      wfs={propWfs}
-                    />
-                  </Paper>
-
+                <Paper
+                  sx={{ mt: 2, p: 2, display: "flex", flexDirection: "column" }}
+                >
+                  <PropAttrField wfs={propWfs} />
+                </Paper>
               </Grid>
 
               <Grid item xs={12} md={2} lg={2}>
@@ -325,7 +328,11 @@ function PortalContent({ propertiesJson, spacesJson }) {
                   <div style={{ height: 400, width: "100%", fontSize: 8 }}>
                     <DataGrid
                       getRowId={(row) => row["space_id"]}
-                      rows={newSpace != null ? Array.from(newSpace) : Array.from(spacesJson)}
+                      rows={
+                        newSpace != null
+                          ? Array.from(newSpace)
+                          : Array.from(spacesJson)
+                      }
                       columns={spaceColumns}
                       pageSize={5}
                       rowsPerPageOptions={[5, 20, 50]}
@@ -335,13 +342,13 @@ function PortalContent({ propertiesJson, spacesJson }) {
                 </Paper>
               </Grid>
               <Grid item xs={12} md={2} lg={2}>
-                                <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
-                                    <SpaceOpsField
-                                        setIdSelected={setIdSelected}
-                                        setHomeSelected={setHomeSelected}
-                                    />
-                                </Paper>
-                            </Grid>
+                <Paper sx={{ p: 2, display: "flex", flexDirection: "column" }}>
+                  <SpaceOpsField
+                    setIdSelected={setIdSelected}
+                    setHomeSelected={setHomeSelected}
+                  />
+                </Paper>
+              </Grid>
             </Grid>
             <Copyright sx={{ pt: 4 }} />
           </Container>
