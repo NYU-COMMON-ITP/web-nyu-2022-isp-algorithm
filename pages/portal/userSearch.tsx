@@ -26,7 +26,7 @@ import MediaCard from "../../src/components/MediaCard";
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import ButtonGroup from '@mui/material/ButtonGroup';
-import { getCities, getProperties, properties } from "../../src/data-access/searches";
+import { getCities, properties } from "../../src/data-access/searches";
 
 export const getStaticProps: GetStaticProps = async () => {
     let cityLists = []
@@ -116,7 +116,7 @@ function PortalContent({ cityMenu, propertiesJson }) {
 
         var geo = geocoder({
 
-            key: '111AIzaSyBLgPwK9WQ-sQOl-0kVwHjHMlPPWa7Gn7E111'
+            key: 'AIzaSyBLgPwK9WQ-sQOl-0kVwHjHMlPPWa7Gn7E'
 
         });
 

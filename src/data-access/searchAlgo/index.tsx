@@ -55,11 +55,14 @@ export async function searchingAlgo(userSelection) {
       },
     });
     const propList = [];
-    const timeWeight = 1;
-    const priceWeight = 1;
-    const disWeight = 1;
+
+    let timeWeight = 1;
+    let priceWeight = 1;
+    let disWeight = 1;
+
     for (const prop of resData) {
       const spaceMap = new Map<Number, any[]>();
+
       // for (const [key, space_value] of Object.entries(prop.spaces)) {
       for (const space_value of Array.from(prop.spaces)) {
         if (space_value.status.includes("Available")) {
@@ -69,7 +72,7 @@ export async function searchingAlgo(userSelection) {
           let diffTime = Math.abs(
             Math.floor(
               (timeMoveIn.getTime() - space_value.date_available.getTime()) /
-                (1000 * 60 * 60 * 24)
+              (1000 * 60 * 60 * 24)
             )
           );
 
@@ -99,16 +102,25 @@ export async function searchingAlgo(userSelection) {
         }
       }
 
-      const dis = getDistanceFromLatLonInKm(
-        Math.abs(37.09024),
-        Math.abs(-95.71289),
-        Math.abs(prop.longitude),
-        Math.abs(prop.latitude)
-      );
+      //distance
+      var lat1 = Math.abs(userSelection.variables.longitude);
+      var lon1 = Math.abs(userSelection.variables.latitude);
+      var lat2 = Math.abs(prop.latitude.valueOf());
+      var lon2 = Math.abs(prop.longitude.valueOf());
 
-      console.log(">>>>>>>>>>>>", dis);
-      //
-      //space排序
+      var R = 6371; // Radius of the earth in km
+      var dLat = (lat2 - lat1) * (Math.PI / 180);  // deg2rad below
+      var dLon = (lon2 - lon1) * (Math.PI / 180);
+      var a =
+        Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+        Math.cos((lat1) * (Math.PI / 180)) * Math.cos((lat2) * (Math.PI / 180)) *
+        Math.sin(dLon / 2) * Math.sin(dLon / 2)
+        ;
+      var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+      var distance = (R * c / 1.6).toFixed(2); // Distance in km
+
+      //space Sort
+
       const spaceSort = Array.from(spaceMap);
       spaceSort.sort(function (a, b) {
         return b[1][1][0] - a[1][1][0];
@@ -133,7 +145,7 @@ export async function searchingAlgo(userSelection) {
         wf_market: prop.wf_market,
         longitude: prop.longitude,
         latitude: prop.latitude,
-        distance_values: dis,
+        distance_values: distance,
         scores_sum: spaceSort[0][1][1][0],
         diff_price: spaceSort[0][1][1][1],
         diff_time: spaceSort[0][1][1][2],
@@ -187,6 +199,32 @@ export async function searchingAlgo(userSelection) {
         ((element.diff_time - mean) / sd).toFixed(3)
       );
     });
+    // propList.forEach((element) => {
+    //   element.scores_sum = (100 - (element.diff_time * timeWeight + element.diff_price * priceWeight)).toFixed(3);
+    // });
+
+    // normalize dis
+    const disSort = Array.from(propList);
+    disSort.sort(function (a, b) {
+      return b.distance_values - a.distance_values;
+    });
+    total = 0;
+    disSort.forEach((element) => {
+      total += parseFloat(element.distance_values);
+    });
+    mean = total / Object.keys(disSort).length;
+
+    totalSD = 0;
+    disSort.forEach((element) => {
+      totalSD += Math.pow(element.distance_values - mean, 2);
+    });
+    sd = Math.sqrt(totalSD / Object.keys(disSort).length - 1);
+
+    disSort.forEach((element) => {
+      element.distance_values = parseFloat(
+        ((element.distance_values - mean) / sd).toFixed(3)
+      );
+    });
 
     // normalize dis
     const disSort = Array.from(propList);
@@ -231,11 +269,11 @@ export async function searchingAlgo(userSelection) {
     }
 
     propList.forEach((element) => {
-      element.scores_sum = parseFloat(
+      element.scores_sum = (
         100 -
-          (element.diff_time * timeWeight +
-            element.diff_price * priceWeight +
-            element.distance_values * disWeight)
+        (element.diff_time * timeWeight +
+          element.diff_price * priceWeight +
+          element.distance_values * disWeight)
       ).toFixed(2);
     });
     //prop 排序

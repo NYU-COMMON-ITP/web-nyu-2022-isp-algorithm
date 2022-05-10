@@ -47,7 +47,7 @@ id,home_name,property_id,brand,city_name,neighborhood,timezone,unit_count,rownum
 13149,NYC.Lenox,1b4f780018c,common,New York,Harlem,Eastern Time (US & Canada),21,1,1,1,1,1,86,71.77
 12102,NYC.Lincoln,88fa432c1c8,common,Brooklyn,Prospect Lefferts Garden,Eastern Time (US & Canada),17,1,1,1,1,1,41.7,74.81
 8230,NYC.Marcy,67b77e7230f,common,Brooklyn,Williamsburg,Eastern Time (US & Canada),38,1,1,1,1,1,40.1,72.532
-14921,NYC.Owens,25f5396f3ca,common,Brooklyn,Bedford Stuyvesant,Eastern Time (US & Canada),44,1,1,1,1,1,89,-40
+14921,NYC.Owens,25f5396f3ca,common,Brooklyn,Bedford Stuyvesant,Eastern Time (US & Canada),44,1,1,1,1,1,40,74.3
 13133,NYC.Robinson,730184ab3fb,common,New York,Harlem,Eastern Time (US & Canada),27,1,1,1,1,1,90,-39
 8165,NYC.Roebling,239264c2d53,kin,Brooklyn,Williamsburg,Eastern Time (US & Canada),7,1,1,1,1,1,43,74.81
 11596,NYC.Sterling,bc2785915bd,common,Brooklyn,Crown Heights,Eastern Time (US & Canada),15,1,1,1,1,1,44,72.532
