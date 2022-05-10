@@ -68,22 +68,33 @@ function PropCard({ data }) {
 
   //Diff Score
   const dist_score = data.distance ? data.distance : 0;
+
   const price_score = data.weights.diff_price ? data.weights.diff_price : 0;
   const time_score = data.weights.diff_time ? data.weights.diff_time : 0;
 
   //Weight factors
   const price_wf = data.weights.price_wf ? data.weights.price_wf : 0;
+
   const dist_wf = data.weights.dist_wf ? data.weights.dist_wf : 1;
+
   const time_wf = data.weights.time_wf ? data.weights.time_wf : 0;
   const market_wf = data.weights.market_wf ? data.weights.market_wf : 0;
 
   const scores = data.sumWeight ? data.sumWeight : 0;
 
+  const disValue = data.distance_values ? data.distance_values : 0;
+  console.log("?????", data);
+
   const [chartData, setChartData] = useState({
     labels: ["Distance", "Price", "Time", "Market"],
     datasets: [
       {
-        data: [0, price_wf * price_score, time_wf * time_score, market_wf],
+        data: [
+          0,
+          Math.abs(price_wf * price_score),
+          Math.abs(time_wf * time_score),
+          Math.abs(market_wf),
+        ],
         backgroundColor: [
           "#003f5c",
           "#58508d",
@@ -213,7 +224,7 @@ function PropCard({ data }) {
               sx={boxStyle_wb}
               className={classes.alignItemsAndJustifyContent}
             >
-              {dist_wf + " x " + dist_score}
+              {distance_wf + " x " + disValue}
             </Box>
             <Box component="span" sx={boxStyle_nb}>
               {"Price Score: "}

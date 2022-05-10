@@ -10,6 +10,7 @@ export default function PropOpsField({ setIdSelected, setHomeSelected }) {
   const [isUpdate, setData] = useState({ isUpdate: false });
   const [isCreate, setData1] = useState({ isCreate: false });
   const [isDelete, setData2] = useState({ isDelete: false });
+  const [isUpdateWeight, setData3] = useState({ isDelete: false });
 
   return (
     <Box
@@ -25,18 +26,12 @@ export default function PropOpsField({ setIdSelected, setHomeSelected }) {
         <Link
           href={{
             pathname: "/portal/operations",
-            query: { isUpdate: true, isCreate: false, isDelete: false }, // the data
-          }}
-        >
-          <a style={{ color: "#1876d1" }}>Update Property</a>
-        </Link>
-        <EditIcon style={{ color: "#1876d1" }}></EditIcon>
-      </div>
-      <div className="editButton">
-        <Link
-          href={{
-            pathname: "/portal/operations",
-            query: { isUpdate: false, isCreate: true, isDelete: false }, // the data
+            query: {
+              isUpdate: false,
+              isCreate: true,
+              isDelete: false,
+              isUpdateWeight: false,
+            }, // the data
           }}
         >
           <a style={{ color: "#1876d1" }}>Create Property</a>
@@ -45,11 +40,51 @@ export default function PropOpsField({ setIdSelected, setHomeSelected }) {
           style={{ color: "#1876d1" }}
         ></AddCircleOutlineIcon>
       </div>
+
       <div className="editButton">
         <Link
           href={{
             pathname: "/portal/operations",
-            query: { isUpdate: false, isCreate: false, isDelete: true }, // the data
+            query: {
+              isUpdate: true,
+              isCreate: false,
+              isDelete: false,
+              isUpdateWeight: false,
+            }, // the data
+          }}
+        >
+          <a style={{ color: "#1876d1" }}>Update Property</a>
+        </Link>
+        <EditIcon style={{ color: "#1876d1" }}></EditIcon>
+      </div>
+
+      <div className="editButton">
+        <Link
+          href={{
+            pathname: "/portal/operations",
+            query: {
+              isUpdate: false,
+              isCreate: false,
+              isDelete: false,
+              isUpdateWeight: true,
+            }, // the data
+          }}
+        >
+          <a style={{ color: "#1876d1" }}>Update Property Weight</a>
+        </Link>
+        <EditIcon style={{ color: "#1876d1" }}></EditIcon>
+      </div>
+
+      <div className="editButton">
+        <Link
+          href={{
+            pathname: "/portal/operations",
+            query: {
+              isUpdate: false,
+              isCreate: false,
+              isDelete: true,
+              isUpdateWeight: false,
+            }, // the data
           }}
         >
           <a style={{ color: "#1876d1" }}>Delete Property</a>

@@ -64,7 +64,9 @@ function resToJson(props) {
         price: prop["price"],
       },
       sumWeight: prop["scores_sum"],
+      distance_values: prop["distance_values"],
       weights: {
+        distance_wf: prop["wf_distance"],
         price_wf: prop["wf_price"],
         time_wf: prop["wf_time"],
         market_wf: prop["wf_market"],

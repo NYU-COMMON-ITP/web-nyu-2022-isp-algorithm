@@ -55,6 +55,7 @@ export async function searchingAlgo(userSelection) {
       },
     });
     const propList = [];
+
     let timeWeight = 1;
     let priceWeight = 1;
     let disWeight = 1;
@@ -66,6 +67,7 @@ export async function searchingAlgo(userSelection) {
       for (const space_value of Array.from(prop.spaces)) {
         if (space_value.status.includes("Available")) {
           //time
+          console.log("hhhhhhhhh", prop);
           const timeMoveIn = new Date(userSelection.variables.move_in);
           let diffTime = Math.abs(
             Math.floor(
@@ -118,6 +120,7 @@ export async function searchingAlgo(userSelection) {
       var distance = (R * c / 1.6).toFixed(2); // Distance in km
 
       //space Sort
+
       const spaceSort = Array.from(spaceMap);
       spaceSort.sort(function (a, b) {
         return b[1][1][0] - a[1][1][0];
@@ -223,6 +226,48 @@ export async function searchingAlgo(userSelection) {
       );
     });
 
+    // normalize dis
+    const disSort = Array.from(propList);
+    disSort.sort(function (a, b) {
+      return b.distance_values - a.distance_values;
+    });
+    total = 0;
+    disSort.forEach((element) => {
+      total += element.distance_values;
+    });
+    mean = total / Object.keys(disSort).length;
+
+    totalSD = 0;
+    disSort.forEach((element) => {
+      totalSD += Math.pow(element.distance_values - mean, 2);
+    });
+    sd = Math.sqrt(totalSD / Object.keys(disSort).length - 1);
+
+    disSort.forEach((element) => {
+      element.distance_values = parseFloat(
+        ((element.distance_values - mean) / sd).toFixed(3)
+      );
+    });
+
+    function getDistanceFromLatLonInKm(lat1, lon1, lat2, lon2) {
+      var R = 6371; // Radius of the earth in km
+      var dLat = deg2rad(lat2 - lat1); // deg2rad below
+      var dLon = deg2rad(lon2 - lon1);
+      var a =
+        Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+        Math.cos(deg2rad(lat1)) *
+          Math.cos(deg2rad(lat2)) *
+          Math.sin(dLon / 2) *
+          Math.sin(dLon / 2);
+      var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+      var d = R * c; // Distance in km
+      return d;
+    }
+
+    function deg2rad(deg) {
+      return deg * (Math.PI / 180);
+    }
+
     propList.forEach((element) => {
       element.scores_sum = (
         100 -
@@ -231,7 +276,6 @@ export async function searchingAlgo(userSelection) {
           element.distance_values * disWeight)
       ).toFixed(2);
     });
-
     //prop 排序
     const propSort = Array.from(propList);
     propSort.sort(function (a, b) {
