@@ -73,7 +73,7 @@ function PropCard({ data }) {
 
   //Weight factors
   const price_wf = data.weights.price_wf ? data.weights.price_wf : 0;
-  const dist_wf = data.weights.dist_wf ? data.weights.dist_wf : 0;
+  const dist_wf = data.weights.dist_wf ? data.weights.dist_wf : 1;
   const time_wf = data.weights.time_wf ? data.weights.time_wf : 0;
   const market_wf = data.weights.market_wf ? data.weights.market_wf : 0;
 
@@ -99,7 +99,7 @@ function PropCard({ data }) {
       labels: ["Distance", "Price", "Time", "Market"],
       datasets: [
         {
-          data: [0, price_wf * price_score, time_wf * time_score, market_wf],
+          data: [dist_score, price_wf * price_score, time_wf * time_score, market_wf],
           backgroundColor: [
             "#003f5c",
             "#58508d",

@@ -117,7 +117,7 @@ function PortalContent({ cityMenu, propertiesJson }) {
 
     var geo = geocoder({
 
-      key: 'AIzaSyBLgPwK9WQ-sQOl-0kVwHjHMlPPWa7Gn7E'
+      key: 'AIzaSyBLgPwK9WQ-sQOl-0kVwHjHMlPPWa7Gn7E111'
 
     });
 
